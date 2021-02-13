@@ -1,2 +1,68 @@
 /.idea/
 /.DS_Store
+
+# zend studio for eclipse project files
+review-restaurant-api/.buildpath
+review-restaurant-api/.project
+review-restaurant-api/.settings
+
+# composer vendor dir
+review-restaurant-api/vendor
+
+# composer itself is not needed
+review-restaurant-api/composer.phar
+
+# phpunit itself is not needed
+review-restaurant-api/phpunit.phar
+# local phpunit config
+/review-restaurant-api/phpunit.xml
+
+review-restaurant-api/tests/_output/*
+review-restaurant-api/tests/_support/_generated
+
+#vagrant folder
+/review-restaurant-api/.vagrant
+
+
+# compiled output
+/review-restaurant-client/dist
+/review-restaurant-client/tmp
+/review-restaurant-client/out-tsc
+# Only exists if Bazel was run
+/review-restaurant-client/bazel-out
+
+# dependencies
+review-restaurant-client/node_modules
+
+# profiling files
+review-restaurant-client/chrome-profiler-events*.json
+review-restaurant-client/speed-measure-plugin*.json
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
+
+# misc
+/review-restaurant-client/.sass-cache
+/review-restaurant-client/connect.lock
+/review-restaurant-client/coverage
+/review-restaurant-client/libpeerconnection.log
+review-restaurant-client/npm-debug.log
+review-restaurant-client/yarn-error.log
+review-restaurant-client/testem.log
+/review-restaurant-client/typings
+
+Thumbs.db

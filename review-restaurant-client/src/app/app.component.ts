@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
+import {TestService} from '../services/test.service';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,10 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'review-restaurant-client';
+
+  constructor(private testService: TestService) {
+    this.testService.getUsers().subscribe(res => {
+      console.log(res);
+    });
+  }
 }

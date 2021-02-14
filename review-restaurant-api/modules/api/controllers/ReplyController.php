@@ -1,6 +1,6 @@
 <?php
 
-namespace app\modules\controllers;
+namespace app\modules\api\controllers;
 
 class ReplyController extends \yii\rest\ActiveController
 {

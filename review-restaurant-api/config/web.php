@@ -14,8 +14,8 @@ $config = [
         '@app' => __DIR__ . '/../',
     ],
     'modules' => [
-        'rest' => [
-            'class' => 'app\modules\Rest',
+        'api' => [
+            'class' => 'app\modules\api\Module',
         ],
     ],
     'components' => [
@@ -57,14 +57,14 @@ $config = [
             ],
         ],
         'db' => $db,
-//        'urlManager' => [
-//            'class' => 'yii\web\UrlManager',
-//            'enablePrettyUrl' => true,
-//            'showScriptName' => false,
+        'urlManager' => [
+            'class' => 'yii\web\UrlManager',
+            'enablePrettyUrl' => true,
+            'showScriptName' => false,
 //            'rules' => [
 //                '<alias:\w+>' => 'site/<alias>',
 //            ],
-//        ],
+        ],
     ],
     'params' => $params,
 ];

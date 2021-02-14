@@ -23,7 +23,7 @@ use yii\base\InvalidConfigException;
  * @property Restaurant[] $restaurants
  * @property Review[] $reviews
  */
-class User extends \yii\db\ActiveRecord
+class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
     /**
      * {@inheritdoc}
@@ -39,7 +39,8 @@ class User extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['firstname', 'lastname', 'access_token', 'access_token_expire_at', 'created_at', 'update_at', 'password_hash', 'email', 'auth_key'], 'required'],
+            [['firstname', 'lastname', 'access_token', 'password_hash', 'email', 'auth_key'], 'required'],
+//            [['created_at', 'update_at'], 'required'],
             [['access_token_expire_at', 'created_at', 'update_at'], 'safe'],
             [['firstname', 'lastname', 'access_token', 'password_hash', 'email', 'auth_key'], 'string', 'max' => 256],
         ];
@@ -62,6 +63,17 @@ class User extends \yii\db\ActiveRecord
             'email' => 'Email',
             'auth_key' => 'Auth Key',
         ];
+    }
+
+
+    public function beforeSave($insert)
+    {
+        $now = date("Y-m-d H:i:s");
+        if ($this->isNewRecord) {
+            $this->created_at = $now;
+        }
+        $this->update_at = $now;
+        return parent::beforeSave($insert);
     }
 
     /**
@@ -93,6 +105,12 @@ class User extends \yii\db\ActiveRecord
     {
         return static::findOne(['access_token' => $token]);
     }
+
+    public static function findByEmail($email)
+    {
+        return static::findOne(['email' => $email]);
+    }
+
 
     public function getId()
     {
@@ -142,4 +160,23 @@ class User extends \yii\db\ActiveRecord
     {
         $this->password_hash = Yii::$app->security->generatePasswordHash($password);
     }
+
+
+    /**
+     *
+     * Assign role to the user
+     */
+
+
+    public function assignRole($role)
+    {
+        $auth = Yii::$app->authManager;
+        $roleTobeAssigned = $auth->getRole($role);
+        if (isset($roleTobeAssigned)) {
+            $auth->assign($roleTobeAssigned, $this->getId());
+        } else {
+            return false;
+        }
+    }
+
 }

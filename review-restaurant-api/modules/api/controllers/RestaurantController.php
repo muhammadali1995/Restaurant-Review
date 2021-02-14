@@ -1,6 +1,6 @@
 <?php
 
-namespace app\modules\controllers;
+namespace app\modules\api\controllers;
 
 class RestaurantController extends \yii\rest\ActiveController
 {

@@ -2,22 +2,23 @@
 
 namespace app\models;
 
+use app\modules\api\resources\UserResource;
 use Yii;
 use yii\base\Model;
 
 /**
  * LoginForm is the model behind the login form.
  *
- * @property-read User2|null $user This property is read-only.
+ * @property-read User|null $user This property is read-only.
  *
  */
 class LoginForm extends Model
 {
-    public $username;
+    public $email;
     public $password;
     public $rememberMe = true;
 
-    private $_user = false;
+    public $_user = false;
 
 
     /**
@@ -27,9 +28,7 @@ class LoginForm extends Model
     {
         return [
             // username and password are both required
-            [['username', 'password'], 'required'],
-            // rememberMe must be a boolean value
-            ['rememberMe', 'boolean'],
+            [['email', 'password'], 'required'],
             // password is validated by validatePassword()
             ['password', 'validatePassword'],
         ];
@@ -68,14 +67,13 @@ class LoginForm extends Model
     /**
      * Finds user by [[username]]
      *
-     * @return User2|null
+     * @return User|null
      */
     public function getUser()
     {
         if ($this->_user === false) {
-            $this->_user = User2::findByUsername($this->username);
+            $this->_user = User::findByEmail($this->email);
         }
-
         return $this->_user;
     }
 }

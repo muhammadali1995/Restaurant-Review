@@ -1,7 +1,7 @@
 <?php
 
 
-namespace app\modules\controllers;
+namespace app\modules\api\controllers;
 
 
 use yii\filters\Cors;
@@ -22,6 +22,6 @@ class TestController extends ActiveController
 
     public function actionIndex()
     {
-        return "Hello Rest";
+        return "Hello Module";
     }
 }

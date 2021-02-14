@@ -5,6 +5,8 @@ namespace app\models;
 use Yii;
 use yii\base\Exception;
 use yii\base\InvalidConfigException;
+use yii\db\ActiveRecord;
+use yii\web\IdentityInterface;
 
 /**
  * This is the model class for table "user".
@@ -23,7 +25,7 @@ use yii\base\InvalidConfigException;
  * @property Restaurant[] $restaurants
  * @property Review[] $reviews
  */
-class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
+class User extends ActiveRecord implements IdentityInterface
 {
     /**
      * {@inheritdoc}

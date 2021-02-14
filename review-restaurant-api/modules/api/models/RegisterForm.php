@@ -65,6 +65,7 @@ class RegisterForm extends Model
             $this->_user->access_token_expire_at = date("Y-m-d H:i:s");
 
             if ($this->_user->save()) {
+                $this->_user->assignRole($this->role);
                 return true;
             }
         }

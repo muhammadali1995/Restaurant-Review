@@ -5,16 +5,33 @@ namespace app\modules\api\controllers;
 use app\modules\api\models\LoginForm;
 use app\modules\api\models\RegisterForm;
 use Yii;
+use yii\filters\auth\HttpBearerAuth;
 use yii\rest\ActiveController;
+use yii\web\ForbiddenHttpException;
 
 class UserController extends ActiveController
 {
 
     public $modelClass = "app\models\User";
 
-    public function actionIndex()
+    public function behaviors()
     {
-        return $this->render('index');
+        $behaviors = parent::behaviors();
+        $behaviors['authenticator'] = [
+            'class' => HttpBearerAuth::class,
+            'except' => ['login', 'register']
+        ];
+        return $behaviors;
+    }
+
+
+    public function checkAccess($action, $model = null, $params = [])
+    {
+        if ($action == 'index' || $action == 'update' || $action == 'delete') {
+            if (!Yii::$app->user->can("admin")) {
+                throw new ForbiddenHttpException('Permission denied: you dont have access to users list');
+            }
+        }
     }
 
     public function actionLogin()

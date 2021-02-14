@@ -14,7 +14,7 @@ use Yii;
  * @property string $updated_at
  * @property string $created_at
  *
- * @property User $user
+ * @property User2 $user
  */
 class Review extends \yii\db\ActiveRecord
 {
@@ -37,7 +37,7 @@ class Review extends \yii\db\ActiveRecord
             [['user_id', 'updated_at', 'created_at'], 'required'],
             [['user_id'], 'integer'],
             [['updated_at', 'created_at'], 'safe'],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User2::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
 
@@ -50,19 +50,19 @@ class Review extends \yii\db\ActiveRecord
             'id' => 'ID',
             'rating' => 'Rating',
             'comment' => 'Comment',
-            'user_id' => 'User ID',
+            'user_id' => 'User2 ID',
             'updated_at' => 'Updated At',
             'created_at' => 'Created At',
         ];
     }
 
     /**
-     * Gets query for [[User]].
+     * Gets query for [[User2]].
      *
      * @return \yii\db\ActiveQuery
      */
     public function getUser()
     {
-        return $this->hasOne(User::className(), ['id' => 'user_id']);
+        return $this->hasOne(User2::className(), ['id' => 'user_id']);
     }
 }

@@ -10,8 +10,8 @@ $config = [
     'controllerNamespace' => 'app\controllers',
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
-        '@npm'   => '@vendor/npm-asset',
-        '@app' => __DIR__.'/../',
+        '@npm' => '@vendor/npm-asset',
+        '@app' => __DIR__ . '/../',
     ],
     'modules' => [
         'rest' => [
@@ -43,6 +43,9 @@ $config = [
             // 'useFileTransport' to false and configure a transport
             // for the mailer to send real emails.
             'useFileTransport' => true,
+        ],
+        'authManager' => [
+            'class' => 'yii\rbac\DbManager',
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,

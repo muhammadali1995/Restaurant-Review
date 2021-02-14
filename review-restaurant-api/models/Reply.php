@@ -43,7 +43,7 @@ class Reply extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'review_id' => 'Review ID',
-            'user_id' => 'User ID',
+            'user_id' => 'User2 ID',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];

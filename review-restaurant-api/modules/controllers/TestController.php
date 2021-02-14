@@ -4,6 +4,7 @@
 namespace app\modules\controllers;
 
 
+use yii\filters\Cors;
 use yii\rest\ActiveController;
 
 class TestController extends ActiveController
@@ -14,7 +15,7 @@ class TestController extends ActiveController
     {
         return [
             'corsFilter' => [
-                'class' => \yii\filters\Cors::className(),
+                'class' => Cors::className(),
             ],
         ];
     }

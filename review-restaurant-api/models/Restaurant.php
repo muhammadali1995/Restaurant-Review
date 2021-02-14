@@ -15,7 +15,7 @@ use Yii;
  * @property string $updated_at
  * @property int $owner
  *
- * @property User $owner0
+ * @property User2 $owner0
  */
 class Restaurant extends \yii\db\ActiveRecord
 {
@@ -38,7 +38,7 @@ class Restaurant extends \yii\db\ActiveRecord
             [['created_at', 'updated_at'], 'safe'],
             [['owner'], 'integer'],
             [['name'], 'string', 'max' => 256],
-            [['owner'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['owner' => 'id']],
+            [['owner'], 'exist', 'skipOnError' => true, 'targetClass' => User2::className(), 'targetAttribute' => ['owner' => 'id']],
         ];
     }
 
@@ -65,6 +65,6 @@ class Restaurant extends \yii\db\ActiveRecord
      */
     public function getOwner0()
     {
-        return $this->hasOne(User::className(), ['id' => 'owner']);
+        return $this->hasOne(User2::className(), ['id' => 'owner']);
     }
 }

@@ -129,10 +129,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 
     public function generateAuthKey()
     {
-        try {
             $this->auth_key = Yii::$app->security->generateRandomString();
-        } catch (Exception $e) {
-        }
     }
 
     /**

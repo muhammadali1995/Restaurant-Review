@@ -13,8 +13,10 @@ use Yii;
  * @property int $user_id
  * @property string $updated_at
  * @property string $created_at
+ * @property int $restaurant_id
  *
- * @property User2 $user
+ * @property Restaurant $restaurant
+ * @property User $user
  */
 class Review extends \yii\db\ActiveRecord
 {
@@ -34,10 +36,11 @@ class Review extends \yii\db\ActiveRecord
         return [
             [['rating'], 'number'],
             [['comment'], 'string'],
-            [['user_id', 'updated_at', 'created_at'], 'required'],
-            [['user_id'], 'integer'],
+            [['user_id', 'updated_at', 'created_at', 'restaurant_id'], 'required'],
+            [['user_id', 'restaurant_id'], 'integer'],
             [['updated_at', 'created_at'], 'safe'],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User2::className(), 'targetAttribute' => ['user_id' => 'id']],
+            [['restaurant_id'], 'exist', 'skipOnError' => true, 'targetClass' => Restaurant::className(), 'targetAttribute' => ['restaurant_id' => 'id']],
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
 
@@ -50,19 +53,30 @@ class Review extends \yii\db\ActiveRecord
             'id' => 'ID',
             'rating' => 'Rating',
             'comment' => 'Comment',
-            'user_id' => 'User2 ID',
+            'user_id' => 'User ID',
             'updated_at' => 'Updated At',
             'created_at' => 'Created At',
+            'restaurant_id' => 'Restaurant ID',
         ];
     }
 
     /**
-     * Gets query for [[User2]].
+     * Gets query for [[Restaurant]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getRestaurant()
+    {
+        return $this->hasOne(Restaurant::className(), ['id' => 'restaurant_id']);
+    }
+
+    /**
+     * Gets query for [[User]].
      *
      * @return \yii\db\ActiveQuery
      */
     public function getUser()
     {
-        return $this->hasOne(User2::className(), ['id' => 'user_id']);
+        return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
 }

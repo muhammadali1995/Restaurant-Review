@@ -2,103 +2,81 @@
 
 namespace app\models;
 
-class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
+use Yii;
+
+/**
+ * This is the model class for table "user".
+ *
+ * @property int $id
+ * @property string $firstname
+ * @property string $lastname
+ * @property string $access_token
+ * @property string $access_token_expire_at
+ * @property string $created_at
+ * @property string $update_at
+ * @property string $password_hash
+ * @property string $email
+ *
+ * @property Restaurant[] $restaurants
+ * @property Review[] $reviews
+ */
+class Users extends \yii\db\ActiveRecord
 {
-    public $id;
-    public $username;
-    public $password;
-    public $authKey;
-    public $accessToken;
-
-    private static $users = [
-        '100' => [
-            'id' => '100',
-            'username' => 'admin',
-            'password' => 'admin',
-            'authKey' => 'test100key',
-            'accessToken' => '100-token',
-        ],
-        '101' => [
-            'id' => '101',
-            'username' => 'demo',
-            'password' => 'demo',
-            'authKey' => 'test101key',
-            'accessToken' => '101-token',
-        ],
-    ];
-
-
     /**
      * {@inheritdoc}
      */
-    public static function findIdentity($id)
+    public static function tableName()
     {
-        return isset(self::$users[$id]) ? new static(self::$users[$id]) : null;
+        return 'user';
     }
 
     /**
      * {@inheritdoc}
      */
-    public static function findIdentityByAccessToken($token, $type = null)
+    public function rules()
     {
-        foreach (self::$users as $user) {
-            if ($user['accessToken'] === $token) {
-                return new static($user);
-            }
-        }
-
-        return null;
+        return [
+            [['firstname', 'lastname', 'access_token', 'access_token_expire_at', 'created_at', 'update_at', 'password_hash', 'email'], 'required'],
+            [['access_token_expire_at', 'created_at', 'update_at'], 'safe'],
+            [['firstname', 'lastname', 'access_token', 'password_hash', 'email'], 'string', 'max' => 256],
+        ];
     }
 
     /**
-     * Finds user by username
+     * {@inheritdoc}
+     */
+    public function attributeLabels()
+    {
+        return [
+            'id' => 'ID',
+            'firstname' => 'Firstname',
+            'lastname' => 'Lastname',
+            'access_token' => 'Access Token',
+            'access_token_expire_at' => 'Access Token Expire At',
+            'created_at' => 'Created At',
+            'update_at' => 'Update At',
+            'password_hash' => 'Password Hash',
+            'email' => 'Email',
+        ];
+    }
+
+    /**
+     * Gets query for [[Restaurants]].
      *
-     * @param string $username
-     * @return static|null
+     * @return \yii\db\ActiveQuery
      */
-    public static function findByUsername($username)
+    public function getRestaurants()
     {
-        foreach (self::$users as $user) {
-            if (strcasecmp($user['username'], $username) === 0) {
-                return new static($user);
-            }
-        }
-
-        return null;
+        return $this->hasMany(Restaurant::className(), ['owner' => 'id']);
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAuthKey()
-    {
-        return $this->authKey;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function validateAuthKey($authKey)
-    {
-        return $this->authKey === $authKey;
-    }
-
-    /**
-     * Validates password
+     * Gets query for [[Reviews]].
      *
-     * @param string $password password to validate
-     * @return bool if password provided is valid for current user
+     * @return \yii\db\ActiveQuery
      */
-    public function validatePassword($password)
+    public function getReviews()
     {
-        return $this->password === $password;
+        return $this->hasMany(Review::className(), ['user_id' => 'id']);
     }
 }

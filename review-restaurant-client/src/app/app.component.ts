@@ -10,8 +10,5 @@ export class AppComponent {
   title = 'review-restaurant-client';
 
   constructor(private testService: TestService) {
-    this.testService.getUsers().subscribe(res => {
-      console.log(res);
-    });
   }
 }

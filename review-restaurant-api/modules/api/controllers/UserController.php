@@ -6,6 +6,7 @@ use app\modules\api\models\LoginForm;
 use app\modules\api\models\RegisterForm;
 use Yii;
 use yii\filters\auth\HttpBearerAuth;
+use yii\filters\Cors;
 use yii\rest\ActiveController;
 use yii\web\ForbiddenHttpException;
 
@@ -20,6 +21,10 @@ class UserController extends ActiveController
         $behaviors['authenticator'] = [
             'class' => HttpBearerAuth::class,
             'except' => ['login', 'register']
+        ];
+
+        $behaviors ['corsFilter'] = [
+            'class' => Cors::class,
         ];
         return $behaviors;
     }

@@ -1,0 +1,28 @@
+<div class="auth-container">
+  <div fxLayout="column"
+       fxFlexFill
+       fxLayoutAlign="center center">
+    <mat-card class="auth-card" fxLayout="column">
+      <mat-card-title>
+        <h1 class="title"><strong>Login</strong></h1>
+      </mat-card-title>
+      <form fxLayout="column" [formGroup]="form" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input formControlName="email" type="email" matInput placeholder="Placeholder">
+          <mat-error *ngIf="form.invalid && (email.touched || email.dirty)">{{getEmailErrorMessage()}}</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Password</mat-label>
+          <input formControlName="password" type="password" matInput placeholder="Placeholder">
+          <mat-error
+            *ngIf="form.invalid && (password.touched || password.dirty)">{{getPasswordErrorMessage()}}</mat-error>
+        </mat-form-field>
+        <button type="submit" [disabled]="form.invalid" mat-button mat-raised-button color="primary">Login</button>
+      </form>
+      <div class="alternative-options">
+        <p>Does not have an account? <a routerLink="/register">Register</a></p>
+      </div>
+    </mat-card>
+  </div>
+</div>

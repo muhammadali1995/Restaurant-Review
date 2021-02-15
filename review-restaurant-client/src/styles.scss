@@ -1,4 +1,35 @@
 /* You can add global styles to this file, and also import other style files */
+//
+@import "src/assets/scss/colors";
+@import "src/assets/scss/variables";
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.auth-container {
+  height: 100%;
+  background: $light-purple;
+
+  .auth-card {
+    max-width: $login-card-width;
+    width: 90%;
+  }
+
+  .title {
+    text-transform: uppercase;
+    text-align: center;
+  }
+
+  .alternative-options {
+    padding-top: 25px;
+    text-align: center;
+    color: $material-gray;
+  }
+}
+

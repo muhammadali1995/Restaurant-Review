@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "restaurant".
@@ -15,9 +16,9 @@ use Yii;
  * @property string $updated_at
  * @property int $owner
  *
- * @property User2 $owner0
+ * @property User $owner0
  */
-class Restaurant extends \yii\db\ActiveRecord
+class Restaurant extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -33,12 +34,12 @@ class Restaurant extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'address', 'created_at', 'updated_at', 'owner'], 'required'],
+            [['name', 'address'], 'required'],
             [['address', 'description'], 'string'],
             [['created_at', 'updated_at'], 'safe'],
             [['owner'], 'integer'],
             [['name'], 'string', 'max' => 256],
-            [['owner'], 'exist', 'skipOnError' => true, 'targetClass' => User2::className(), 'targetAttribute' => ['owner' => 'id']],
+            [['owner'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['owner' => 'id']],
         ];
     }
 
@@ -58,13 +59,24 @@ class Restaurant extends \yii\db\ActiveRecord
         ];
     }
 
+    public function beforeSave($insert)
+    {
+        $now = date("Y-m-d H:i:s");
+        if ($this->isNewRecord) {
+            $this->created_at = $now;
+            $this->owner = Yii::$app->user->getId();
+        }
+        $this->updated_at = $now;
+        return parent::beforeSave($insert);
+    }
+
     /**
-     * Gets query for [[Owner0]].
+     * Gets query for [[Owner]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getOwner0()
+    public function getOwner()
     {
-        return $this->hasOne(User2::className(), ['id' => 'owner']);
+        return $this->hasOne(User::className(), ['id' => 'owner']);
     }
 }

@@ -30,11 +30,6 @@ class UserController extends ActiveController
         // add CORS filter
         $behaviors['corsFilter'] = [
             'class' => Cors::class,
-            'cors' => [
-                'Origin' => ['*'],
-                'Access-Control-Request-Method' => ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-                'Access-Control-Request-Headers' => ['*'],
-            ],
         ];
 
         // re-add authentication filter

@@ -7,7 +7,6 @@ $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
-    'controllerNamespace' => 'app\controllers',
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm' => '@vendor/npm-asset',
@@ -15,6 +14,7 @@ $config = [
     ],
     'modules' => [
         'api' => [
+            'basePath' => '@app/modules/api',
             'class' => 'app\modules\api\Module',
         ],
     ],
@@ -59,10 +59,27 @@ $config = [
         'db' => $db,
         'urlManager' => [
             'enablePrettyUrl' => true,
+            'enableStrictParsing' => true,
             'showScriptName' => false,
-//            'rules' => [
-//                '<alias:\w+>' => 'site/<alias>',
-//            ],
+            'rules' => [
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => ['api/user'],
+                    'pluralize' => false,
+                    'extraPatterns' => [
+                        'POST login' => 'login',
+                        'OPTIONS <action:\w+>' => 'options'
+                    ]
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => ['api/restaurant'],
+                    'pluralize' => false,
+                    'extraPatterns' => [
+                        'OPTIONS <action:\w+>' => 'options'
+                    ]
+                ]
+            ]
         ],
     ],
     'params' => $params,

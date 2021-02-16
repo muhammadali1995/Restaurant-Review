@@ -4,7 +4,7 @@ import {UserModel} from '../../models/user-model';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {environment} from '../../../environments/environment';
 import {map} from 'rxjs/operators';
-import {Router} from "@angular/router";
+import {Router} from '@angular/router';
 
 const apiUrl = environment.apiUrl;
 
@@ -18,6 +18,8 @@ export class AccountService {
 
   constructor(private http: HttpClient,
               private router: Router) {
+    this.userSubject = new BehaviorSubject<UserModel>(JSON.parse(localStorage.getItem('currentUser')));
+    this.user = this.userSubject.asObservable();
   }
 
   public get currentUser(): UserModel {
@@ -44,7 +46,7 @@ export class AccountService {
 
 
   register(user: UserModel) {
-    this.http.post(`${apiUrl}/user/register`, user);
+    return this.http.post(`${apiUrl}/user/register`, user);
   }
 
 }

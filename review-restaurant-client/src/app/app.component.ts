@@ -1,5 +1,4 @@
 import {Component} from '@angular/core';
-import {TestService} from '../services/test.service';
 
 @Component({
   selector: 'app-root',
@@ -9,6 +8,6 @@ import {TestService} from '../services/test.service';
 export class AppComponent {
   title = 'review-restaurant-client';
 
-  constructor(private testService: TestService) {
+  constructor() {
   }
 }

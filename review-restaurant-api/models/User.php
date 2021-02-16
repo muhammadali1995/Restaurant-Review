@@ -21,12 +21,17 @@ use yii\web\IdentityInterface;
  * @property string $password_hash
  * @property string $email
  * @property string $auth_key
+ * @property string $role
  *
  * @property Restaurant[] $restaurants
  * @property Review[] $reviews
  */
 class User extends ActiveRecord implements IdentityInterface
 {
+
+
+    public $role;
+
     /**
      * {@inheritdoc}
      */
@@ -131,7 +136,7 @@ class User extends ActiveRecord implements IdentityInterface
 
     public function generateAuthKey()
     {
-            $this->auth_key = Yii::$app->security->generateRandomString();
+        $this->auth_key = Yii::$app->security->generateRandomString();
     }
 
     /**
@@ -160,6 +165,10 @@ class User extends ActiveRecord implements IdentityInterface
         $this->password_hash = Yii::$app->security->generatePasswordHash($password);
     }
 
+    public function setRole($role)
+    {
+        $this->role = $role;
+    }
 
     /**
      *
@@ -177,5 +186,6 @@ class User extends ActiveRecord implements IdentityInterface
             return false;
         }
     }
+
 
 }

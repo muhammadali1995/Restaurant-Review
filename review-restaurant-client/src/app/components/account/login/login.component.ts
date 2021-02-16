@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AccountService} from '../account.service';
+import {finalize} from 'rxjs/operators';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -10,9 +12,11 @@ import {AccountService} from '../account.service';
 export class LoginComponent implements OnInit {
 
   form: FormGroup;
-  error: Error;
+  error: string;
+  submitting: boolean;
 
   constructor(private fb: FormBuilder,
+              private router: Router,
               private accountService: AccountService) {
     this.form = this.fb.group({
       email: [null, [Validators.required, Validators.email]],
@@ -36,7 +40,7 @@ export class LoginComponent implements OnInit {
 
 
   // email error message
-  getEmailErrorMessage() {
+  get getEmailErrorMessage() {
     if (this.email.hasError('required')) {
       return 'Email is required';
     }
@@ -45,7 +49,7 @@ export class LoginComponent implements OnInit {
   }
 
   // password error message
-  getPasswordErrorMessage() {
+  get getPasswordErrorMessage() {
     if (this.password.hasError('required')) {
       return 'Password is required';
     }
@@ -54,9 +58,18 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
+    this.submitting = true;
     const request = this.form.value;
-    this.accountService.login(request).subscribe(res => {
-    }, error => error);
+    this.accountService.login(request).pipe(finalize(() => this.submitting = false)).subscribe(res => {
+      this.router.navigate(['/']).then(() => {
+      });
+    }, error => {
+      if (error.status === 422) {
+        this.error = 'Incorrect email or password';
+      } else {
+        this.error = error.message;
+      }
+    });
   }
 
 }

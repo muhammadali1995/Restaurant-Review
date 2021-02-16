@@ -24,6 +24,17 @@ class LoginForm extends \app\models\LoginForm
     {
         if ($this->_user === false) {
             $this->_user = UserResource::findByEmail($this->email);
+
+            //get the roles of the user and send them back to client
+            $currUserRoles = Yii::$app->authManager->getRolesByUser($this->_user->getId());
+            $roles = [];
+            if (isset($currUserRoles)) {
+                foreach ($currUserRoles as $role) {
+                    array_push($roles, $role->name);
+                }
+            }
+            $this->_user->setRole($roles);
+
         }
         return $this->_user;
     }

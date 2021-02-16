@@ -10,16 +10,19 @@
         <mat-form-field appearance="outline">
           <mat-label>Email</mat-label>
           <input formControlName="email" type="email" matInput placeholder="Placeholder">
-          <mat-error *ngIf="form.invalid && (email.touched || email.dirty)">{{getEmailErrorMessage()}}</mat-error>
+          <mat-error *ngIf="form.invalid && (email.touched || email.dirty)">{{getEmailErrorMessage}}</mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label>Password</mat-label>
           <input formControlName="password" type="password" matInput placeholder="Placeholder">
           <mat-error
-            *ngIf="form.invalid && (password.touched || password.dirty)">{{getPasswordErrorMessage()}}</mat-error>
+            *ngIf="form.invalid && (password.touched || password.dirty)">{{getPasswordErrorMessage}}</mat-error>
         </mat-form-field>
-        <button type="submit" [disabled]="form.invalid" mat-button mat-raised-button color="primary">Login</button>
+        <button type="submit" [disabled]="form.invalid || submitting" mat-button mat-raised-button color="primary">Login</button>
       </form>
+      <p>
+        <mat-error class="error-message" *ngIf="error">{{error}}</mat-error>
+      </p>
       <div class="alternative-options">
         <p>Does not have an account? <a routerLink="/register">Register</a></p>
       </div>

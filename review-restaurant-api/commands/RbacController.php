@@ -52,6 +52,12 @@ class RbacController extends Controller
         $createReplyToComment->ruleName = $isOwnerRule->name;
         $auth->add($createReplyToComment);
 
+        // add 'readRestaurantList' permission
+        $readOwnRestaurantList = $auth->createPermission('readOwnRestaurantList');
+        $readOwnRestaurantList->description = "See the list of restaurants owned by the user";
+        $readOwnRestaurantList->ruleName = $isOwnerRule->name;
+        $auth->add($readOwnRestaurantList);
+
 
         //add 'owner' role and give this role the "createRestaurant" and "createReplyToComment" permissions
         $owner = $auth->createRole("owner");

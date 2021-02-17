@@ -1,0 +1,30 @@
+<div class="banner d-flex flex-column justify-content-around">
+  <h3 class="title">Add New Restaurants</h3>
+</div>
+<div class="container">
+  <div class="card mt-5 p-3">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input id="name" type="text" class="form-control" formControlName="name" required>
+        <small class="text-danger"
+               *ngIf="form.invalid && (name.touched || name.dirty)">{{getNameErrorMessage}}</small>
+      </div>
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea id="description" type="text" class="form-control" formControlName="description"> </textarea>
+      </div>
+      <div class="form-group">
+        <label for="address">Address</label>
+        <textarea [rows]="3" id="address" type="text" class="form-control" formControlName="address"
+                  required></textarea>
+        <small class="text-danger"
+               *ngIf="form.invalid && (address.touched || address.dirty)">{{getAddressErrorMessage}}</small>
+      </div>
+      <div class="row no-gutters justify-content-end">
+        <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancel</button>
+        <button class="btn btn-primary ml-3" type="submit" [disabled]="form.invalid ||submitting">Create</button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -67,6 +67,7 @@ $config = [
                     'controller' => ['api/user'],
                     'pluralize' => false,
                     'extraPatterns' => [
+                        'POST register' => 'register',
                         'POST login' => 'login',
                         'OPTIONS <action:\w+>' => 'options'
                     ]

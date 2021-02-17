@@ -14,27 +14,25 @@ body {
 
 .auth-container {
   height: 100%;
-  background: $light-purple;
+  background: $light-blue;
 
   .auth-card {
     max-width: $login-card-width;
     width: 90%;
   }
-
-  .title {
-    text-transform: uppercase;
-    text-align: center;
-  }
-
-  .alternative-options {
-    padding-top: 25px;
-    text-align: center;
-    color: $material-gray;
-  }
 }
 
-.error-message {
+.banner {
+  background: $light-blue;
+  height: 100px;
+  width: 100%;
+  color: $white;
+}
+
+.title {
+  text-transform: uppercase;
   text-align: center;
-  margin-top: 15px;
 }
 
+/* Importing Bootstrap SCSS file. */
+@import '~bootstrap/scss/bootstrap';

@@ -1,0 +1,37 @@
+<div class="banner d-flex flex-column justify-content-around">
+  <h3 class="title">My Restaurants</h3>
+</div>
+<div class="container">
+  <div class="d-flex justify-content-end my-3">
+    <button routerLink="create" class="btn btn-outline-primary">
+      <fa-icon [icon]="faPlus"></fa-icon>
+      <span> Add New Restaurant</span>
+    </button>
+  </div>
+  <div class="card p-3" *ngIf="!restaurants">
+    <span class="text text-info"> There are no restaurants yet</span>
+  </div>
+  <div *ngIf="restaurants">
+    <div class="row mb-3" *ngFor="let rt of restaurants">
+      <div class="card p-3 w-100">
+        <div class="row no-gutters">
+          <div class="col-md-3">
+            <img class="img card-img" src="/assets/images/restaurants/img.png"
+                 alt="random restaurant image">
+          </div>
+          <div class="col-md-9">
+            <div class="card-body">
+              <h5 class="card-title"><a [routerLink]="[rt.id]">{{rt.name}}</a></h5>
+              <p class="card-text">{{rt.description}}</p>
+              <p class="card-text"><small class="text-muted">
+                <fa-icon [icon]="faMapMarker"></fa-icon>
+                {{rt.address}}
+              </small></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ngb-pagination (pageChange)="fetch($event)" [collectionSize]="total" [(page)]="page" aria-label="Default pagination"></ngb-pagination>
+  </div>
+</div>

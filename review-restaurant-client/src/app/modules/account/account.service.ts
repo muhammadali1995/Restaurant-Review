@@ -39,9 +39,8 @@ export class AccountService {
   logout() {
     localStorage.removeItem('currentUser');
     this.userSubject.next(null);
-
     // after removing the user form local storage go back to login
-    this.router.navigate(['login']);
+    this.router.navigate(['/account/login']);
   }
 
 

@@ -20,7 +20,10 @@ class UserController extends ActiveController
         $behaviors = parent::behaviors();
         $behaviors['authenticator'] = [
             'class' => HttpBearerAuth::class,
-            'except' => ['login', 'register']
+            'except' => [
+                'options',
+                'login',
+                'register']
         ];
 
         // remove authentication filter
@@ -34,12 +37,6 @@ class UserController extends ActiveController
 
         // re-add authentication filter
         $behaviors['authenticator'] = $auth;
-        // avoid authentication on CORS-pre-flight requests (HTTP OPTIONS method)
-        $behaviors['authenticator']['except'] = [
-            'options',
-            'login',
-            'register'
-        ];
 
         return $behaviors;
     }

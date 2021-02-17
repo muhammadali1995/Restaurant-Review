@@ -2,7 +2,7 @@
 
 namespace app\modules\api\controllers;
 
-use Faker\Provider\Base;
+use app\models\Restaurant;
 use Yii;
 use yii\filters\auth\HttpBearerAuth;
 use yii\filters\Cors;
@@ -27,6 +27,14 @@ class RestaurantController extends ActiveController
         // add CORS filter
         $behaviors['corsFilter'] = [
             'class' => Cors::class,
+            'cors' => [
+                'Origin' => ['*'],
+                'Access-Control-Request-Method' => ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'],
+                'Access-Control-Request-Headers' => ['*'],
+                'Access-Control-Allow-Credentials' => null,
+                'Access-Control-Max-Age' => 86400,
+                'Access-Control-Expose-Headers' => ["X-Pagination-Per-Page", "X-Pagination-Total-Count"]
+            ]
         ];
 
         // re-add authentication filter
@@ -37,16 +45,28 @@ class RestaurantController extends ActiveController
 
     public function checkAccess($action, $model = null, $params = [])
     {
-        if ($action == 'index' || $action == 'view' || $action == 'create') {
+        if ($action == 'view' || $action == 'create') {
             if (!Yii::$app->user->can("owner")) {
-                throw new ForbiddenHttpException('Permission denied: you dont have access to users list');
+                throw new ForbiddenHttpException('Permission denied: you dont have access for ' . $action);
             }
         }
     }
 
 
-    public function actionCreate()
+    public function actionIndex()
     {
+        $restaurants = [];
+        if (Yii::$app->user->can("owner")) {
+            $ownerId = Yii::$app->user->getId();
+            if (isset($ownerId)) {
+                $restaurants = Restaurant::find()->where(['owner' => $ownerId])->all();
+            }
+        } else {
+            $restaurants = Restaurant::find()->all();
+        }
+
+        return $restaurants;
     }
+
 
 }

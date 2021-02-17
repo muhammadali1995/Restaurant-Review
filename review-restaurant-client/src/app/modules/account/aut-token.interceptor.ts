@@ -7,7 +7,7 @@ import {environment} from '../../../environments/environment';
 const apiUrl = environment.apiUrl;
 
 @Injectable()
-export class AuthTokenInterceptor implements HttpInterceptor {
+export class AutTokenInterceptor implements HttpInterceptor {
   constructor(private  accountService: AccountService) {
   }
 

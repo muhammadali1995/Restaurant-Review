@@ -3,24 +3,24 @@ import {NgModule} from '@angular/core';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
-import {HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {CommonModule} from '@angular/common';
-import { RegisterComponent } from './components/account/register/register.component';
-import { LoginComponent } from './components/account/login/login.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatSliderModule} from '@angular/material/slider';
-import {MatInputModule} from '@angular/material/input';
-import {MatIconModule} from '@angular/material/icon';
-import {FlexLayoutModule} from '@angular/flex-layout';
+import {RegisterComponent} from './modules/account/components/register/register.component';
+import {LoginComponent} from './modules/account/components/login/login.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {MatCardModule} from '@angular/material/card';
-import {MatButtonModule} from '@angular/material/button';
+import {AccountComponent} from './modules/account/components/account.component';
+import {SharedModule} from './modules/shared/shared.module';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
+import {AutTokenInterceptor} from './modules/account/aut-token.interceptor';
 
 @NgModule({
   declarations: [
     AppComponent,
     RegisterComponent,
-    LoginComponent
+    LoginComponent,
+    AccountComponent
   ],
   imports: [
     BrowserModule,
@@ -29,15 +29,18 @@ import {MatButtonModule} from '@angular/material/button';
     HttpClientModule,
     AppRoutingModule,
     ReactiveFormsModule,
+    FontAwesomeModule,
     BrowserAnimationsModule,
-    MatSliderModule,
-    MatInputModule,
-    FlexLayoutModule,
-    MatIconModule,
-    MatCardModule,
-    MatButtonModule
+    SharedModule,
+    NgbModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AutTokenInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

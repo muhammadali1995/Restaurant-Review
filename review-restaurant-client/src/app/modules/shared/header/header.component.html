@@ -1,0 +1,13 @@
+<nav class="navbar navbar-light bg-primary px-md-5">
+  <a class="navbar-brand text-white">RerR</a>
+  <div ngbDropdown class="d-inline-block">
+    <button class="btn" id="dropdownMenu1" ngbDropdownToggle>
+      <fa-icon class="text-white" [icon]="faUser"></fa-icon>
+      <span class="text-white pl-2">{{user?.firstname}}</span>
+    </button>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenu1" ngbDropdownMenu>
+      <button class="dropdown-item" (click)="logout()">Logout</button>
+    </div>
+  </div>
+</nav>
+

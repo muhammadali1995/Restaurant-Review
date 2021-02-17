@@ -1,0 +1,33 @@
+<div class="auth-container d-flex flex-column justify-content-around">
+  <div class="col-12 col-sm-6 col-md-3 align-self-center">
+    <div class="card p-3">
+      <div class="card-title">
+        <h2 class="title"><strong>Login</strong></h2>
+      </div>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input id="email" class="form-control" formControlName="email" type="email" placeholder="Placeholder">
+          <small class="text-danger"
+                 *ngIf="form.invalid && (email.touched || email.dirty)">{{getEmailErrorMessage}}</small>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input id="password" class="form-control" formControlName="password" type="password"
+                 placeholder="Placeholder">
+          <small class="text-danger"
+                 *ngIf="form.invalid && (password.touched || password.dirty)">{{getPasswordErrorMessage}}</small>
+        </div>
+        <button class="btn btn-primary btn-block" type="submit" [disabled]="form.invalid || submitting">
+          Login
+        </button>
+      </form>
+      <p>
+        <small class="text-danger" *ngIf="error">{{error}}</small>
+      </p>
+      <div class="alternative-options">
+        <p>Does not have an account? <a routerLink="/account/register">Register</a></p>
+      </div>
+    </div>
+  </div>
+</div>

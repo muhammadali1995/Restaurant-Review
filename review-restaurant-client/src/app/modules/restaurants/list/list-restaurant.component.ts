@@ -3,7 +3,7 @@ import {faMapMarkerAlt, faPlusCircle} from '@fortawesome/free-solid-svg-icons';
 import {RestaurantService} from '../restaurant.service';
 import {RestaurantModel} from '../../../models/restaurant.model';
 import {finalize} from 'rxjs/operators';
-import {HttpResponse} from '@angular/common/http';
+import {ListRestaurantResponse} from '../../../models/list-restaurant-response';
 
 @Component({
   selector: 'app-list-restaurant',
@@ -24,7 +24,7 @@ export class ListRestaurantComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.fetch(1);
+    this.fetch(0);
   }
 
 
@@ -32,8 +32,9 @@ export class ListRestaurantComponent implements OnInit {
     this.page = page;
     this.restaurantService.fetchAll(page)
       .pipe(finalize(() => this.loading = false))
-      .subscribe((response: HttpResponse<RestaurantModel[]>) => {
-        this.restaurants = response.body;
+      .subscribe((response: ListRestaurantResponse) => {
+        this.restaurants = response.rows;
+        this.total = response.total;
       }, error => this.error = error);
   }
 }

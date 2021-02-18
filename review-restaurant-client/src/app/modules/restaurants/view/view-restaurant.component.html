@@ -1,0 +1,30 @@
+<div class="banner d-flex flex-column justify-content-around">
+  <h3 class="title">{{restaurant?.name}}</h3>
+</div>
+<div class="container">
+  <div class="d-flex flex-row justify-content-end my-3">
+    <button (click)="delete()" class="btn btn-danger">
+      <fa-icon [icon]="faTrash"></fa-icon>
+      <span class="ml-1">Delete</span>
+    </button>
+    <button [routerLink]="['update']" class="btn btn-primary ml-2">
+      <fa-icon [icon]="faEdit"></fa-icon>
+      <span class="ml-1">Edit</span></button>
+  </div>
+  <div class="row" *ngIf="restaurant">
+    <div class="card p-3 w-100">
+      <div class="card-title d-flex justify-content-between"><h3>{{restaurant.name}}</h3>
+        <button class="btn btn-outline-primary">Write a review</button>
+      </div>
+      <div class=" px-0">
+        <p>
+          {{restaurant.description}}
+        </p>
+        <p>
+          <fa-icon [icon]="faMapMarker"></fa-icon>
+          {{restaurant.address}}
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

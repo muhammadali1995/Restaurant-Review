@@ -1,23 +1,30 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {RestaurantService} from '../restaurant.service';
-import {finalize} from 'rxjs/operators';
 import {Location} from '@angular/common';
+import {RestaurantModel} from '../../../models/restaurant.model';
+import {ActivatedRoute, Router} from '@angular/router';
+import {finalize} from 'rxjs/operators';
 
 @Component({
-  selector: 'app-create-restaurant',
-  templateUrl: './create-restaurant.component.html',
-  styleUrls: ['./create-restaurant.component.scss']
+  selector: 'app-update-restaurant',
+  templateUrl: './update-restaurant.component.html',
+  styleUrls: ['./update-restaurant.component.scss']
 })
-export class CreateRestaurantComponent implements OnInit {
+export class UpdateRestaurantComponent implements OnInit {
+
 
   form: FormGroup;
   error: string;
   submitting: boolean;
+  loading: boolean;
+  restaurant: RestaurantModel;
 
   // inject dependencies to the constructor
   constructor(private fb: FormBuilder,
               private restaurantService: RestaurantService,
+              private router: Router,
+              private route: ActivatedRoute,
               private location: Location
   ) {
     this.form = this.fb.group({
@@ -29,6 +36,14 @@ export class CreateRestaurantComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.route.params.subscribe(params => {
+      this.restaurantService.fetchOne(params.id).subscribe((restaurant: RestaurantModel) => {
+        this.restaurant = restaurant;
+        this.form.patchValue({
+          ...restaurant
+        });
+      });
+    });
   }
 
   // getters
@@ -58,16 +73,13 @@ export class CreateRestaurantComponent implements OnInit {
   onSubmit() {
     this.submitting = true;
     const request = this.form.value;
-    this.restaurantService.create(request).pipe(finalize(() => this.submitting = false)).subscribe(res => {
-      // success
-      this.showSuccess();
-      // this.location.back();
-    }, error => {
-      console.log(error);
-    });
+    this.restaurantService.update(this.restaurant?.id, request).pipe(finalize(() => {
+      this.submitting = false;
+    })).subscribe(res => {
+      // on success navigate to list
+      this.location.back();
+      window.alert('Successfully updated');
+    }, error => this.error = error);
   }
 
-  showSuccess() {
-    window.alert('Successfully updated');
-  }
 }

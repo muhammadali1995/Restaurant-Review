@@ -4,6 +4,7 @@ namespace app\modules\api\controllers;
 
 use app\models\Restaurant;
 use Yii;
+use yii\data\Pagination;
 use yii\filters\auth\HttpBearerAuth;
 use yii\filters\Cors;
 use yii\rest\ActiveController;
@@ -25,17 +26,8 @@ class RestaurantController extends ActiveController
         unset($behaviors['authenticator']);
 
         // add CORS filter
-        $behaviors['corsFilter'] = [
-            'class' => Cors::class,
-            'cors' => [
-                'Origin' => ['*'],
-                'Access-Control-Request-Method' => ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'],
-                'Access-Control-Request-Headers' => ['*'],
-                'Access-Control-Allow-Credentials' => null,
-                'Access-Control-Max-Age' => 86400,
-                'Access-Control-Expose-Headers' => ["X-Pagination-Per-Page", "X-Pagination-Total-Count"]
-            ]
-        ];
+
+        $behaviors['corsFilter'] ['class'] = Cors::class;
 
         // re-add authentication filter
         $behaviors['authenticator'] = $auth;
@@ -53,19 +45,46 @@ class RestaurantController extends ActiveController
     }
 
 
-    public function actionIndex()
+    public function actions()
     {
-        $restaurants = [];
+        $actions = parent::actions();
+
+        // customize the data provider preparation with the "prepareDataProvider()" method
+        $actions['index']['prepareDataProvider'] = [$this, 'prepareDataProvider'];
+
+        return $actions;
+    }
+
+
+    public function prepareDataProvider()
+    {
+
+        //get query params sent by the client
+        $queryParams = Yii::$app->request->queryParams;
+
+
+        //offset for getting the targeted page data
+        $offset = 0;
+        if (isset($queryParams['pages'])) {
+            $offset = $queryParams['pages'];
+        }
+        // prepare and return a data provider for the "index" action
+        $query = [];
         if (Yii::$app->user->can("owner")) {
             $ownerId = Yii::$app->user->getId();
             if (isset($ownerId)) {
-                $restaurants = Restaurant::find()->where(['owner' => $ownerId])->all();
+                $query = Restaurant::find()->where(['owner' => $ownerId]);
             }
         } else {
-            $restaurants = Restaurant::find()->all();
+            $query = Restaurant::find();
         }
 
-        return $restaurants;
+        $countQuery = clone $query;
+        $pages = new Pagination(['totalCount' => $countQuery->count(), 'defaultPageSize' => 10]);
+        return [
+            'rows' => $query->offset($offset)->limit($pages->limit)->all(),
+            'total' => $pages->totalCount
+        ];
     }
 
 

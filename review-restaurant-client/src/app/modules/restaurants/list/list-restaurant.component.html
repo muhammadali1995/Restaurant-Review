@@ -11,7 +11,7 @@
   <div class="card p-3" *ngIf="!restaurants">
     <span class="text text-info"> There are no restaurants yet</span>
   </div>
-  <div *ngIf="restaurants">
+  <div>
     <div class="row mb-3" *ngFor="let rt of restaurants">
       <div class="card p-3 w-100">
         <div class="row no-gutters">
@@ -32,6 +32,12 @@
         </div>
       </div>
     </div>
-    <ngb-pagination (pageChange)="fetch($event)" [collectionSize]="total" [(page)]="page" aria-label="Default pagination"></ngb-pagination>
+    <div class="d-flex justify-content-around mt-5">
+      <ngb-pagination class="align-self-center" (pageChange)="fetch($event)"
+                      [collectionSize]="total"
+                      [(page)]="page"
+                      [pageSize]="pageSize"
+                      aria-label="Default pagination"></ngb-pagination>
+    </div>
   </div>
 </div>

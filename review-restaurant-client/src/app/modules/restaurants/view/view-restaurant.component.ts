@@ -6,7 +6,7 @@ import {finalize} from 'rxjs/operators';
 import {faMapMarkerAlt, faPencilAlt, faTrashAlt} from '@fortawesome/free-solid-svg-icons';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {DeleteRestaurantComponent} from '../delete/delete-restaurant.component';
-import {Location} from "@angular/common";
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-view-restaurant',

@@ -4,6 +4,8 @@ import {RestaurantService} from '../restaurant.service';
 import {RestaurantModel} from '../../../models/restaurant.model';
 import {finalize} from 'rxjs/operators';
 import {ListRestaurantResponse} from '../../../models/list-restaurant-response';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-list-restaurant',
@@ -12,29 +14,41 @@ import {ListRestaurantResponse} from '../../../models/list-restaurant-response';
 })
 export class ListRestaurantComponent implements OnInit {
 
-  restaurants: RestaurantModel [];
+  restaurants: RestaurantModel [] = [];
   loading: boolean;
   error: string;
   faPlus = faPlusCircle;
   faMapMarker = faMapMarkerAlt;
-  page = 1;
-  total = 50;
+  page = 0;
+  total = 0;
+  pageSize = 10;
 
-  constructor(private restaurantService: RestaurantService) {
+  constructor(private restaurantService: RestaurantService,
+              private location: Location,
+              private activatedRoute: ActivatedRoute,
+              private router: Router,
+  ) {
   }
 
   ngOnInit(): void {
-    this.fetch(0);
   }
 
 
-  fetch(page) {
-    this.page = page;
-    this.restaurantService.fetchAll(page)
+  // get the rows of the current page and update total
+
+  fetch(page: number) {
+    this.restaurantService.fetchAll(page - 1)
       .pipe(finalize(() => this.loading = false))
       .subscribe((response: ListRestaurantResponse) => {
         this.restaurants = response.rows;
         this.total = response.total;
       }, error => this.error = error);
+    this.updateUrl(page);
+  }
+
+  updateUrl(page) {
+    // update url for on pagination change
+    const url = this.router.createUrlTree([], {relativeTo: this.activatedRoute, queryParams: {page}}).toString();
+    this.location.go(url);
   }
 }

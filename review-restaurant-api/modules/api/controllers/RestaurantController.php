@@ -2,7 +2,7 @@
 
 namespace app\modules\api\controllers;
 
-use app\models\Restaurant;
+use app\modules\api\resources\RestaurantResource;
 use Yii;
 use yii\data\Pagination;
 use yii\filters\auth\HttpBearerAuth;
@@ -65,18 +65,18 @@ class RestaurantController extends ActiveController
 
         //offset for getting the targeted page data
         $offset = 0;
-        if (isset($queryParams['pages'])) {
-            $offset = $queryParams['pages'];
+        if (isset($queryParams['page'])) {
+            $offset = $queryParams['page'];
         }
         // prepare and return a data provider for the "index" action
         $query = [];
         if (Yii::$app->user->can("owner")) {
             $ownerId = Yii::$app->user->getId();
             if (isset($ownerId)) {
-                $query = Restaurant::find()->where(['owner' => $ownerId]);
+                $query = RestaurantResource::find()->where(['owner' => $ownerId]);
             }
         } else {
-            $query = Restaurant::find();
+            $query = RestaurantResource::find();
         }
 
         $countQuery = clone $query;

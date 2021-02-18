@@ -18,10 +18,10 @@ export class RestaurantService {
 
 
   // fetch all restaurants
-  fetchAll(currPage: string): Observable<ListRestaurantResponse> {
+  fetchAll(currPage: number): Observable<ListRestaurantResponse> {
     return this.http.get<ListRestaurantResponse>(this.apiUrl, {
       params: {
-        page: currPage,
+        page: currPage.toString(),
       },
     });
   }

@@ -61,13 +61,13 @@ export class CreateRestaurantComponent implements OnInit {
     this.restaurantService.create(request).pipe(finalize(() => this.submitting = false)).subscribe(res => {
       // success
       this.showSuccess();
-      // this.location.back();
+      this.location.back();
     }, error => {
       console.log(error);
     });
   }
 
   showSuccess() {
-    window.alert('Successfully updated');
+    window.alert('Successfully created');
   }
 }

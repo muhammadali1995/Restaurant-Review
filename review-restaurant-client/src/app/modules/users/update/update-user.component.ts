@@ -1,33 +1,46 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {AccountService} from '../../account.service';
+import {ActivatedRoute, Router} from '@angular/router';
+import {UserModel} from '../../../models/user-model';
+import {Location} from '@angular/common';
+import {UserService} from '../user.service';
 import {finalize} from 'rxjs/operators';
-import {Router} from '@angular/router';
 
 @Component({
-  selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss']
+  selector: 'app-update-user',
+  templateUrl: './update-user.component.html',
+  styleUrls: ['./update-user.component.scss']
 })
-export class RegisterComponent implements OnInit {
+export class UpdateUserComponent implements OnInit {
 
   form: FormGroup;
   submitting: boolean;
   error: string;
+  user: UserModel;
 
   constructor(private fb: FormBuilder,
               private router: Router,
-              private accountService: AccountService) {
-  }
-
-  ngOnInit(): void {
+              private location: Location,
+              private route: ActivatedRoute,
+              private userService: UserService) {
     this.form = this.fb.group({
       firstname: [null, Validators.required],
       lastname: [null, Validators.required],
-      email: [null, [Validators.required, Validators.email]],
-      password: [null, [Validators.required, Validators.min(8)]],
-      password_repeat: [null, [Validators.required, Validators.min(8)]],
-      role: [null, [Validators.required]]
+      password: [null, Validators.min(8)],
+      password_repeat: [null, Validators.min(8)],
+    });
+  }
+
+  ngOnInit(): void {
+    this.route.params.subscribe(params => {
+      this.userService.fetchOne(params.id).subscribe(user => {
+        this.user = user;
+        this.form.patchValue({
+          id: user.id,
+          firstname: user.firstname,
+          lastname: user.lastname,
+        });
+      });
     });
   }
 
@@ -50,17 +63,6 @@ export class RegisterComponent implements OnInit {
     return this.lastname.hasError('required') ? 'Lastname is required' : '';
   }
 
-  get email() {
-    return this.form.get('email');
-  }
-
-  // email error message
-  get getEmailErrorMessage() {
-    if (this.email.hasError('required')) {
-      return 'Email is required';
-    }
-    return this.email.hasError('email') ? 'Not a valid email' : '';
-  }
 
   get password() {
     return this.form.get('password');
@@ -68,49 +70,46 @@ export class RegisterComponent implements OnInit {
 
   // password error message
   get getPasswordErrorMessage() {
-    if (this.password.hasError('required')) {
-      return 'Password is required';
-    }
     return this.password.hasError('min') ? 'Password should be more than 8 characters' : '';
   }
 
 
   get passwordRepeat() {
+    console.log('hello');
     return this.form.get('password_repeat');
   }
 
   // confirm password error message
   get getPasswordRepeatErrorMessage() {
-    if (this.passwordRepeat.hasError('required')) {
-      return 'Confirm password is required';
-    }
+    console.log('hello');
     return this.passwordRepeat.hasError('min') ? 'Confirm password should be more than 8 characters' : '';
   }
 
-  get role() {
-    return this.form.get('role');
-  }
-
-  get getRoleErrorMessage() {
-    return this.role.hasError('required') ? 'Role is required' : '';
-  }
-
-  // handle register form submission
+  // handle update form submission
   onSubmit() {
     this.submitting = true;
     const request = this.form.value;
+
     if (request.password !== request.password_repeat) {
       this.error = 'Password do not match confirm password';
+      this.submitting = false;
       return;
     }
 
-    // delete password_repeat as the validation is not needed in the api
     delete request.password_repeat;
 
-    this.accountService.register(request).pipe(finalize(() => this.submitting = false)).subscribe(res => {
-      this.router.navigate(['/account/login']).then(r => {
-      });
-    }, error => this.error = error);
+    this.userService.update(this.user.id, request).pipe(finalize(() => this.submitting = false)).subscribe(response => {
+      this.error = '';
+      window.alert('Successfully updated');
+      this.location.back();
+    }, error => {
+      this.error = error.error?.message;
+    });
+
+  }
+
+  onCancel() {
+    this.location.back();
   }
 
 }

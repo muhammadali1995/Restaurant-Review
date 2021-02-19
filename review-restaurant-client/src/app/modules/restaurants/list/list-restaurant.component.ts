@@ -14,7 +14,7 @@ import {Location} from '@angular/common';
 })
 export class ListRestaurantComponent implements OnInit {
 
-  restaurants: RestaurantModel [] = [];
+  restaurants: RestaurantModel [];
   loading: boolean;
   error: string;
   faPlus = faPlusCircle;
@@ -31,11 +31,12 @@ export class ListRestaurantComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // get the first page on start
+    this.fetch(1);
   }
 
 
   // get the rows of the current page and update total
-
   fetch(page: number) {
     this.restaurantService.fetchAll(page - 1)
       .pipe(finalize(() => this.loading = false))

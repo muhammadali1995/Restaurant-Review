@@ -54,6 +54,8 @@
 
           <button class="btn btn-primary btn-block" [disabled]="form.invalid || submitting">Register</button>
         </form>
+        <small class="text-danger"
+               *ngIf="error">{{error}}</small>
         <div class="pt-5">
           <p class="text-muted text-center">Already have an account? <a routerLink="/account/login">Login</a></p>
         </div>

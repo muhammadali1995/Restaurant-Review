@@ -14,7 +14,7 @@
   <div class="row" *ngIf="restaurant">
     <div class="card p-3 w-100">
       <div class="card-title d-flex justify-content-between"><h3>{{restaurant.name}}</h3>
-        <button class="btn btn-outline-primary">Write a review</button>
+        <button class="btn btn-outline-primary" routerLink="review">Write a review</button>
       </div>
       <div class=" px-0">
         <p>
@@ -24,6 +24,9 @@
           <fa-icon [icon]="faMapMarker"></fa-icon>
           {{restaurant.address}}
         </p>
+      </div>
+      <div>
+        <app-comment-restaurant (onComment)="onComment($event)" [restaurant]="restaurant"></app-comment-restaurant>
       </div>
     </div>
   </div>

@@ -35,6 +35,16 @@ class Reply extends \yii\db\ActiveRecord
         ];
     }
 
+    public function beforeSave($insert)
+    {
+        $now = date("Y-m-d H:i:s");
+        if ($this->isNewRecord) {
+            $this->created_at = $now;
+        }
+        $this->update_at = $now;
+        return parent::beforeSave($insert);
+    }
+
     /**
      * {@inheritdoc}
      */

@@ -5,28 +5,27 @@ namespace app\models;
 use Yii;
 
 /**
- * This is the model class for table "review".
+ * This is the model class for table "comment".
  *
  * @property int $id
- * @property float|null $rating
- * @property string|null $comment
+ * @property string $comment
  * @property int $user_id
- * @property string $updated_at
- * @property string $created_at
  * @property int $restaurant_id
  * @property string|null $reply
+ * @property string $created_at
+ * @property string $update_at
  *
  * @property Restaurant $restaurant
  * @property User $user
  */
-class Review extends \yii\db\ActiveRecord
+class Comment extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'review';
+        return 'comment';
     }
 
     /**
@@ -35,30 +34,12 @@ class Review extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['rating'], 'number'],
+            [['comment', 'restaurant_id'], 'required'],
             [['comment', 'reply'], 'string'],
-            [['restaurant_id', 'rating'], 'required'],
             [['user_id', 'restaurant_id'], 'integer'],
-            [['updated_at', 'created_at'], 'safe'],
+            [['created_at', 'update_at'], 'safe'],
             [['restaurant_id'], 'exist', 'skipOnError' => true, 'targetClass' => Restaurant::className(), 'targetAttribute' => ['restaurant_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function attributeLabels()
-    {
-        return [
-            'id' => 'ID',
-            'rating' => 'Rating',
-            'comment' => 'Comment',
-            'user_id' => 'User ID',
-            'updated_at' => 'Updated At',
-            'created_at' => 'Created At',
-            'restaurant_id' => 'Restaurant ID',
-            'reply' => 'Reply',
         ];
     }
 
@@ -70,8 +51,24 @@ class Review extends \yii\db\ActiveRecord
             $this->created_at = $now;
             $this->user_id = Yii::$app->user->getId();
         }
-        $this->updated_at = $now;
+        $this->update_at = $now;
         return parent::beforeSave($insert);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function attributeLabels()
+    {
+        return [
+            'id' => 'ID',
+            'comment' => 'Comment',
+            'user_id' => 'User ID',
+            'restaurant_id' => 'Restaurant ID',
+            'reply' => 'Reply',
+            'created_at' => 'Created At',
+            'update_at' => 'Update At',
+        ];
     }
 
     /**

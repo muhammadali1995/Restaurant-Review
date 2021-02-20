@@ -6,13 +6,13 @@ import {CreateRestaurantComponent} from './create/create-restaurant.component';
 import {ListRestaurantComponent} from './list/list-restaurant.component';
 import {SharedModule} from '../shared/shared.module';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
-import {ReactiveFormsModule} from '@angular/forms';
-import {NgbPaginationModule} from '@ng-bootstrap/ng-bootstrap';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {NgbModule, NgbPaginationModule} from '@ng-bootstrap/ng-bootstrap';
 import {ViewRestaurantComponent} from './view/view-restaurant.component';
 import {UpdateRestaurantComponent} from './update/update-restaurant.component';
 import {DeleteRestaurantComponent} from './delete/delete-restaurant.component';
-
-;
+import {ReviewRestaurantComponent} from './review/review-restaurant.component';
+import {CommentRestaurantComponent} from './comment/comment-restaurant.component';
 
 
 @NgModule({
@@ -20,7 +20,9 @@ import {DeleteRestaurantComponent} from './delete/delete-restaurant.component';
     ListRestaurantComponent,
     ViewRestaurantComponent,
     UpdateRestaurantComponent,
-    DeleteRestaurantComponent],
+    DeleteRestaurantComponent,
+    ReviewRestaurantComponent,
+    CommentRestaurantComponent],
   imports: [
     CommonModule,
     RestaurantRoutingModule,
@@ -28,6 +30,8 @@ import {DeleteRestaurantComponent} from './delete/delete-restaurant.component';
     FontAwesomeModule,
     ReactiveFormsModule,
     NgbPaginationModule,
+    FormsModule,
+    NgbModule,
   ]
 })
 export class RestaurantModule {

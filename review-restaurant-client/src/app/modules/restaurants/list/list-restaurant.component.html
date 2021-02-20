@@ -8,7 +8,7 @@
       <span> Add New Restaurant</span>
     </button>
   </div>
-  <div class="card p-3" *ngIf="!restaurants">
+  <div class="card p-3" *ngIf="!restaurants||restaurants?.length==0">
     <span class="text text-info"> There are no restaurants yet</span>
   </div>
   <div>

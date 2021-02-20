@@ -2,6 +2,13 @@
 
 namespace app\modules\api\controllers;
 
-class ReviewController extends \yii\rest\ActiveController
+use yii\filters\auth\HttpBearerAuth;
+use yii\filters\Cors;
+
+class ReviewController extends BaseController
 {
+
+    public $modelClass = "app\models\Review";
+
+
 }

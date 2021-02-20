@@ -75,13 +75,11 @@ export class UpdateUserComponent implements OnInit {
 
 
   get passwordRepeat() {
-    console.log('hello');
     return this.form.get('password_repeat');
   }
 
   // confirm password error message
   get getPasswordRepeatErrorMessage() {
-    console.log('hello');
     return this.passwordRepeat.hasError('min') ? 'Confirm password should be more than 8 characters' : '';
   }
 

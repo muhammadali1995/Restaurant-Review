@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {RestaurantModel} from '../../../models/restaurant.model';
-import {RestaurantService} from '../restaurant.service';
+import {RestaurantService} from '../services/restaurant.service';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {finalize} from 'rxjs/operators';
 

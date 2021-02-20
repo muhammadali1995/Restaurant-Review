@@ -1,12 +1,14 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {RestaurantModel} from '../../../models/restaurant.model';
-import {RestaurantService} from '../restaurant.service';
+import {RestaurantService} from '../services/restaurant.service';
 import {finalize} from 'rxjs/operators';
 import {faMapMarkerAlt, faPencilAlt, faTrashAlt} from '@fortawesome/free-solid-svg-icons';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {DeleteRestaurantComponent} from '../delete/delete-restaurant.component';
 import {Location} from '@angular/common';
+import {CommentService} from '../services/comment.service';
+import {CommentModel} from "../../../models/comment-model";
 
 @Component({
   selector: 'app-view-restaurant',
@@ -25,11 +27,10 @@ export class ViewRestaurantComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
               private modalService: NgbModal,
+              private commentService: CommentService,
               private location: Location,
-              private restaurantService: RestaurantService) {
-  }
-
-  ngOnInit(): void {
+              private restaurantService: RestaurantService
+  ) {
     this.loading = true;
     this.route.params.subscribe(params => {
       this.restaurantService.fetchOne(params.id)
@@ -40,6 +41,9 @@ export class ViewRestaurantComponent implements OnInit {
           this.error = error;
         });
     });
+  }
+
+  ngOnInit(): void {
   }
 
   delete() {
@@ -53,5 +57,8 @@ export class ViewRestaurantComponent implements OnInit {
     });
   }
 
+  onComment(comment: CommentModel) {
+    this.restaurant.comments.push(comment);
+  }
 
 }

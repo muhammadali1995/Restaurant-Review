@@ -3,7 +3,6 @@
 namespace app\models;
 
 use Yii;
-use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "restaurant".
@@ -16,9 +15,11 @@ use yii\db\ActiveRecord;
  * @property string $updated_at
  * @property int $owner
  *
+ * @property Comment[] $comments
  * @property User $owner0
+ * @property Review[] $reviews
  */
-class Restaurant extends ActiveRecord
+class Restaurant extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -36,10 +37,10 @@ class Restaurant extends ActiveRecord
         return [
             [['name', 'address'], 'required'],
             [['address', 'description'], 'string'],
-            [['created_at', 'updated_at'], 'safe'],
+            [['created_at', 'updated_at', 'owner'], 'safe'],
             [['owner'], 'integer'],
             [['name'], 'string', 'max' => 256],
-            [['owner'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['owner' => 'id']],
+            [['owner'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['owner' => 'id']],
         ];
     }
 
@@ -59,6 +60,7 @@ class Restaurant extends ActiveRecord
         ];
     }
 
+
     public function beforeSave($insert)
     {
         $now = date("Y-m-d H:i:s");
@@ -71,12 +73,32 @@ class Restaurant extends ActiveRecord
     }
 
     /**
-     * Gets query for [[Owner]].
+     * Gets query for [[Comments]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getOwner()
+    public function getComments()
+    {
+        return $this->hasMany(Comment::className(), ['restaurant_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Owner0]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getOwner0()
     {
         return $this->hasOne(User::className(), ['id' => 'owner']);
+    }
+
+    /**
+     * Gets query for [[Reviews]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getReviews()
+    {
+        return $this->hasMany(Review::className(), ['restaurant_id' => 'id']);
     }
 }

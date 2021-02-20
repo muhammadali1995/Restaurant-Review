@@ -79,6 +79,22 @@ $config = [
                     'extraPatterns' => [
                         'OPTIONS <action:\w+>' => 'options'
                     ]
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => ['api/review'],
+                    'pluralize' => false,
+                    'extraPatterns' => [
+                        'OPTIONS <action:\w+>' => 'options'
+                    ]
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => ['api/comment'],
+                    'pluralize' => false,
+                    'extraPatterns' => [
+                        'OPTIONS <action:\w+>' => 'options'
+                    ]
                 ]
             ]
         ],

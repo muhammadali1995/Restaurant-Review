@@ -104,9 +104,6 @@ export class RegisterComponent implements OnInit {
       return;
     }
 
-    // delete password_repeat as the validation is not needed in the api
-    delete request.password_repeat;
-
     this.accountService.register(request).pipe(finalize(() => this.submitting = false)).subscribe(res => {
       this.router.navigate(['/account/login']).then(r => {
       });

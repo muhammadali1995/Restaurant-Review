@@ -26,7 +26,24 @@
         </p>
       </div>
       <div>
-        <app-comment-restaurant (onComment)="onComment($event)" [restaurant]="restaurant"></app-comment-restaurant>
+        <ul ngbNav #nav="ngbNav" class="nav-tabs">
+          <li ngbNavItem>
+            <a ngbNavLink>Reviews</a>
+            <ng-template ngbNavContent>
+              <app-list-review [restaurant]="restaurant"></app-list-review>
+            </ng-template>
+          </li>
+          <li ngbNavItem>
+            <a ngbNavLink>Comments</a>
+            <ng-template ngbNavContent>
+              <app-comment-restaurant [restaurant]="restaurant">
+              </app-comment-restaurant>
+              <app-list-comment [restaurant]="restaurant">
+              </app-list-comment>
+            </ng-template>
+          </li>
+        </ul>
+        <div [ngbNavOutlet]="nav"></div>
       </div>
     </div>
   </div>

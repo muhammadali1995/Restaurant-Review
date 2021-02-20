@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {RestaurantService} from '../services/restaurant.service';
-import {RestaurantModel} from '../../../models/restaurant.model';
+import {RestaurantService} from '../../restaurant.service';
+import {RestaurantModel} from '../../../../models/restaurant.model';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Location} from '@angular/common';
 import {faStarHalf} from '@fortawesome/free-solid-svg-icons';
-import {ReviewService} from '../services/review.service';
+import {ReviewService} from '../review.service';
 
 @Component({
   selector: 'app-review-restaurant',

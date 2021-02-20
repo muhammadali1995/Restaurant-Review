@@ -4,7 +4,8 @@ import {ListRestaurantComponent} from './list/list-restaurant.component';
 import {CreateRestaurantComponent} from './create/create-restaurant.component';
 import {ViewRestaurantComponent} from './view/view-restaurant.component';
 import {UpdateRestaurantComponent} from './update/update-restaurant.component';
-import {ReviewRestaurantComponent} from './review/review-restaurant.component';
+import {ReviewRestaurantComponent} from './review/create/review-restaurant.component';
+import {UpdateReviewComponent} from "./review/update/update-review.component";
 
 
 const routes: Routes = [
@@ -28,7 +29,10 @@ const routes: Routes = [
   {
     path: ':id/update',
     component: UpdateRestaurantComponent
-  }
+  }, {
+    path: ':id/update/:reviewId',
+    component: UpdateReviewComponent
+  },
 
 ];
 

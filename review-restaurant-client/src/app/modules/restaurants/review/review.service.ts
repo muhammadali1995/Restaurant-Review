@@ -23,4 +23,13 @@ export class ReviewService {
     return this.http.delete<boolean>(`${this.apiUrl}/${id}`);
   }
 
+  // update request to delete a review
+  update(id: number, request: ReviewModel): Observable<ReviewModel> {
+    return this.http.put<ReviewModel>(`${this.apiUrl}/${id}`, request);
+  }
+
+  fetchOne(id: number): Observable<ReviewModel> {
+    return this.http.get<ReviewModel>(`${this.apiUrl}/${id}`);
+  }
+
 }

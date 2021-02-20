@@ -88,7 +88,7 @@ class UserController extends ActiveController
 
         $countQuery = clone $query;
         $pages = new Pagination(['totalCount' => $countQuery->count(), 'defaultPageSize' => 10]);
-        $rows = $query->select('user.id, user.firstname, user.lastname, user.email, auth_assignment.item_name as role')
+            $rows = $query->select('user.id, user.firstname, user.lastname, user.email, auth_assignment.item_name as role')
             ->leftJoin('auth_assignment', '`auth_assignment`.`user_id` = `user`.`id`')
             ->offset($offset)
             ->limit($pages->limit)

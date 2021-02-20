@@ -2,6 +2,7 @@
 
 namespace app\modules\api\controllers;
 
+use app\models\Restaurant;
 use app\modules\api\resources\RestaurantResource;
 use Yii;
 use yii\data\Pagination;
@@ -9,6 +10,7 @@ use yii\filters\auth\HttpBearerAuth;
 use yii\filters\Cors;
 use yii\rest\ActiveController;
 use yii\web\ForbiddenHttpException;
+use yii\web\NotFoundHttpException;
 
 class RestaurantController extends ActiveController
 {
@@ -51,6 +53,7 @@ class RestaurantController extends ActiveController
 
         // customize the data provider preparation with the "prepareDataProvider()" method
         $actions['index']['prepareDataProvider'] = [$this, 'prepareDataProvider'];
+        unset($actions['view']);
 
         return $actions;
     }
@@ -69,14 +72,12 @@ class RestaurantController extends ActiveController
             $offset = $queryParams['page'];
         }
         // prepare and return a data provider for the "index" action
-        $query = [];
+        $query = RestaurantResource::find();
         if (Yii::$app->user->can("owner")) {
             $ownerId = Yii::$app->user->getId();
             if (isset($ownerId)) {
                 $query = RestaurantResource::find()->where(['owner' => $ownerId]);
             }
-        } else {
-            $query = RestaurantResource::find();
         }
 
         $countQuery = clone $query;
@@ -87,5 +88,19 @@ class RestaurantController extends ActiveController
         ];
     }
 
+
+    public function actionView()
+    {
+        $queryParam = Yii::$app->request->getQueryParams();
+
+        $id = $queryParam['id'];
+        if (isset($id)) {
+            return RestaurantResource::find()->with(['reviews.user', 'comments.user', 'owner0'])->where(['id' => $id])->one();
+        }
+
+        throw new NotFoundHttpException("Requested resource not found");
+
+
+    }
 
 }

@@ -14,7 +14,23 @@ export class CommentService {
   constructor(private  http: HttpClient) {
   }
 
+
+  // create request to create a new comment
   create(request: CommentModel): Observable<CommentModel> {
     return this.http.post<CommentModel>(this.apiUrl, request);
+  }
+
+  // delete request to delete a review
+  delete(id: number): Observable<boolean> {
+    return this.http.delete<boolean>(`${this.apiUrl}/${id}`);
+  }
+
+  // update request to delete a review
+  update(id: number, request: CommentModel): Observable<CommentModel> {
+    return this.http.put<CommentModel>(`${this.apiUrl}/${id}`, request);
+  }
+
+  fetchOne(id: number): Observable<CommentModel> {
+    return this.http.get<CommentModel>(`${this.apiUrl}/${id}`);
   }
 }

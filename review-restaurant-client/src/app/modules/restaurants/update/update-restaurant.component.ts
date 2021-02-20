@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {RestaurantService} from '../services/restaurant.service';
+import {RestaurantService} from '../restaurant.service';
 import {Location} from '@angular/common';
 import {RestaurantModel} from '../../../models/restaurant.model';
 import {ActivatedRoute, Router} from '@angular/router';

@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {faMapMarkerAlt, faPlusCircle} from '@fortawesome/free-solid-svg-icons';
-import {RestaurantService} from '../services/restaurant.service';
+import {RestaurantService} from '../restaurant.service';
 import {RestaurantModel} from '../../../models/restaurant.model';
 import {finalize} from 'rxjs/operators';
 import {ListRestaurantResponse} from '../../../models/list-restaurant-response';

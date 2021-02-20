@@ -1,0 +1,32 @@
+<div class="comment-container">
+  <div class="card mt-3 d-flex flex-column justify-content-between" *ngFor="let review of restaurant?.reviews">
+    <div class="card-title mb-0 px-4 pt-2  pb-0">
+      <ngb-rating [(rate)]="review.rating" id="rate" [max]="5" [readonly]="true">
+        <ng-template let-fill="fill">
+          <span class="star" [class.filled]="fill === 100">&#9733;</span>
+        </ng-template>
+      </ngb-rating>
+    </div>
+    <div class="card-body py-1">
+      <p class="mb-1">{{review.comment}}</p>
+    </div>
+    <div class="card-footer d-flex justify-content-between py-1">
+      <div>
+        <small><i> {{review.user?.firstname}} {{review.user?.lastname}}</i></small>
+        <small class="ml-2"><i>{{review.created_at | date: 'medium'}}</i></small>
+      </div>
+      <div>
+        <button (click)="delete(review)" class="btn btn-danger py-0">
+          <small>
+            <fa-icon [icon]="faTrash"></fa-icon>
+            Delete</small>
+        </button>
+        <a [routerLink]="['update', review.id]" class="py-0 ml-2">
+          <small>
+            <fa-icon [icon]="faPencil"></fa-icon>
+            Edit</small>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

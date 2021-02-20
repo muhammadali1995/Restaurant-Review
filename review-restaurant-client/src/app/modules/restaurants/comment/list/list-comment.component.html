@@ -1,0 +1,11 @@
+<div class="comment-container">
+  <div class="card mt-3 d-flex flex-column justify-content-between" *ngFor="let rComment of restaurant?.comments">
+    <div class="card-body py-1">
+      <p class="mb-1">{{rComment.comment}}</p>
+    </div>
+    <div class="card-footer d-flex justify-content-end py-1">
+      <small><i> {{rComment.user?.firstname}} {{rComment.user?.lastname}}</i></small>
+      <small class="ml-2"><i>{{rComment.created_at | date: 'medium'}}</i></small>
+    </div>
+  </div>
+</div>

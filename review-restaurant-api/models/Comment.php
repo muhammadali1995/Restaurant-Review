@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\modules\api\resources\UserResource;
 use Yii;
 
 /**
@@ -78,7 +79,7 @@ class Comment extends \yii\db\ActiveRecord
      */
     public function getRestaurant()
     {
-        return $this->hasOne(Restaurant::className(), ['id' => 'restaurant_id']);
+        return $this->hasOne(Restaurant::class, ['id' => 'restaurant_id']);
     }
 
     /**
@@ -88,6 +89,6 @@ class Comment extends \yii\db\ActiveRecord
      */
     public function getUser()
     {
-        return $this->hasOne(User::className(), ['id' => 'user_id']);
+        return $this->hasOne(User::class, ['id' => 'user_id'])->select(['id', 'firstname', 'lastname']);
     }
 }

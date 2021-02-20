@@ -1,0 +1,32 @@
+<div class="banner d-flex flex-column justify-content-around">
+  <h3 class="title"> Rate  {{restaurant?.name}}</h3>
+</div>
+<div class="container">
+  <div class="card mt-5 p-3">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="form-group mb-0">
+        <label for="rate">Rate</label>
+        <div>
+          <ngb-rating id="rate" [max]="5" formControlName="rating" required>
+            <ng-template let-fill="fill">
+              <span class="star" [class.filled]="fill === 100">&#9733;</span>
+            </ng-template>
+          </ngb-rating>
+          <small class="text-danger"
+                 *ngIf="form.invalid && (rating.touched || rating.dirty)">{{getRateErrorMessage}}</small>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="description">Comment</label>
+        <textarea rows="4" id="description" type="text" class="form-control" formControlName="comment"> </textarea>
+      </div>
+      <div class="row no-gutters justify-content-end">
+        <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancel</button>
+        <button class="btn btn-primary ml-3" type="submit" [disabled]="form.invalid">Send</button>
+      </div>
+    </form>
+    <small class="text-danger"
+           *ngIf="error">{{error}}</small>
+
+  </div>
+</div>

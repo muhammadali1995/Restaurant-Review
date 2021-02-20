@@ -1,9 +1,9 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {RestaurantModel} from '../../../models/restaurant.model';
-import {CommentService} from '../services/comment.service';
-import {CommentModel} from '../../../models/comment-model';
-import {finalize} from "rxjs/operators";
+import {RestaurantModel} from '../../../../models/restaurant.model';
+import {CommentService} from '../comment.service';
+import {CommentModel} from '../../../../models/comment-model';
+import {finalize} from 'rxjs/operators';
 
 @Component({
   selector: 'app-comment-restaurant',
@@ -26,8 +26,6 @@ export class CommentRestaurantComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // set the id of the restaurant being commented
-    console.log(this.restaurant);
     this.form.get('restaurant_id').setValue(this.restaurant.id);
   }
 
@@ -56,7 +54,9 @@ export class CommentRestaurantComponent implements OnInit {
     this.commenting = true;
     const request = this.form.value;
     this.commentService.create(request).pipe(finalize(() => this.commenting = false)).subscribe((comment: CommentModel) => {
+      this.restaurant.comments.push(comment);
       this.onComment.emit(comment);
+      this.form.reset();
     }, er => this.error = er.error.message);
   }
 

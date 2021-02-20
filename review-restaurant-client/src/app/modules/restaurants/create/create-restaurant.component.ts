@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {RestaurantService} from '../services/restaurant.service';
+import {RestaurantService} from '../restaurant.service';
 import {finalize} from 'rxjs/operators';
 import {Location} from '@angular/common';
 

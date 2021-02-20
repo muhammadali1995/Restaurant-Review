@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\modules\api\resources\UserResource;
 use Yii;
 
 /**
@@ -91,6 +92,6 @@ class Review extends \yii\db\ActiveRecord
      */
     public function getUser()
     {
-        return $this->hasOne(User::className(), ['id' => 'user_id']);
+        return $this->hasOne(User::className(), ['id' => 'user_id'])->select(['id', 'firstname', 'lastname']);
     }
 }

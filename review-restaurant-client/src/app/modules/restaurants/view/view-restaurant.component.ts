@@ -1,13 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {RestaurantModel} from '../../../models/restaurant.model';
-import {RestaurantService} from '../services/restaurant.service';
+import {RestaurantService} from '../restaurant.service';
 import {finalize} from 'rxjs/operators';
 import {faMapMarkerAlt, faPencilAlt, faTrashAlt} from '@fortawesome/free-solid-svg-icons';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {DeleteRestaurantComponent} from '../delete/delete-restaurant.component';
 import {Location} from '@angular/common';
-import {CommentService} from '../services/comment.service';
+import {CommentService} from '../comment/comment.service';
 import {CommentModel} from "../../../models/comment-model";
 
 @Component({
@@ -55,10 +55,6 @@ export class ViewRestaurantComponent implements OnInit {
         this.location.back();
       }
     });
-  }
-
-  onComment(comment: CommentModel) {
-    this.restaurant.comments.push(comment);
   }
 
 }

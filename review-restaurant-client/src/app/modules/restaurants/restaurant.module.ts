@@ -11,8 +11,14 @@ import {NgbModule, NgbPaginationModule} from '@ng-bootstrap/ng-bootstrap';
 import {ViewRestaurantComponent} from './view/view-restaurant.component';
 import {UpdateRestaurantComponent} from './update/update-restaurant.component';
 import {DeleteRestaurantComponent} from './delete/delete-restaurant.component';
-import {ReviewRestaurantComponent} from './review/review-restaurant.component';
-import {CommentRestaurantComponent} from './comment/comment-restaurant.component';
+import {ReviewRestaurantComponent} from './review/create/review-restaurant.component';
+import {CommentRestaurantComponent} from './comment/create/comment-restaurant.component';
+import {ListReviewComponent} from './review/list/list-review.component';
+import {ListCommentComponent} from './comment/list/list-comment.component';
+import {DeleteReviewComponent} from './review/delete/delete-review.component';
+import {UpdateCommentComponent} from './comment/update/update-comment.component';
+import {DeleteCommentComponent} from './comment/delete/delete-comment.component';
+import {UpdateReviewComponent} from "./review/update/update-review.component";
 
 
 @NgModule({
@@ -22,7 +28,13 @@ import {CommentRestaurantComponent} from './comment/comment-restaurant.component
     UpdateRestaurantComponent,
     DeleteRestaurantComponent,
     ReviewRestaurantComponent,
-    CommentRestaurantComponent],
+    CommentRestaurantComponent,
+    ListReviewComponent,
+    ListCommentComponent,
+    UpdateReviewComponent,
+    DeleteReviewComponent,
+    UpdateCommentComponent,
+    DeleteCommentComponent],
   imports: [
     CommonModule,
     RestaurantRoutingModule,

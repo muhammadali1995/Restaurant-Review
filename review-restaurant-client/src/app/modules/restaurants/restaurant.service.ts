@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {environment} from '../../../../environments/environment';
+import {environment} from '../../../environments/environment';
 import {Observable} from 'rxjs';
-import {RestaurantModel} from '../../../models/restaurant.model';
-import {ListRestaurantResponse} from '../../../models/list-restaurant-response';
+import {RestaurantModel} from '../../models/restaurant.model';
+import {ListRestaurantResponse} from '../../models/list-restaurant-response';
 
 
 @Injectable({
@@ -29,7 +29,11 @@ export class RestaurantService {
 
   // fetch a single restaurant
   fetchOne(id: number): Observable<RestaurantModel> {
-    return this.http.get<RestaurantModel>(`${this.apiUrl}/${id}`);
+    return this.http.get<RestaurantModel>(`${this.apiUrl}/${id}`, {
+      params: {
+        expand: 'reviews.user,comments.user'
+      }
+    });
   }
 
   // create request to add a new restaurant

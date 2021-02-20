@@ -9,6 +9,7 @@
     </div>
     <div class="card-body py-1">
       <p class="mb-1">{{review.comment}}</p>
+      <ngb-alert type="info" [dismissible]="false" *ngIf="review.reply"><small>{{review.reply}}</small></ngb-alert>
     </div>
     <div class="card-footer d-flex justify-content-between py-1">
       <div>
@@ -26,6 +27,12 @@
             <fa-icon [icon]="faPencil"></fa-icon>
             Edit</small>
         </a>
+        <button *ngIf="!review.reply" (click)="reply(review)" class="btn btn-info py-0 ml-2">
+          <small>
+            <fa-icon [icon]="faReply"></fa-icon>
+            Reply</small>
+        </button>
+
       </div>
     </div>
   </div>

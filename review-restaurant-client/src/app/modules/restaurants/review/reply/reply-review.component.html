@@ -1,1 +1,23 @@
-<p>reply-review works!</p>
+<div class="modal-header">
+  <h4 class="modal-title" id="modal-basic-title">Reply to a review</h4>
+  <button type="button" class="close" aria-label="Close" (click)="onClose()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <p>
+      <i>{{review.comment}}</i>
+    </p>
+    <div class="form-group m-0">
+      <label for="reply">Reply</label>
+      <textarea id="reply" rows="3" placeholder="Reply to comment" type="text" class="form-control"
+                formControlName="reply"></textarea>
+      <small class="text text-danger"
+             *ngIf="form.invalid && (reply.touched || reply.dirty)">{{getReplyError}}</small>
+    </div>
+    <div class="form-group mt-2 text-right">
+      <button class="btn btn-primary" [disabled]="form.invalid|| saving">Reply</button>
+    </div>
+  </form>
+</div>

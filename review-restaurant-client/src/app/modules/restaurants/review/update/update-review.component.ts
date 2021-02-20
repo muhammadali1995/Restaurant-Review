@@ -25,7 +25,6 @@ export class UpdateReviewComponent implements OnInit {
               private fb: FormBuilder,
               private reviewService: ReviewService) {
     this.form = this.fb.group({
-      restaurant_id: [null, Validators.required],
       rating: [null, Validators.required],
       comment: null
     });
@@ -38,7 +37,6 @@ export class UpdateReviewComponent implements OnInit {
       this.reviewService.fetchOne(params.reviewId).subscribe((review: ReviewModel) => {
         this.review = review;
         this.form.patchValue({
-          restaurant_id: params.id,
           rating: review.rating,
           comment: review.comment
         });

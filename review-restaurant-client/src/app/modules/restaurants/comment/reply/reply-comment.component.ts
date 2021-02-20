@@ -1,16 +1,15 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {CommentService} from '../comment.service';
 import {CommentModel} from '../../../../models/comment-model';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {CommentService} from '../comment.service';
 
 @Component({
-  selector: 'app-update-comment',
-  templateUrl: './update-comment.component.html',
-  styleUrls: ['./update-comment.component.scss']
+  selector: 'app-reply-comment',
+  templateUrl: './reply-comment.component.html',
+  styleUrls: ['./reply-comment.component.scss']
 })
-export class UpdateCommentComponent implements OnInit {
-
+export class ReplyCommentComponent implements OnInit {
 
   @Input() comment: CommentModel;
 
@@ -22,7 +21,7 @@ export class UpdateCommentComponent implements OnInit {
               private fb: FormBuilder,
               private commentService: CommentService) {
     this.form = this.fb.group({
-      comment: [null, [Validators.required, this.noWhitespaceValidator]]
+      reply: [null, [Validators.required, this.noWhitespaceValidator]]
     });
   }
 
@@ -32,25 +31,22 @@ export class UpdateCommentComponent implements OnInit {
       .subscribe(
         (comment: CommentModel) => {
           this.comment = comment;
-          this.form.patchValue({
-            comment: comment.comment
-          });
         },
 
         err => this.error = err.error.message);
   }
 
 
-  get commentControl() {
-    return this.form.get('comment');
+  get reply() {
+    return this.form.get('reply');
   }
 
-  get getCommentError() {
-    if (this.commentControl.hasError('required')) {
+  get getReplyError() {
+    if (this.reply.hasError('required')) {
       return 'Comment is required';
     }
+    return this.reply.hasError('whitespace') ? 'Reply can not be whitespaces' : '';
 
-    return this.commentControl.hasError('whitespace') ? 'Comment can not be whitespaces' : '';
   }
 
 
@@ -72,5 +68,6 @@ export class UpdateCommentComponent implements OnInit {
         this.activeModal.close(updatedComment);
       }, err => this.error = err.error.message);
   }
+
 
 }

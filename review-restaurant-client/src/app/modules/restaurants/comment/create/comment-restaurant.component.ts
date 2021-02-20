@@ -37,7 +37,7 @@ export class CommentRestaurantComponent implements OnInit {
 
   get getCommentError() {
     if (this.comment.hasError('required')) {
-      return this.comment.hasError('required') ? 'Comment is required' : '';
+      return 'Comment is required';
     }
 
     return this.comment.hasError('whitespace') ? 'Comment can not be whitespaces' : '';

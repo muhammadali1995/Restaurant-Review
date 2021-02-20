@@ -1,11 +1,33 @@
 <div class="comment-container">
   <div class="card mt-3 d-flex flex-column justify-content-between" *ngFor="let rComment of restaurant?.comments">
     <div class="card-body py-1">
-      <p class="mb-1">{{rComment.comment}}</p>
+      <p class="mb-1 font-weight-bold">{{rComment.comment}}</p>
+      <ngb-alert type="info" [dismissible]="false" *ngIf="rComment.reply"><small>{{rComment.reply}}</small></ngb-alert>
     </div>
-    <div class="card-footer d-flex justify-content-end py-1">
-      <small><i> {{rComment.user?.firstname}} {{rComment.user?.lastname}}</i></small>
-      <small class="ml-2"><i>{{rComment.created_at | date: 'medium'}}</i></small>
+    <div class="card-footer d-flex justify-content-between py-1">
+      <div>
+        <small><i> {{rComment.user?.firstname}} {{rComment.user?.lastname}}</i></small>
+        <small class="ml-2"><i>{{rComment.created_at | date: 'medium'}}</i></small>
+      </div>
+      <div>
+        <button (click)="delete(rComment)" class="btn btn-danger py-0">
+          <small>
+            <fa-icon [icon]="faTrash"></fa-icon>
+            Delete</small>
+        </button>
+        <button (click)="update(rComment)" class="btn btn-primary py-0 ml-2">
+          <small>
+            <fa-icon [icon]="faPencil"></fa-icon>
+            Update</small>
+        </button>
+        <button *ngIf="!rComment.reply" (click)="reply(rComment)" class="btn btn-info py-0 ml-2">
+          <small>
+            <fa-icon [icon]="faReply"></fa-icon>
+            Reply</small>
+        </button>
+
+
+      </div>
     </div>
   </div>
 </div>

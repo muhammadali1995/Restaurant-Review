@@ -18,6 +18,12 @@ export class LoginComponent implements OnInit {
   constructor(private fb: FormBuilder,
               private router: Router,
               private accountService: AccountService) {
+
+    // if the user is already logged in return to the home page
+    if (this.accountService.currentUser) {
+      this.router.navigate(['/']);
+    }
+
     this.form = this.fb.group({
       email: [null, [Validators.required, Validators.email]],
       password: [null, [Validators.required, Validators.min(8)]]
@@ -61,8 +67,7 @@ export class LoginComponent implements OnInit {
     this.submitting = true;
     const request = this.form.value;
     this.accountService.login(request).pipe(finalize(() => this.submitting = false)).subscribe(res => {
-      this.router.navigate(['/']).then(() => {
-      });
+      this.router.navigate(['/']);
     }, error => {
       if (error.status === 422) {
         this.error = 'Incorrect email or password';

@@ -4,6 +4,7 @@ import {RestaurantModel} from '../../../../models/restaurant.model';
 import {CommentService} from '../comment.service';
 import {CommentModel} from '../../../../models/comment-model';
 import {finalize} from 'rxjs/operators';
+import {ValidatorService} from '../../../shared/services/validator.service';
 
 @Component({
   selector: 'app-comment-restaurant',
@@ -16,12 +17,13 @@ export class CommentRestaurantComponent implements OnInit {
   commenting: boolean;
   error: string;
   @Input() restaurant: RestaurantModel;
-  @Output() onComment = new EventEmitter();
 
-  constructor(private fb: FormBuilder, private commentService: CommentService) {
+  constructor(private fb: FormBuilder,
+              private validatorService: ValidatorService,
+              private commentService: CommentService) {
     this.form = this.fb.group({
       restaurant_id: [null, Validators.required],
-      comment: [null, [Validators.required, this.noWhitespaceValidator]]
+      comment: [null, [Validators.required, this.validatorService.noWhitespaceValidator]]
     });
   }
 
@@ -39,15 +41,7 @@ export class CommentRestaurantComponent implements OnInit {
     if (this.comment.hasError('required')) {
       return 'Comment is required';
     }
-
-    return this.comment.hasError('whitespace') ? 'Comment can not be whitespaces' : '';
-  }
-
-
-  public noWhitespaceValidator(control: FormControl) {
-    const isWhitespace = (control.value || '').trim().length === 0;
-    const isValid = !isWhitespace;
-    return isValid ? null : {whitespace: true};
+    return (this.comment.errors && this.comment.errors.whitespace) ? 'Comment can not be whitespaces' : '';
   }
 
   onCommentSubmitted() {
@@ -55,7 +49,6 @@ export class CommentRestaurantComponent implements OnInit {
     const request = this.form.value;
     this.commentService.create(request).pipe(finalize(() => this.commenting = false)).subscribe((comment: CommentModel) => {
       this.restaurant.comments.push(comment);
-      this.onComment.emit(comment);
       this.form.reset();
     }, er => this.error = er.error.message);
   }

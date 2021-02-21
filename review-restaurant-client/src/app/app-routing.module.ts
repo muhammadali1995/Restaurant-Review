@@ -1,6 +1,8 @@
 import {NgModule} from '@angular/core';
-import {Routes, RouterModule} from '@angular/router';
+import {RouterModule, Routes} from '@angular/router';
 import {PageNotFoundComponent} from './components/page-not-found/page-not-found.component';
+import {Roles} from './models/roles';
+import {AuthGuard} from './modules/account/auth.guard';
 
 
 const routes: Routes = [
@@ -10,8 +12,12 @@ const routes: Routes = [
     loadChildren: () => import('./modules/account/account.module').then(m => m.AccountModule)
   },
   {
+    // main modules is only accessible for authorized users
     path: '',
-    loadChildren: () => import('./modules/main/main.module').then(m => m.MainModule)
+    loadChildren: () => import('./modules/main/main.module').then(m => m.MainModule),
+    data: [Roles.ADMIN, Roles.OWNER, Roles.REGULAR_USER],
+    canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard]
   },
   {path: '**', component: PageNotFoundComponent}
 ];

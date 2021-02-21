@@ -34,7 +34,7 @@ class LoginForm extends \app\models\LoginForm
                         array_push($roles, $role->name);
                     }
                 }
-                $this->_user->setRole($roles);
+                $this->_user->setRole($roles[0]);
             }
 
         }

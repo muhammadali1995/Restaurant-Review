@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AccountService} from '../../account.service';
 import {finalize} from 'rxjs/operators';
 import {Router} from '@angular/router';
+import {ValidatorService} from '../../../shared/services/validator.service';
 
 @Component({
   selector: 'app-register',
@@ -17,16 +18,22 @@ export class RegisterComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
               private router: Router,
+              private validatorService: ValidatorService,
               private accountService: AccountService) {
+
+    // if the user is already logged in then navigate to home page
+    if (accountService.currentUser) {
+      this.router.navigate(['/']);
+    }
   }
 
   ngOnInit(): void {
     this.form = this.fb.group({
-      firstname: [null, Validators.required],
-      lastname: [null, Validators.required],
+      firstname: [null, [Validators.required, this.validatorService.noWhitespaceValidator]],
+      lastname: [null, [Validators.required, this.validatorService.noWhitespaceValidator]],
       email: [null, [Validators.required, Validators.email]],
-      password: [null, [Validators.required, Validators.min(8)]],
-      password_repeat: [null, [Validators.required, Validators.min(8)]],
+      password: [null, [Validators.required, Validators.minLength(8)]],
+      password_repeat: [null, [Validators.required, Validators.minLength(8)]],
       role: [null, [Validators.required]]
     });
   }
@@ -38,7 +45,10 @@ export class RegisterComponent implements OnInit {
 
   // Firstname error message
   get getFirstnameErrorMessage(): string {
-    return this.firstname.hasError('required') ? 'Firstname is required' : '';
+    if (this.firstname.hasError('required')) {
+      return 'Firstname is required';
+    }
+    return (this.firstname.errors && this.firstname.errors.whitespace) ? 'Firstname can not be whitespaces' : '';
   }
 
   get lastname() {
@@ -47,7 +57,10 @@ export class RegisterComponent implements OnInit {
 
   // Lastname error message
   get getLastnameErrorMessage(): string {
-    return this.lastname.hasError('required') ? 'Lastname is required' : '';
+    if (this.lastname.hasError('required')) {
+      return 'Lastname is required';
+    }
+    return (this.lastname.errors && this.lastname.errors.whitespace) ? 'Lastname can not be whitespaces' : '';
   }
 
   get email() {
@@ -71,7 +84,7 @@ export class RegisterComponent implements OnInit {
     if (this.password.hasError('required')) {
       return 'Password is required';
     }
-    return this.password.hasError('min') ? 'Password should be more than 8 characters' : '';
+    return (this.password.errors && this.password.errors.minlength) ? 'Password should be more than 8 characters' : '';
   }
 
 
@@ -84,7 +97,7 @@ export class RegisterComponent implements OnInit {
     if (this.passwordRepeat.hasError('required')) {
       return 'Confirm password is required';
     }
-    return this.passwordRepeat.hasError('min') ? 'Confirm password should be more than 8 characters' : '';
+    return (this.passwordRepeat.errors && this.passwordRepeat.errors.minlength) ? 'Confirm password should be more than 8 characters' : '';
   }
 
   get role() {
@@ -101,13 +114,18 @@ export class RegisterComponent implements OnInit {
     const request = this.form.value;
     if (request.password !== request.password_repeat) {
       this.error = 'Password do not match confirm password';
+      this.submitting = false;
       return;
     }
 
     this.accountService.register(request).pipe(finalize(() => this.submitting = false)).subscribe(res => {
       this.router.navigate(['/account/login']).then(r => {
       });
-    }, error => this.error = error);
+    }, (err) => {
+      if (err.error.errors && err.error.errors.email) {
+        this.error = 'The email has already taken by another user';
+      }
+    });
   }
 
 }

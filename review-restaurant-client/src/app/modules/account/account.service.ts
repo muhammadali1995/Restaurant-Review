@@ -6,13 +6,12 @@ import {environment} from '../../../environments/environment';
 import {map} from 'rxjs/operators';
 import {Router} from '@angular/router';
 
-const apiUrl = environment.apiUrl;
 
 @Injectable({
   providedIn: 'root'
 })
 export class AccountService {
-
+  apiUrl = `${environment.apiUrl}/user`;
   public userSubject: BehaviorSubject<UserModel>;
   public user: Observable<UserModel>;
 
@@ -28,7 +27,7 @@ export class AccountService {
 
   // login accepts a request object that has login and password
   login(request: { username: string, password: string }) {
-    return this.http.post<UserModel>(`${apiUrl}/user/login`, request).pipe(map(user => {
+    return this.http.post<UserModel>(`${this.apiUrl}/login`, request).pipe(map(user => {
       // save the logged in user to localStorage to get when page refresh
       localStorage.setItem('currentUser', JSON.stringify(user));
       this.userSubject.next(user);
@@ -45,7 +44,7 @@ export class AccountService {
 
 
   register(user: UserModel) {
-    return this.http.post(`${apiUrl}/user/register`, user);
+    return this.http.post(`${this.apiUrl}/register`, user);
   }
 
 }

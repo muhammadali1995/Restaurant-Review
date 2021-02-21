@@ -1,10 +1,10 @@
 <div class="auth-container d-flex flex-column justify-content-around">
-  <div class="col-12 col-sm-6 col-md-3 align-self-center">
+  <div class="col-12 col-sm-6 col-md-4 align-self-center">
     <div class="card">
       <div class="card-title">
-        <h3 class="text-uppercase mb-0 text-center"><strong>Create Account</strong></h3>
+        <h3 class="text-uppercase mt-2 mb-0 text-center">Register</h3>
       </div>
-      <div class="card-body">
+      <div class="card-body py-0">
         <form [formGroup]="form" (ngSubmit)="onSubmit()">
           <div class="form-group">
             <label for="firstname">Firstname</label>
@@ -25,22 +25,6 @@
             <small class="text-danger"
                    *ngIf="form.invalid && (email.touched || email.dirty)">{{getEmailErrorMessage}}</small>
           </div>
-
-          <div class="form-group">
-            <label for="password">Password</label>
-            <input class="form-control" id="password" type="password" formControlName="password" placeholder="Password"
-                   required>
-            <small class="text-danger"
-                   *ngIf="form.invalid && (lastname.touched || lastname.dirty)">{{getPasswordErrorMessage}}</small>
-          </div>
-
-          <div class="form-group">
-            <label for="confirm-password">Confirm Password</label>
-            <input class="form-control" id="confirm-password" type="password" formControlName="password_repeat"
-                   placeholder="Confirm Password" required>
-            <small class="text-danger"
-                   *ngIf="form.invalid && (passwordRepeat.touched || passwordRepeat.dirty)">{{getPasswordRepeatErrorMessage}}</small>
-          </div>
           <div class="form-group">
             <label for="role">Role</label>
             <select id="role" class="form-control" required formControlName="role">
@@ -52,6 +36,23 @@
                    *ngIf="form.invalid && (role.touched || role.dirty)">{{getRoleErrorMessage}}</small>
           </div>
 
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input class="form-control" id="password" type="password" formControlName="password"
+                   placeholder="Password"
+                   required>
+            <small class="text-danger"
+                   *ngIf="form.invalid && (lastname.touched || lastname.dirty)">{{getPasswordErrorMessage}}</small>
+          </div>
+
+          <div class="form-group">
+            <label for="confirm-password">Confirm Password</label>
+            <input class="form-control" [minLength]="8" id="confirm-password" type="password"
+                   formControlName="password_repeat"
+                   placeholder="Confirm Password" required>
+            <small class="text-danger"
+                   *ngIf="form.invalid && (passwordRepeat.touched || passwordRepeat.dirty)">{{getPasswordRepeatErrorMessage}}</small>
+          </div>
           <button class="btn btn-primary btn-block" [disabled]="form.invalid || submitting">Register</button>
         </form>
         <small class="text-danger"

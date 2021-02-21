@@ -3,6 +3,7 @@ import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {CommentService} from '../comment.service';
 import {CommentModel} from '../../../../models/comment-model';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {ValidatorService} from "../../../shared/services/validator.service";
 
 @Component({
   selector: 'app-update-comment',
@@ -20,9 +21,10 @@ export class UpdateCommentComponent implements OnInit {
 
   constructor(private activeModal: NgbActiveModal,
               private fb: FormBuilder,
+              private validatorService: ValidatorService,
               private commentService: CommentService) {
     this.form = this.fb.group({
-      comment: [null, [Validators.required, this.noWhitespaceValidator]]
+      comment: [null, [Validators.required, this.validatorService.noWhitespaceValidator]]
     });
   }
 
@@ -50,14 +52,7 @@ export class UpdateCommentComponent implements OnInit {
       return 'Comment is required';
     }
 
-    return this.commentControl.hasError('whitespace') ? 'Comment can not be whitespaces' : '';
-  }
-
-
-  public noWhitespaceValidator(control: FormControl) {
-    const isWhitespace = (control.value || '').trim().length === 0;
-    const isValid = !isWhitespace;
-    return isValid ? null : {whitespace: true};
+    return (this.commentControl.errors && this.commentControl.errors.whitespace) ? 'Comment can not be whitespaces' : '';
   }
 
   onClose() {

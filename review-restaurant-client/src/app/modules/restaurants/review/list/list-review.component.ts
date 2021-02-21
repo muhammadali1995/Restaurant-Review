@@ -5,7 +5,9 @@ import {ReviewModel} from '../../../../models/review.model';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {DeleteReviewComponent} from '../delete/delete-review.component';
 import {ReplyReviewComponent} from '../reply/reply-review.component';
-import {RestaurantService} from "../../restaurant.service";
+import {RestaurantService} from '../../restaurant.service';
+import {Action} from '../../../../models/action';
+import {AuthGuard} from '../../../account/auth.guard';
 
 @Component({
   selector: 'app-list-review',
@@ -20,6 +22,7 @@ export class ListReviewComponent implements OnInit {
   faReply = faReply;
 
   constructor(private modalService: NgbModal,
+              private authGuardService: AuthGuard,
               private restaurantService: RestaurantService) {
   }
 
@@ -59,5 +62,17 @@ export class ListReviewComponent implements OnInit {
     this.restaurantService.fetchOne(this.restaurant.id).subscribe((restaurant: RestaurantModel) => {
       this.restaurant = restaurant;
     });
+  }
+
+  get canEdit() {
+    return this.authGuardService.can(Action.UPDATE_REVIEW);
+  }
+
+  get canDelete() {
+    return this.authGuardService.can(Action.DELETE_REVIEW);
+  }
+
+  get canReply() {
+    return this.authGuardService.can(Action.REPLY_REVIEW);
   }
 }

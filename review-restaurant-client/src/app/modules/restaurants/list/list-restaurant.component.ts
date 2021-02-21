@@ -6,6 +6,9 @@ import {finalize} from 'rxjs/operators';
 import {ListRestaurantResponse} from '../../../models/list-restaurant-response';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Location} from '@angular/common';
+import {AccountService} from '../../account/account.service';
+import {AuthGuard} from "../../account/auth.guard";
+import {Action} from "../../../models/action";
 
 @Component({
   selector: 'app-list-restaurant',
@@ -25,6 +28,8 @@ export class ListRestaurantComponent implements OnInit {
 
   constructor(private restaurantService: RestaurantService,
               private location: Location,
+              private authGuardService: AuthGuard,
+              private accountService: AccountService,
               private activatedRoute: ActivatedRoute,
               private router: Router,
   ) {
@@ -51,5 +56,10 @@ export class ListRestaurantComponent implements OnInit {
     // update url for on pagination change
     const url = this.router.createUrlTree([], {relativeTo: this.activatedRoute, queryParams: {page}}).toString();
     this.location.go(url);
+  }
+
+  get canCreate() {
+    // if the user is owner, then can add a new restaurant
+    return this.authGuardService.can(Action.CREATE_RESTAURANT);
   }
 }

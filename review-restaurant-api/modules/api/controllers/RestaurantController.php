@@ -40,8 +40,12 @@ class RestaurantController extends ActiveController
 
     public function checkAccess($action, $model = null, $params = [])
     {
-        if ($action == 'view' || $action == 'create') {
+        if ($action == 'create') {
             if (!Yii::$app->user->can("owner")) {
+                throw new ForbiddenHttpException('Permission denied: you dont have access for ' . $action);
+            }
+        } else if ($action == 'delete' || $action == 'update') {
+            if (!Yii::$app->user->can("admin")) {
                 throw new ForbiddenHttpException('Permission denied: you dont have access for ' . $action);
             }
         }

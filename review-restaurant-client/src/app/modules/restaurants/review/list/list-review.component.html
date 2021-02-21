@@ -19,17 +19,17 @@
         <small class="ml-2"><i>{{review.created_at | date: 'medium'}}</i></small>
       </div>
       <div>
-        <button (click)="delete(review)" class="btn btn-danger py-0">
+        <button (click)="delete(review)" class="btn btn-danger py-0" *ngIf="canDelete">
           <small>
             <fa-icon [icon]="faTrash"></fa-icon>
             Delete</small>
         </button>
-        <a [routerLink]="['update', review.id]" class="py-0 ml-2">
+        <a [routerLink]="['update', review.id]" class="py-0 ml-2" *ngIf="canEdit">
           <small>
             <fa-icon [icon]="faPencil"></fa-icon>
             Edit</small>
         </a>
-        <button *ngIf="!review.reply" (click)="reply(review)" class="btn btn-info py-0 ml-2">
+        <button *ngIf="!review.reply && canReply" (click)="reply(review)" class="btn btn-info py-0 ml-2">
           <small>
             <fa-icon [icon]="faReply"></fa-icon>
             Reply</small>

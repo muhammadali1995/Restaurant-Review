@@ -8,6 +8,8 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {DeleteRestaurantComponent} from '../delete/delete-restaurant.component';
 import {Location} from '@angular/common';
 import {CommentService} from '../comment/comment.service';
+import {AuthGuard} from '../../account/auth.guard';
+import {Action} from '../../../models/action';
 
 @Component({
   selector: 'app-view-restaurant',
@@ -28,6 +30,7 @@ export class ViewRestaurantComponent implements OnInit {
               private modalService: NgbModal,
               private commentService: CommentService,
               private location: Location,
+              private authGuardService: AuthGuard,
               private restaurantService: RestaurantService
   ) {
     this.loading = true;
@@ -56,4 +59,19 @@ export class ViewRestaurantComponent implements OnInit {
     });
   }
 
+  get canEdit() {
+    return this.authGuardService.can(Action.UPDATE_RESTAURANT);
+  }
+
+  get canDelete() {
+    return this.authGuardService.can(Action.DELETE_RESTAURANT);
+  }
+
+  get canReview() {
+    return this.authGuardService.can(Action.CREATE_REVIEW);
+  }
+
+  get canComment() {
+    return this.authGuardService.can(Action.CREATE_COMMENT);
+  }
 }

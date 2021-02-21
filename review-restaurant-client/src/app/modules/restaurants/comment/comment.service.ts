@@ -13,8 +13,7 @@ export class CommentService {
 
   constructor(private  http: HttpClient) {
   }
-
-
+  
   // create request to create a new comment
   create(request: CommentModel): Observable<CommentModel> {
     return this.http.post<CommentModel>(this.apiUrl, request);

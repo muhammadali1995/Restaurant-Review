@@ -10,17 +10,17 @@
         <small class="ml-2"><i>{{rComment.created_at | date: 'medium'}}</i></small>
       </div>
       <div>
-        <button (click)="delete(rComment)" class="btn btn-danger py-0">
+        <button (click)="delete(rComment)" class="btn btn-danger py-0" *ngIf="canDelete">
           <small>
             <fa-icon [icon]="faTrash"></fa-icon>
             Delete</small>
         </button>
-        <button (click)="update(rComment)" class="btn btn-primary py-0 ml-2">
+        <button (click)="update(rComment)" class="btn btn-primary py-0 ml-2" *ngIf="canEdit">
           <small>
             <fa-icon [icon]="faPencil"></fa-icon>
             Update</small>
         </button>
-        <button *ngIf="!rComment.reply" (click)="reply(rComment)" class="btn btn-info py-0 ml-2">
+        <button *ngIf="!rComment.reply  && canReply" (click)="reply(rComment)" class="btn btn-info py-0 ml-2">
           <small>
             <fa-icon [icon]="faReply"></fa-icon>
             Reply</small>

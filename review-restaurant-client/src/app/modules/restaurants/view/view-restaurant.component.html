@@ -4,11 +4,11 @@
 </div>
 <div class="container">
   <div class="d-flex flex-row justify-content-end my-3">
-    <button (click)="delete()" class="btn btn-danger">
+    <button (click)="delete()" class="btn btn-danger" *ngIf="canDelete">
       <fa-icon [icon]="faTrash"></fa-icon>
       <span class="ml-1">Delete</span>
     </button>
-    <button [routerLink]="['update']" class="btn btn-primary ml-2">
+    <button [routerLink]="['update']" class="btn btn-primary ml-2" *ngIf="canEdit">
       <fa-icon [icon]="faEdit"></fa-icon>
       <span class="ml-1">Edit</span></button>
   </div>
@@ -21,7 +21,7 @@
                       [starTemplate]="t" [readonly]="true">
           </ngb-rating>
           {{restaurant.name}}</h3>
-        <button class="btn btn-outline-primary" routerLink="review">Write a review</button>
+        <button class="btn btn-outline-primary" routerLink="review" *ngIf="canReview">Write a review</button>
       </div>
       <div class=" px-0">
         <p>
@@ -43,7 +43,7 @@
           <li ngbNavItem>
             <a ngbNavLink>Comments</a>
             <ng-template ngbNavContent>
-              <app-comment-restaurant [restaurant]="restaurant">
+              <app-comment-restaurant *ngIf="canComment" [restaurant]="restaurant">
               </app-comment-restaurant>
               <app-list-comment [restaurant]="restaurant">
               </app-list-comment>

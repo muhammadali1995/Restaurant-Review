@@ -3,9 +3,11 @@ import {RestaurantModel} from '../../../../models/restaurant.model';
 import {CommentModel} from '../../../../models/comment-model';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {DeleteCommentComponent} from '../delete/delete-comment.component';
-import {faPencilAlt, faTrashAlt, faReply} from '@fortawesome/free-solid-svg-icons';
+import {faPencilAlt, faReply, faTrashAlt} from '@fortawesome/free-solid-svg-icons';
 import {UpdateCommentComponent} from '../update/update-comment.component';
 import {ReplyCommentComponent} from '../reply/reply-comment.component';
+import {Action} from '../../../../models/action';
+import {AuthGuard} from "../../../account/auth.guard";
 
 @Component({
   selector: 'app-list-comment',
@@ -19,7 +21,7 @@ export class ListCommentComponent implements OnInit {
   faPencil = faPencilAlt;
   faReply = faReply;
 
-  constructor(private modalService: NgbModal) {
+  constructor(private modalService: NgbModal, private authGuardService: AuthGuard) {
   }
 
   ngOnInit(): void {
@@ -55,5 +57,18 @@ export class ListCommentComponent implements OnInit {
       }
     });
   }
+
+  get canEdit() {
+    return this.authGuardService.can(Action.UPDATE_COMMENT);
+  }
+
+  get canDelete() {
+    return this.authGuardService.can(Action.DELETE_COMMENT);
+  }
+
+  get canReply() {
+    return this.authGuardService.can(Action.REPLY_COMMENT);
+  }
+
 
 }

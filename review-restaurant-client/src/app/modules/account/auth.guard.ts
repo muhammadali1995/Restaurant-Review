@@ -1,6 +1,8 @@
 import {ActivatedRouteSnapshot, CanActivate, CanActivateChild, Router, RouterStateSnapshot} from '@angular/router';
 import {AccountService} from './account.service';
 import {Injectable} from '@angular/core';
+import {Action} from '../../models/action';
+import {Roles} from '../../models/roles';
 
 
 @Injectable({providedIn: 'root'})
@@ -40,4 +42,29 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     return false;
   }
 
+  can(action: Action): boolean {
+    const currentUser = this.authService.currentUser;
+    if (!currentUser || !currentUser.role) {
+      return false;
+    }
+
+    switch (currentUser.role) {
+      case Roles.ADMIN:
+        return action === Action.UPDATE_RESTAURANT
+          || action === Action.DELETE_RESTAURANT
+          || action === Action.UPDATE_COMMENT
+          || action === Action.DELETE_COMMENT
+          || action === Action.DELETE_REVIEW
+          || action === Action.UPDATE_REVIEW;
+      case Roles.OWNER:
+        return action === Action.CREATE_RESTAURANT
+          || action === Action.REPLY_COMMENT
+          || action === Action.REPLY_REVIEW;
+      case Roles.REGULAR_USER:
+        return action === Action.CREATE_COMMENT
+          || action === Action.CREATE_REVIEW;
+      default:
+        return false;
+    }
+  }
 }

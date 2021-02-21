@@ -14,7 +14,8 @@ import {SharedModule} from './modules/shared/shared.module';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {AutTokenInterceptor} from './modules/account/aut-token.interceptor';
-import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+import {PageNotFoundComponent} from './components/page-not-found/page-not-found.component';
+import {AuthGuard} from "./modules/account/auth.guard";
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
     NgbModule
   ],
   providers: [
+    AuthGuard,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AutTokenInterceptor,

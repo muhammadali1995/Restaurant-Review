@@ -1,10 +1,10 @@
-import {UserRoleModel} from './user-role.model';
+import {Roles} from './roles';
 
 export interface UserModel {
   id: number;
   firstname: string;
   lastname: string;
   email: string;
-  role: UserRoleModel;
+  role: Roles;
   access_token: string;
 }

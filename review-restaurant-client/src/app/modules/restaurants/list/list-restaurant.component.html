@@ -1,14 +1,14 @@
 <div class="banner d-flex flex-column justify-content-around">
   <h3 class="title">Restaurants</h3>
 </div>
-<div class="container">
-  <div class="d-flex justify-content-end my-3">
+<div class="container my-3">
+  <div class="d-flex justify-content-end mb-3" *ngIf="canCreate">
     <button routerLink="create" class="btn btn-outline-primary">
       <fa-icon [icon]="faPlus"></fa-icon>
       <span> Add New Restaurant</span>
     </button>
   </div>
-  <div class="card p-3" *ngIf="!restaurants||restaurants?.length==0">
+  <div class="card  p-3" *ngIf="!restaurants||restaurants?.length==0">
     <span class="text text-info"> There are no restaurants yet</span>
   </div>
   <div>

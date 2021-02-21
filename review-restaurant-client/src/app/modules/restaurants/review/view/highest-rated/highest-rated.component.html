@@ -1,0 +1,22 @@
+<div class="card mt-3 d-flex flex-column justify-content-between alert-success">
+  <div class="card-title mb-0 px-4 pt-2  pb-0 d-flex justify-content-between">
+    <ngb-rating [(rate)]="review.rating" id="rate" [max]="5" [readonly]="true">
+      <ng-template let-fill="fill">
+        <span class="star" [class.full]="fill === 100">&#9733;</span>
+      </ng-template>
+    </ngb-rating>
+    <div>
+      <span class="badge badge-success">Highest Rated</span>
+    </div>
+  </div>
+  <div class="card-body py-1">
+    <p class="mb-1">{{review.comment}}</p>
+    <ngb-alert type="warning" [dismissible]="false" *ngIf="review.reply"><small>{{review.reply}}</small></ngb-alert>
+  </div>
+  <div class="card-footer d-flex justify-content-between py-1">
+    <div>
+      <small><i> {{review.user?.firstname}} {{review.user?.lastname}}</i></small>
+      <small class="ml-2"><i>{{review.created_at | date: 'medium'}}</i></small>
+    </div>
+  </div>
+</div>

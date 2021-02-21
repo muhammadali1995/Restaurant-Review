@@ -21,6 +21,8 @@ import {DeleteCommentComponent} from './comment/delete/delete-comment.component'
 import {UpdateReviewComponent} from "./review/update/update-review.component";
 import { ReplyCommentComponent } from './comment/reply/reply-comment.component';
 import { ReplyReviewComponent } from './review/reply/reply-review.component';
+import { HighestRatedComponent } from './review/view/highest-rated/highest-rated.component';
+import { LowestRatedComponent } from './review/view/lowest-rated/lowest-rated.component';
 
 
 @NgModule({
@@ -38,7 +40,9 @@ import { ReplyReviewComponent } from './review/reply/reply-review.component';
     UpdateCommentComponent,
     DeleteCommentComponent,
     ReplyCommentComponent,
-    ReplyReviewComponent],
+    ReplyReviewComponent,
+    HighestRatedComponent,
+    LowestRatedComponent],
   imports: [
     CommonModule,
     RestaurantRoutingModule,

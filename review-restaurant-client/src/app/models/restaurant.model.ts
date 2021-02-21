@@ -8,4 +8,7 @@ export interface RestaurantModel {
   description: string;
   comments: CommentModel [];
   reviews: ReviewModel [];
+  averageRating?: number;
+  highestReview?: ReviewModel;
+  lowestReview?: ReviewModel;
 }

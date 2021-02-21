@@ -3,6 +3,7 @@
 namespace app\modules\api\controllers;
 
 use app\models\Restaurant;
+use app\models\Review;
 use app\modules\api\resources\RestaurantResource;
 use Yii;
 use yii\data\Pagination;
@@ -93,9 +94,34 @@ class RestaurantController extends ActiveController
     {
         $queryParam = Yii::$app->request->getQueryParams();
 
+
         $id = $queryParam['id'];
         if (isset($id)) {
-            return RestaurantResource::find()->with(['reviews.user', 'comments.user', 'owner0'])->where(['id' => $id])->one();
+
+            $result = RestaurantResource::find()->with(['reviews.user', 'comments.user'])->where(['id' => $id])->one();
+
+
+            $reviewQuery = Review::find()->where(['restaurant_id' => $id])->with('user');
+
+            //find average of the reviews
+            $result['averageRating'] = round($reviewQuery->average('rating'), 2);
+
+            //find the maximum rating from the reviews of the restaurant and select the latest review with that max rating
+            $maxRating = $reviewQuery->max('rating');
+            $result['highestReview'] = $reviewQuery
+                ->andWhere(['rating' => $maxRating])
+                ->orderBy('created_at desc')
+                ->asArray()
+                ->one();
+
+            //find the minimum rating from the reviews of the restaurant and select the latest review with that minimum rating
+            $minRating = $reviewQuery->min('rating');
+            $result['lowestReview'] = $reviewQuery->andWhere(['rating' => $minRating])
+                ->orderBy('created_at asc')
+                ->asArray()
+                ->one();
+
+            return $result;
         }
 
         throw new NotFoundHttpException("Requested resource not found");

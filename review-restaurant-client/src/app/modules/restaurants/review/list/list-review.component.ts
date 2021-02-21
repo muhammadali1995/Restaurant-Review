@@ -4,7 +4,7 @@ import {faPencilAlt, faTrashAlt, faReply} from '@fortawesome/free-solid-svg-icon
 import {ReviewModel} from '../../../../models/review.model';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {DeleteReviewComponent} from '../delete/delete-review.component';
-import {ReplyReviewComponent} from "../reply/reply-review.component";
+import {ReplyReviewComponent} from '../reply/reply-review.component';
 
 @Component({
   selector: 'app-list-review',

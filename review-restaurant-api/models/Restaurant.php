@@ -18,6 +18,7 @@ use Yii;
  * @property Comment[] $comments
  * @property User $owner0
  * @property Review[] $reviews
+ * @property int $averageReviews
  */
 class Restaurant extends \yii\db\ActiveRecord
 {
@@ -80,7 +81,9 @@ class Restaurant extends \yii\db\ActiveRecord
     public function getComments()
     {
         return $this->hasMany(Comment::className(), ['restaurant_id' => 'id'])
-            ->select(['id', 'comment', 'reply', 'restaurant_id', 'user_id', 'created_at']);
+            ->select(['id', 'comment', 'reply', 'restaurant_id', 'user_id', 'created_at'])
+            ->orderBy('created_at desc')
+            ->limit(10);;
     }
 
     /**
@@ -101,6 +104,14 @@ class Restaurant extends \yii\db\ActiveRecord
     public function getReviews()
     {
         return $this->hasMany(Review::className(), ['restaurant_id' => 'id'])
-            ->select(['id', 'rating', 'comment', 'created_at', 'reply', 'user_id', 'restaurant_id']);
+            ->select(['id',
+                'rating',
+                'comment',
+                'created_at',
+                'reply',
+                'user_id',
+                'restaurant_id'])->orderBy('created_at desc');
     }
+
+
 }

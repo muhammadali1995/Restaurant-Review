@@ -8,7 +8,6 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {DeleteRestaurantComponent} from '../delete/delete-restaurant.component';
 import {Location} from '@angular/common';
 import {CommentService} from '../comment/comment.service';
-import {CommentModel} from "../../../models/comment-model";
 
 @Component({
   selector: 'app-view-restaurant',
@@ -37,6 +36,7 @@ export class ViewRestaurantComponent implements OnInit {
         .pipe(finalize(() => this.loading = false))
         .subscribe((restaurant: RestaurantModel) => {
           this.restaurant = restaurant;
+          console.log(this.restaurant);
         }, error => {
           this.error = error;
         });

@@ -9,7 +9,7 @@
         <div>
           <ngb-rating id="rate" [max]="5" formControlName="rating" required>
             <ng-template let-fill="fill">
-              <span class="star" [class.filled]="fill === 100">&#9733;</span>
+              <span class="star" [class.full]="fill === 100">&#9733;</span>
             </ng-template>
           </ngb-rating>
           <small class="text-danger"

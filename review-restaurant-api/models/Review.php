@@ -2,7 +2,6 @@
 
 namespace app\models;
 
-use app\modules\api\resources\UserResource;
 use Yii;
 
 /**

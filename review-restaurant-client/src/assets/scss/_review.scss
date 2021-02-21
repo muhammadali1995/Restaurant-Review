@@ -1,9 +1,19 @@
 @import "colors";
 
-.filled {
-  color: $light-blue;
+.star {
+  position: relative;
+  display: inline-block;
+  font-size: 2rem;
+  color: #d3d3d3;
 }
 
-.star {
-  font-size: 2rem;
+.full {
+  color: $yellow;
+}
+
+.half {
+  position: absolute;
+  display: inline-block;
+  overflow: hidden;
+  color: $yellow;
 }

@@ -7,12 +7,14 @@ import {UpdateUserComponent} from './update/update-user.component';
 import {ListUserComponent} from './list/list-user.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
-import {ReactiveFormsModule} from "@angular/forms";
+import {ReactiveFormsModule} from '@angular/forms';
 
 
 @NgModule({
-  declarations: [ListUserComponent,
-    DeleteUserComponent, UpdateUserComponent],
+  declarations: [
+    ListUserComponent,
+    DeleteUserComponent,
+    UpdateUserComponent],
   imports: [
     CommonModule,
     UserRoutingModule,

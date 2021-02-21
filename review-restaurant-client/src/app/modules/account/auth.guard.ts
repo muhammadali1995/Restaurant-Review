@@ -23,10 +23,16 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     // the user is logged in then check if has access to route
     if (currentUser) {
       // if has access to route return true otherwise navigate to homepage and return false
-      if (route.data.roles && route.data.roles.indexOf(currentUser.role) !== -1) {
-        this.router.navigate(['/']);
-        return false;
+      const data = route.data;
+      if (data.roles) {
+        if (data.roles.indexOf(currentUser.role) === -1) {
+          this.router.navigate(['/']);
+          return false;
+        } else {
+          return true;
+        }
       }
+      // console.log(route.data.roles.indexOf("regularUser"));
       return true;
     }
 

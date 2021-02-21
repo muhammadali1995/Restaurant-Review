@@ -21,7 +21,7 @@ const routes: Routes = [{
       // user module is access for only 'ADMIN'
       path: 'user',
       loadChildren: () => import('../users/user.module').then(m => m.UserModule),
-      data: [Roles.ADMIN],
+      data: {roles: [Roles.ADMIN]},
       canActivate: [AuthGuard],
       canActivateChild: [AuthGuard],
     }

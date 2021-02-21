@@ -17,7 +17,8 @@
       <div class="card-title d-flex justify-content-between">
 
         <h3>
-          <ngb-rating [(rate)]="restaurant.averageRating" id="rate" [max]="5" [starTemplate]="t" [readonly]="true">
+          <ngb-rating *ngIf="restaurant.averageRating" [(rate)]="restaurant.averageRating" id="rate" [max]="5"
+                      [starTemplate]="t" [readonly]="true">
           </ngb-rating>
           {{restaurant.name}}</h3>
         <button class="btn btn-outline-primary" routerLink="review">Write a review</button>

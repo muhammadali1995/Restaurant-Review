@@ -5,6 +5,7 @@ import {ReviewModel} from '../../../../models/review.model';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {DeleteReviewComponent} from '../delete/delete-review.component';
 import {ReplyReviewComponent} from '../reply/reply-review.component';
+import {RestaurantService} from "../../restaurant.service";
 
 @Component({
   selector: 'app-list-review',
@@ -18,7 +19,8 @@ export class ListReviewComponent implements OnInit {
   faPencil = faPencilAlt;
   faReply = faReply;
 
-  constructor(private modalService: NgbModal) {
+  constructor(private modalService: NgbModal,
+              private restaurantService: RestaurantService) {
   }
 
   ngOnInit(): void {
@@ -32,6 +34,7 @@ export class ListReviewComponent implements OnInit {
     modal.result.then(res => {
       if (res === 'success') {
         this.restaurant.reviews.splice(index, 1);
+        this.fetchRestaurant();
       }
     });
   }
@@ -40,11 +43,21 @@ export class ListReviewComponent implements OnInit {
     const index = this.restaurant.reviews.indexOf(review);
     const modal = this.modalService.open(ReplyReviewComponent);
     modal.componentInstance.review = review;
-    modal.result.then(res => {
+    modal.result.then((res: ReviewModel) => {
       if (res && res.id) {
         this.restaurant.reviews[index] = res;
+
+        this.fetchRestaurant();
       }
     });
   }
 
+
+  // re-fetch restaurant to get the changes of the review stats
+
+  fetchRestaurant() {
+    this.restaurantService.fetchOne(this.restaurant.id).subscribe((restaurant: RestaurantModel) => {
+      this.restaurant = restaurant;
+    });
+  }
 }

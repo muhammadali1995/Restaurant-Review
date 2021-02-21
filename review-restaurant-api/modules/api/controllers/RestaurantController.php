@@ -73,15 +73,19 @@ class RestaurantController extends ActiveController
             $offset = $queryParams['page'];
         }
         // prepare and return a data provider for the "index" action
-        $query = RestaurantResource::find();
+        $query = Restaurant::find()
+            ->select('restaurant.*, AVG(r.rating) as avg_rating')
+            ->joinWith('reviews r')->groupBy('restaurant.id')->orderBy('avg_rating desc');
+
         if (Yii::$app->user->can("owner")) {
             $ownerId = Yii::$app->user->getId();
             if (isset($ownerId)) {
-                $query = RestaurantResource::find()->where(['owner' => $ownerId]);
+                $query = Restaurant::find()->where(['owner' => $ownerId]);
             }
         }
 
         $countQuery = clone $query;
+
         $pages = new Pagination(['totalCount' => $countQuery->count(), 'defaultPageSize' => 10]);
         return [
             'rows' => $query->offset($offset)->limit($pages->limit)->all(),
@@ -101,23 +105,30 @@ class RestaurantController extends ActiveController
             $result = RestaurantResource::find()->with(['reviews.user', 'comments.user'])->where(['id' => $id])->one();
 
 
-            $reviewQuery = Review::find()->where(['restaurant_id' => $id])->with('user');
+            $statResult = Review::find()->select('avg(rating) as avg_rating, 
+                            max(rating) as max_rating, 
+                            min(rating) as min_rating')
+                ->where(['restaurant_id' => $id])->asArray()->one();
+
 
             //find average of the reviews
-            $result['averageRating'] = round($reviewQuery->average('rating'), 2);
+            $result['averageRating'] = round($statResult['avg_rating'], 2);
 
-            //find the maximum rating from the reviews of the restaurant and select the latest review with that max rating
-            $maxRating = $reviewQuery->max('rating');
-            $result['highestReview'] = $reviewQuery
-                ->andWhere(['rating' => $maxRating])
+//            //find the maximum rating from the reviews of the restaurant and select the latest review with that max rating
+            $result['highestReview'] = Review::find()->with('user')
+                ->where(['rating' => $statResult['max_rating']])
+                ->andWhere(['restaurant_id' => $id])
                 ->orderBy('created_at desc')
                 ->asArray()
                 ->one();
 
             //find the minimum rating from the reviews of the restaurant and select the latest review with that minimum rating
-            $minRating = $reviewQuery->min('rating');
-            $result['lowestReview'] = $reviewQuery->andWhere(['rating' => $minRating])
-                ->orderBy('created_at asc')
+
+            $result['lowestReview'] = Review::find()
+                ->with("user")
+                ->where(['rating' => $statResult['min_rating']])
+                ->andWhere(['restaurant_id' => $id])
+                ->orderBy('created_at')
                 ->asArray()
                 ->one();
 

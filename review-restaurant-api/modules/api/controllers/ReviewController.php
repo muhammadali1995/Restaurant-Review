@@ -7,8 +7,6 @@ use yii\filters\Cors;
 
 class ReviewController extends BaseController
 {
-
     public $modelClass = "app\models\Review";
-
 
 }

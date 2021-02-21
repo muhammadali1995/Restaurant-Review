@@ -31,7 +31,7 @@ export class RestaurantService {
   fetchOne(id: number): Observable<RestaurantModel> {
     return this.http.get<RestaurantModel>(`${this.apiUrl}/${id}`, {
       params: {
-        expand: 'reviews.user,comments.user'
+        expand: 'reviews.user,comments.user,user'
       }
     });
   }

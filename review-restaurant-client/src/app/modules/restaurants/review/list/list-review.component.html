@@ -1,6 +1,6 @@
 <div class="comment-container">
-  <app-highest-rated [review]="restaurant.highestReview"></app-highest-rated>
-  <app-lowest-rated [review]="restaurant.lowestReview"></app-lowest-rated>
+  <app-highest-rated *ngIf="restaurant.highestReview" [review]="restaurant.highestReview"></app-highest-rated>
+  <app-lowest-rated *ngIf="restaurant.lowestReview" [review]="restaurant.lowestReview"></app-lowest-rated>
   <div class="card mt-3 d-flex flex-column justify-content-between" *ngFor="let review of restaurant?.reviews">
     <div class="card-title mb-0 px-4 pt-2  pb-0">
       <ngb-rating [(rate)]="review.rating" id="rate" [max]="5" [readonly]="true">

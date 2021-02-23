@@ -21,7 +21,6 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   }
 
   private runAuthCheck(currentUser: any, route: ActivatedRouteSnapshot) {
-
     // the user is logged in then check if has access to route
     if (currentUser) {
       // if has access to route return true otherwise navigate to homepage and return false
@@ -60,7 +59,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         return action === Action.CREATE_RESTAURANT
           || action === Action.REPLY_COMMENT
           || action === Action.REPLY_REVIEW;
-      case Roles.REGULAR_USER:
+      case Roles.CUSTOMER:
         return action === Action.CREATE_COMMENT
           || action === Action.CREATE_REVIEW;
       default:

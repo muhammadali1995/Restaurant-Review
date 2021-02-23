@@ -1,13 +1,28 @@
-<nav class="navbar navbar-light bg-primary px-md-5">
-  <a class="navbar-brand text-white">RerR</a>
-  <div ngbDropdown class="d-inline-block">
-    <button class="btn" id="dropdownMenu1" ngbDropdownToggle>
-      <fa-icon class="text-white" [icon]="faUser"></fa-icon>
-      <span class="text-white pl-2">{{user?.firstname}}</span>
-    </button>
-    <div class="dropdown-menu" aria-labelledby="dropdownMenu1" ngbDropdownMenu>
-      <button class="dropdown-item" (click)="logout()">Logout</button>
-    </div>
+<nav class="navbar navbar-expand-lg bg-primary">
+  <a class="navbar-brand text-white" [routerLink]="'/'">Restaurant Review</a>
+  <button class="navbar-toggler text-white" type="button" (click)="isMenuCollapsed = !isMenuCollapsed">
+    &#9776;
+  </button>
+
+  <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse">
+    <ul class="navbar-nav w-100">
+      <li class="nav-item active">
+        <a class="nav-link text-white" routerLink='/restaurant' (click)="isMenuCollapsed = true">Restaurants</a>
+      </li>
+      <li class="nav-item" *ngIf="isAdmin">
+        <a class="nav-link text-white" routerLink="/user" (click)="isMenuCollapsed = true">Users</a>
+      </li>
+      <li class="nav-item ml-lg-auto mr-5 text-white">
+        <div ngbDropdown class="d-inline-block">
+          <button class="btn" id="dropdownMenu1" ngbDropdownToggle>
+            <fa-icon class="text-white" [icon]="faUser"></fa-icon>
+            <span class="text-white pl-2">{{user?.firstname}}</span>
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenu1" ngbDropdownMenu>
+            <button class="dropdown-item" (click)="logout()">Logout</button>
+          </div>
+        </div>
+      </li>
+    </ul>
   </div>
 </nav>
-

@@ -15,7 +15,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {AutTokenInterceptor} from './modules/account/aut-token.interceptor';
 import {PageNotFoundComponent} from './components/page-not-found/page-not-found.component';
-import {AuthGuard} from "./modules/account/auth.guard";
+import {AuthGuard} from './modules/account/auth.guard';
 
 @NgModule({
   declarations: [

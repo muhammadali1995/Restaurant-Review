@@ -6,9 +6,8 @@ import {ViewRestaurantComponent} from './view/view-restaurant.component';
 import {UpdateRestaurantComponent} from './update/update-restaurant.component';
 import {ReviewRestaurantComponent} from './review/create/review-restaurant.component';
 import {UpdateReviewComponent} from './review/update/update-review.component';
-import {Roles} from '../../models/roles';
 import {AuthGuard} from '../account/auth.guard';
-
+import {Roles} from '../../models/roles';
 
 const routes: Routes = [
   {
@@ -19,30 +18,33 @@ const routes: Routes = [
   {
     path: 'create',
     component: CreateRestaurantComponent,
-    data: [Roles.OWNER],
-    canActivate: [AuthGuard],
+    // owner can create restaurants
+    data: {roles: [Roles.OWNER]},
+    canActivate: [AuthGuard]
   },
   {
     path: ':id',
-    component: ViewRestaurantComponent
+    component: ViewRestaurantComponent,
   },
   {
     path: ':id/review',
     component: ReviewRestaurantComponent,
-    data: [Roles.REGULAR_USER],
-    canActivate: [AuthGuard],
+    // regular user can create reviews on restaurants
+    data: {roles: [Roles.CUSTOMER]},
+    canActivate: [AuthGuard]
   },
   {
     path: ':id/update',
     component: UpdateRestaurantComponent,
+    // only admin can update a restaurant
     data: [Roles.ADMIN],
     canActivate: [AuthGuard],
-    canActivateChild: [AuthGuard],
   }, {
     path: ':id/update/:reviewId',
     component: UpdateReviewComponent,
-    data: [Roles.ADMIN],
-    canActivate: [AuthGuard],
+    // only admin can update a review
+    data: {roles: [Roles.ADMIN]},
+    canActivate: [AuthGuard]
   },
 
 ];

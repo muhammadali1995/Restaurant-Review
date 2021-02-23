@@ -5,6 +5,7 @@ import {UserModel} from '../../../models/user-model';
 import {Location} from '@angular/common';
 import {UserService} from '../user.service';
 import {finalize} from 'rxjs/operators';
+import {ValidatorService} from "../../shared/services/validator.service";
 
 @Component({
   selector: 'app-update-user',
@@ -22,12 +23,13 @@ export class UpdateUserComponent implements OnInit {
               private router: Router,
               private location: Location,
               private route: ActivatedRoute,
+              private validatorService: ValidatorService,
               private userService: UserService) {
     this.form = this.fb.group({
-      firstname: [null, Validators.required],
-      lastname: [null, Validators.required],
-      password: [null, Validators.min(8)],
-      password_repeat: [null, Validators.min(8)],
+      firstname: [null, [Validators.required, validatorService.noWhitespaceValidator]],
+      lastname: [null, [Validators.required, validatorService.noWhitespaceValidator]],
+      password: [null, [Validators.minLength(8), validatorService.noWhitespaceValidator]],
+      password_repeat: [null, [Validators.minLength(8), validatorService.noWhitespaceValidator]],
     });
   }
 
@@ -70,7 +72,12 @@ export class UpdateUserComponent implements OnInit {
 
   // password error message
   get getPasswordErrorMessage() {
-    return this.password.hasError('min') ? 'Password should be more than 8 characters' : '';
+    if (this.password.hasError('required')) {
+      return 'Password is required';
+    } else if (this.password.errors && this.password.errors.whitespace) {
+      return 'Password can not be whitespaces';
+    }
+    return (this.password.errors && this.password.errors.minlength) ? 'Password should be more than 8 characters' : '';
   }
 
 
@@ -80,7 +87,12 @@ export class UpdateUserComponent implements OnInit {
 
   // confirm password error message
   get getPasswordRepeatErrorMessage() {
-    return this.passwordRepeat.hasError('min') ? 'Confirm password should be more than 8 characters' : '';
+    if (this.passwordRepeat.hasError('required')) {
+      return 'Confirm password is required';
+    } else if (this.passwordRepeat.errors && this.passwordRepeat.errors.whitespace) {
+      return 'Confirm password can not be whitespaces';
+    }
+    return (this.passwordRepeat.errors && this.passwordRepeat.errors.minlength) ? 'Confirm password should be more than 8 characters' : '';
   }
 
   // handle update form submission

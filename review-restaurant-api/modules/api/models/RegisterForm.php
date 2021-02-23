@@ -19,7 +19,6 @@ class RegisterForm extends Model
 
     public $email;
     public $password;
-    public $password_repeat;
     public $role;
     public $firstname;
     public $lastname;
@@ -38,15 +37,14 @@ class RegisterForm extends Model
             // email and password are both required
             ['email', 'unique', 'targetClass' => '\app\modules\api\resources\UserResource', 'message' => 'This email has already been taken'],
             //required fields
-            [['email', 'password', 'firstname', 'lastname', 'role', 'password_repeat'], 'required'],
+            [['email', 'password', 'firstname', 'lastname', 'role'], 'required'],
             // email should be of type email
             ['email', 'email'],
             //['password', 'length', 'min' => 8, 'message' => "Password should be more than 8 characters"],
             ['password', 'string', 'min' => 8, 'message' => "New password must contain at least 8 characters"],
             // password and password_repeat validation
-            ['password', 'compare', 'compareAttribute' => 'password_repeat'],
-            //role should be one of these: owner, admin or regularUser
-            ['role', 'in', 'range' => [UserRoles::ADMIN, UserRoles::OWNER, UserRoles::REGULAR_USER]]
+            //role should be one of these: owner or customer
+            ['role', 'in', 'range' => [UserRoles::OWNER, UserRoles::CUSTOMER]]
         ];
     }
 

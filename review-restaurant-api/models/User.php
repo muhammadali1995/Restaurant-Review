@@ -26,11 +26,22 @@ use yii\web\IdentityInterface;
  * @property Restaurant[] $restaurants
  * @property Review[] $reviews
  */
+
+/**
+ * @SWG\Definition(required={"email"})
+ *
+ * @SWG\Property(property="id", type="integer")
+ * @SWG\Property(property="email", type="string")
+ */
+
 class User extends ActiveRecord implements IdentityInterface
 {
 
 
     public $role;
+    /**
+     * @var false|mixed|string|null
+     */
 
     /**
      * {@inheritdoc}

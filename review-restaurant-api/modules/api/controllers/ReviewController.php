@@ -2,11 +2,28 @@
 
 namespace app\modules\api\controllers;
 
-use yii\filters\auth\HttpBearerAuth;
-use yii\filters\Cors;
+use Yii;
+use yii\web\ForbiddenHttpException;
 
 class ReviewController extends BaseController
 {
     public $modelClass = "app\models\Review";
+
+
+    public function checkAccess($action, $model = null, $params = [])
+    {
+        if ($action == 'delete') {
+            if (!Yii::$app->user->can("admin")) {
+                throw new ForbiddenHttpException('Permission denied: you dont have access to this action');
+            }
+        }
+    }
+
+    public function actions()
+    {
+        $actions = parent::actions();
+        unset($actions['index']);
+        return $actions;
+    }
 
 }

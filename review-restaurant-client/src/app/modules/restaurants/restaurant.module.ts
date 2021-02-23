@@ -18,7 +18,7 @@ import {ListCommentComponent} from './comment/list/list-comment.component';
 import {DeleteReviewComponent} from './review/delete/delete-review.component';
 import {UpdateCommentComponent} from './comment/update/update-comment.component';
 import {DeleteCommentComponent} from './comment/delete/delete-comment.component';
-import {UpdateReviewComponent} from "./review/update/update-review.component";
+import {UpdateReviewComponent} from './review/update/update-review.component';
 import {ReplyCommentComponent} from './comment/reply/reply-comment.component';
 import {ReplyReviewComponent} from './review/reply/reply-review.component';
 import {HighestRatedComponent} from './review/view/highest-rated/highest-rated.component';

@@ -65,9 +65,9 @@ class UserController extends ActiveController
 
         //unsetting update function to customize
         unset($actions['update']);
+        unset($actions['view']);
         return $actions;
     }
-
 
     public function prepareDataProvider()
     {
@@ -79,16 +79,19 @@ class UserController extends ActiveController
         //offset for getting the targeted page data
         $offset = 0;
         if (isset($queryParams['page'])) {
-            $offset = $queryParams['page'];
+            $offset = $queryParams['page'] - 1;
         }
 
         $query = UserResource::find();
 
+        $admin = 'admin';
+        //select all users except users
         $countQuery = clone $query;
         $pages = new Pagination(['totalCount' => $countQuery->count(), 'defaultPageSize' => 10]);
         $rows = $query->select('user.id, user.firstname, user.lastname, user.email, auth_assignment.item_name as role')
             ->leftJoin('auth_assignment', '`auth_assignment`.`user_id` = `user`.`id`')
             ->offset($offset)
+            ->andWhere(['<>', 'auth_assignment.item_name', $admin])
             ->limit($pages->limit)
             ->all();
         return [
@@ -97,6 +100,10 @@ class UserController extends ActiveController
         ];
     }
 
+    public function actionView($id)
+    {
+        return User::find()->select(['id', 'firstname', 'lastname'])->one();
+    }
 
     public function actionUpdate()
     {
@@ -115,7 +122,7 @@ class UserController extends ActiveController
         $password = trim($request['password']);
         if (isset($password)) {
             if (strlen($password) < 8) {
-                throw new BadRequestHttpException("Password should be 8 or more characters");
+                throw new BadRequestHttpException("Password should be 8 or more characters or it can not contain white spaces");
             }
 
             $model->setPassword($password);

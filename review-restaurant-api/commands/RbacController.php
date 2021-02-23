@@ -32,12 +32,12 @@ class RbacController extends Controller
         $auth->add($createComment);
 
 
-        //add "regularUser" role and give this role the "createComment" and "createRate" permissions
+        //add "customer" role and give this role the "createComment" and "createRate" permissions
 
-        $regularUser = $auth->createRole('regularUser');
-        $auth->add($regularUser);
-        $auth->addChild($regularUser, $createRate);
-        $auth->addChild($regularUser, $createComment);
+        $customer = $auth->createRole('customer');
+        $auth->add($customer);
+        $auth->addChild($customer, $createRate);
+        $auth->addChild($customer, $createComment);
 
 
         //add 'createRestaurant' permission

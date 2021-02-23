@@ -30,7 +30,7 @@
             <select id="role" class="form-control" required formControlName="role">
               <option [value]="null" disabled>Select a role</option>
               <option value="owner">Owner</option>
-              <option value="regularUser">Regular User</option>
+              <option value="customer">Customer</option>
             </select>
             <small class="text-danger"
                    *ngIf="form.invalid && (role.touched || role.dirty)">{{getRoleErrorMessage}}</small>

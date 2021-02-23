@@ -32,8 +32,8 @@ export class RegisterComponent implements OnInit {
       firstname: [null, [Validators.required, this.validatorService.noWhitespaceValidator]],
       lastname: [null, [Validators.required, this.validatorService.noWhitespaceValidator]],
       email: [null, [Validators.required, Validators.email]],
-      password: [null, [Validators.required, Validators.minLength(8)]],
-      password_repeat: [null, [Validators.required, Validators.minLength(8)]],
+      password: [null, [Validators.required, Validators.minLength(8), this.validatorService.noWhitespaceValidator]],
+      password_repeat: [null, [Validators.required, Validators.minLength(8), this.validatorService.noWhitespaceValidator]],
       role: [null, [Validators.required]]
     });
   }
@@ -83,6 +83,8 @@ export class RegisterComponent implements OnInit {
   get getPasswordErrorMessage() {
     if (this.password.hasError('required')) {
       return 'Password is required';
+    } else if (this.password.errors && this.password.errors.whitespace) {
+      return 'Password can not be whitespaces';
     }
     return (this.password.errors && this.password.errors.minlength) ? 'Password should be more than 8 characters' : '';
   }
@@ -96,6 +98,8 @@ export class RegisterComponent implements OnInit {
   get getPasswordRepeatErrorMessage() {
     if (this.passwordRepeat.hasError('required')) {
       return 'Confirm password is required';
+    } else if (this.passwordRepeat.errors && this.passwordRepeat.errors.whitespace) {
+      return 'Confirm password can not be whitespaces';
     }
     return (this.passwordRepeat.errors && this.passwordRepeat.errors.minlength) ? 'Confirm password should be more than 8 characters' : '';
   }

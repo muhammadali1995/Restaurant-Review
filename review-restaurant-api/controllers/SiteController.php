@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use yii\filters\AccessControl;
+use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
@@ -50,6 +51,19 @@ class SiteController extends Controller
             'captcha' => [
                 'class' => 'yii\captcha\CaptchaAction',
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
+            ],
+            'doc' => [
+                'class' => 'light\swagger\SwaggerAction',
+                'restUrl' => Url::to(['/site/api'], true),
+            ],
+            'api' => [
+                'class' => 'light\swagger\SwaggerApiAction',
+                'scanDir' => [
+                    Yii::getAlias('@app/modules/api/swagger'),
+                    Yii::getAlias('@app/modules/api/controllers'),
+                    Yii::getAlias('@app/modules/api/models'),
+                ],
+                'api_key' => 'test'
             ],
         ];
     }

@@ -15,9 +15,8 @@ const routes: Routes = [
     // main modules is only accessible for authorized users
     path: '',
     loadChildren: () => import('./modules/main/main.module').then(m => m.MainModule),
-    data: [Roles.ADMIN, Roles.OWNER, Roles.REGULAR_USER],
+    data: {roles: [Roles.ADMIN, Roles.OWNER, Roles.CUSTOMER]},
     canActivate: [AuthGuard],
-    canActivateChild: [AuthGuard]
   },
   {path: '**', component: PageNotFoundComponent}
 ];

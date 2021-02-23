@@ -7,8 +7,8 @@ import {ListRestaurantResponse} from '../../../models/list-restaurant-response';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Location} from '@angular/common';
 import {AccountService} from '../../account/account.service';
-import {AuthGuard} from "../../account/auth.guard";
-import {Action} from "../../../models/action";
+import {AuthGuard} from '../../account/auth.guard';
+import {Action} from '../../../models/action';
 
 @Component({
   selector: 'app-list-restaurant',
@@ -61,5 +61,17 @@ export class ListRestaurantComponent implements OnInit {
   get canCreate() {
     // if the user is owner, then can add a new restaurant
     return this.authGuardService.can(Action.CREATE_RESTAURANT);
+  }
+
+  get canSeePendingReviews() {
+    // if the user is owner, then can see review count
+    return this.authGuardService.can(Action.CREATE_RESTAURANT);
+  }
+
+  getPendingReviewCount(restaurant: RestaurantModel) {
+    if (restaurant.reviewAggregation) {
+      return restaurant.reviewAggregation[0]?.counted ? restaurant.reviewAggregation[0]?.counted : 0;
+    }
+    return 0;
   }
 }

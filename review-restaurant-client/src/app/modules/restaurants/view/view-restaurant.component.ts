@@ -35,13 +35,7 @@ export class ViewRestaurantComponent implements OnInit {
   ) {
     this.loading = true;
     this.route.params.subscribe(params => {
-      this.restaurantService.fetchOne(params.id)
-        .pipe(finalize(() => this.loading = false))
-        .subscribe((restaurant: RestaurantModel) => {
-          this.restaurant = restaurant;
-        }, error => {
-          this.error = error;
-        });
+      this.fetch(params.id);
     });
   }
 
@@ -59,6 +53,23 @@ export class ViewRestaurantComponent implements OnInit {
     });
   }
 
+
+  // on new comment created, refetch the restaurants
+  onCommented() {
+    this.fetch(this.restaurant.id);
+  }
+
+
+  fetch(id: number) {
+    this.restaurantService.fetchOne(id)
+      .pipe(finalize(() => this.loading = false))
+      .subscribe((restaurant: RestaurantModel) => {
+        this.restaurant = restaurant;
+      }, error => {
+        this.error = error;
+      });
+  }
+
   get canEdit() {
     return this.authGuardService.can(Action.UPDATE_RESTAURANT);
   }
@@ -74,4 +85,16 @@ export class ViewRestaurantComponent implements OnInit {
   get canComment() {
     return this.authGuardService.can(Action.CREATE_COMMENT);
   }
+
+  get canSeePendingReviews() {
+    return this.authGuardService.can(Action.CREATE_RESTAURANT);
+  }
+
+  get pendingReviewCount() {
+    if (this.restaurant.reviewAggregation) {
+      return this.restaurant.reviewAggregation[0]?.counted ? this.restaurant.reviewAggregation[0]?.counted : 0;
+    }
+    return 0;
+  }
+
 }

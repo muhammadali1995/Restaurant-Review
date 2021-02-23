@@ -5,6 +5,7 @@ import {CommentService} from '../comment.service';
 import {CommentModel} from '../../../../models/comment-model';
 import {finalize} from 'rxjs/operators';
 import {ValidatorService} from '../../../shared/services/validator.service';
+import {RestaurantService} from '../../restaurant.service';
 
 @Component({
   selector: 'app-comment-restaurant',
@@ -17,9 +18,11 @@ export class CommentRestaurantComponent implements OnInit {
   commenting: boolean;
   error: string;
   @Input() restaurant: RestaurantModel;
+  @Output() onCommented = new EventEmitter();
 
   constructor(private fb: FormBuilder,
               private validatorService: ValidatorService,
+              private restaurantService: RestaurantService,
               private commentService: CommentService) {
     this.form = this.fb.group({
       restaurant_id: [null, Validators.required],
@@ -48,7 +51,7 @@ export class CommentRestaurantComponent implements OnInit {
     this.commenting = true;
     const request = this.form.value;
     this.commentService.create(request).pipe(finalize(() => this.commenting = false)).subscribe((comment: CommentModel) => {
-      this.restaurant.comments.push(comment);
+      this.onCommented.emit();
       this.form.reset();
     }, er => this.error = er.error.message);
   }

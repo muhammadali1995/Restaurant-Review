@@ -11,4 +11,5 @@ export interface RestaurantModel {
   averageRating?: number;
   highestReview?: ReviewModel;
   lowestReview?: ReviewModel;
+  reviewAggregation?: any;
 }

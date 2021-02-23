@@ -78,21 +78,26 @@ class RestaurantController extends ActiveController
         }
         // prepare and return a data provider for the "index" action
         $query = Restaurant::find()
-            ->select('restaurant.*, AVG(r.rating) as avg_rating')
-            ->joinWith('reviews r')->groupBy('restaurant.id')->orderBy('avg_rating desc');
+            ->select('restaurant.id, 
+                         restaurant.name,
+                         restaurant.address,
+                         restaurant.description, 
+                         AVG(review.rating) as averageRating')
+            ->joinWith('reviews')->groupBy('restaurant.id')->orderBy('averageRating desc');
+
 
         if (Yii::$app->user->can("owner")) {
             $ownerId = Yii::$app->user->getId();
             if (isset($ownerId)) {
-                $query = Restaurant::find()->where(['owner' => $ownerId]);
+                $query->with('reviewAggregation')->where(['owner' => $ownerId]);
             }
         }
 
         $countQuery = clone $query;
-
         $pages = new Pagination(['totalCount' => $countQuery->count(), 'defaultPageSize' => 10]);
+
         return [
-            'rows' => $query->offset($offset)->limit($pages->limit)->all(),
+            'rows' => $query->offset($offset)->limit($pages->limit)->asArray()->all(),
             'total' => $pages->totalCount
         ];
     }
@@ -102,11 +107,19 @@ class RestaurantController extends ActiveController
     {
         $queryParam = Yii::$app->request->getQueryParams();
 
-
         $id = $queryParam['id'];
         if (isset($id)) {
 
-            $result = RestaurantResource::find()->with(['reviews.user', 'comments.user'])->where(['id' => $id])->one();
+            $query = RestaurantResource::find()->with(['reviews.user', 'comments.user']);
+
+            if (Yii::$app->user->can('owner')) {
+                //if the currently logged in user is not the owner of the restaurant then throw error
+                if (isset($result) && $result->owner !== Yii::$app->user->getId()) {
+                    throw new  NotFoundHttpException("Requested resource not found");
+                }
+                $query->with(['reviewAggregation', 'reviews.user', 'comments.user']);
+            }
+            $result = $query->where(['id' => $id])->one();
 
 
             $statResult = Review::find()->select('avg(rating) as avg_rating, 

@@ -15,9 +15,8 @@
   <div class="row" *ngIf="restaurant">
     <div class="card p-3 w-100">
       <div class="card-title d-flex justify-content-between">
-
         <h3>
-          <ngb-rating *ngIf="restaurant.averageRating" [(rate)]="restaurant.averageRating" id="rate" [max]="5"
+          <ngb-rating [(rate)]="restaurant.averageRating" id="rate" [max]="5"
                       [starTemplate]="t" [readonly]="true">
           </ngb-rating>
           {{restaurant.name}}</h3>
@@ -31,6 +30,8 @@
           <fa-icon [icon]="faMapMarker"></fa-icon>
           {{restaurant.address}}
         </p>
+        <p> <span *ngIf="canSeePendingReviews"
+                  class="badge warning-badge"> Pending Reviews: {{pendingReviewCount}}</span></p>
       </div>
       <div>
         <ul ngbNav #nav="ngbNav" class="nav-tabs">
@@ -43,7 +44,7 @@
           <li ngbNavItem>
             <a ngbNavLink>Comments</a>
             <ng-template ngbNavContent>
-              <app-comment-restaurant *ngIf="canComment" [restaurant]="restaurant">
+              <app-comment-restaurant (onCommented)="onCommented()" *ngIf="canComment" [restaurant]="restaurant">
               </app-comment-restaurant>
               <app-list-comment [restaurant]="restaurant">
               </app-list-comment>

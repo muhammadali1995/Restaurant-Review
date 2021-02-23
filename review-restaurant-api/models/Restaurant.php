@@ -22,6 +22,7 @@ use Yii;
  */
 class Restaurant extends \yii\db\ActiveRecord
 {
+
     /**
      * {@inheritdoc}
      */
@@ -110,7 +111,16 @@ class Restaurant extends \yii\db\ActiveRecord
                 'created_at',
                 'reply',
                 'user_id',
-                'restaurant_id'])->orderBy('created_at desc');
+                'restaurant_id'])->orderBy('review.created_at');
+    }
+
+
+    public function getReviewAggregation()
+    {
+        return $this->getReviews()
+            ->select(['restaurant_id', 'counted' => 'count(*)'])
+            ->groupBy('restaurant_id')
+            ->asArray(true);
     }
 
 

@@ -20,13 +20,21 @@
                  alt="random restaurant image">
           </div>
           <div class="col-md-9">
-            <div class="card-body">
-              <h5 class="card-title"><a [routerLink]="[rt.id]">{{rt.name}}</a></h5>
+            <div class="card-body pt-0">
+              <span class="rating-badge badge badge-warning">{{rt.averageRating}}</span>
+              <ngb-rating [(rate)]="rt.averageRating" id="rate" [max]="5"
+                          [starTemplate]="t" [readonly]="true">
+              </ngb-rating>
+              <br>
+              <p><a [routerLink]="[rt.id]">{{rt.name}}</a>
+              </p>
               <p class="card-text">{{rt.description}}</p>
               <p class="card-text"><small class="text-muted">
                 <fa-icon [icon]="faMapMarker"></fa-icon>
                 {{rt.address}}
               </small></p>
+              <span *ngIf="canSeePendingReviews"
+                    class="badge warning-badge"> Pending Reviews: {{getPendingReviewCount(rt)}}</span>
             </div>
           </div>
         </div>
@@ -41,3 +49,8 @@
     </div>
   </div>
 </div>
+<ng-template #t let-fill="fill">
+  <span class="star" [class.full]="fill === 100">
+    <span class="half" [style.width.%]="fill">&#9733;</span>&#9733;
+  </span>
+</ng-template>

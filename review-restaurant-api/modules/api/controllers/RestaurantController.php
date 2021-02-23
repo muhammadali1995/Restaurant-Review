@@ -74,7 +74,7 @@ class RestaurantController extends ActiveController
         //offset for getting the targeted page data
         $offset = 0;
         if (isset($queryParams['page'])) {
-            $offset = $queryParams['page'];
+            $offset = ($queryParams['page'] - 1) * 10;
         }
         // prepare and return a data provider for the "index" action
         $query = Restaurant::find()

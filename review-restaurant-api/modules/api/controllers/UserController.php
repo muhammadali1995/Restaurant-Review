@@ -79,7 +79,7 @@ class UserController extends ActiveController
         //offset for getting the targeted page data
         $offset = 0;
         if (isset($queryParams['page'])) {
-            $offset = $queryParams['page'] - 1;
+            $offset = ($queryParams['page'] - 1) * 10;
         }
 
         $query = UserResource::find();

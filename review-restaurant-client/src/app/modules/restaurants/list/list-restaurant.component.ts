@@ -43,7 +43,7 @@ export class ListRestaurantComponent implements OnInit {
 
   // get the rows of the current page and update total
   fetch(page: number) {
-    this.restaurantService.fetchAll(page - 1)
+    this.restaurantService.fetchAll(page)
       .pipe(finalize(() => this.loading = false))
       .subscribe((response: ListRestaurantResponse) => {
         this.restaurants = response.rows;

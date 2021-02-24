@@ -1,4 +1,3 @@
-
 <div class="comment-container">
   <div class="card mt-3 d-flex flex-column justify-content-between" *ngFor="let rComment of restaurant?.comments">
     <div class="card-body py-1">
@@ -30,4 +29,5 @@
       </div>
     </div>
   </div>
+  <small class="text text-danger" *ngIf="error">{{error}}</small>
 </div>

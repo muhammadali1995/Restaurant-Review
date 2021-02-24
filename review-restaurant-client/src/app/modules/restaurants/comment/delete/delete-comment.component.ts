@@ -11,6 +11,7 @@ import {CommentService} from '../comment.service';
 export class DeleteCommentComponent implements OnInit {
 
   @Input() comment: CommentModel;
+  error: string;
 
   constructor(private activeModal: NgbActiveModal, private commentService: CommentService) {
   }
@@ -28,6 +29,6 @@ export class DeleteCommentComponent implements OnInit {
     this.commentService.delete(this.comment.id).subscribe(res => {
       window.alert('Successfully deleted');
       this.activeModal.close('success');
-    });
+    }, error => this.error = error.error?.message);
   }
 }

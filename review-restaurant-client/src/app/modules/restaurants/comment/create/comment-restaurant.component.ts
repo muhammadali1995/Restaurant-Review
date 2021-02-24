@@ -50,7 +50,7 @@ export class CommentRestaurantComponent implements OnInit {
     this.commentService.create(request).pipe(finalize(() => this.commenting = false)).subscribe((comment: CommentModel) => {
       this.onUpdate.emit();
       this.setForm();
-    }, er => this.error = er.error.message);
+    }, er => this.error = er.error?.message);
   }
 
   setForm() {

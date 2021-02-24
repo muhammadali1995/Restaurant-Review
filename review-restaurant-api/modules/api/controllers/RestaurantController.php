@@ -132,35 +132,37 @@ class RestaurantController extends ActiveController
             }
             $result = $query->where(['id' => $id])->one();
 
+            if (isset($result)) {
 
-            $statResult = Review::find()->select('avg(rating) as avg_rating, 
+                $statResult = Review::find()->select('avg(rating) as avg_rating, 
                             max(rating) as max_rating, 
                             min(rating) as min_rating')
-                ->where(['restaurant_id' => $id])->asArray()->one();
+                    ->where(['restaurant_id' => $id])->asArray()->one();
 
 
-            //find average of the reviews
-            $result['averageRating'] = round($statResult['avg_rating'], 2);
+                //find average of the reviews
+                $result['averageRating'] = round($statResult['avg_rating'], 2);
 
-            //find the maximum rating from the reviews of the restaurant and select the latest review with that max rating
-            $result['highestReview'] = Review::find()->with('user')
-                ->where(['rating' => $statResult['max_rating']])
-                ->andWhere(['restaurant_id' => $id])
-                ->orderBy('created_at desc')
-                ->asArray()
-                ->one();
+                //find the maximum rating from the reviews of the restaurant and select the latest review with that max rating
+                $result['highestReview'] = Review::find()->with('user')
+                    ->where(['rating' => $statResult['max_rating']])
+                    ->andWhere(['restaurant_id' => $id])
+                    ->orderBy('created_at desc')
+                    ->asArray()
+                    ->one();
 
-            //find the minimum rating from the reviews of the restaurant and select the latest review with that minimum rating
+                //find the minimum rating from the reviews of the restaurant and select the latest review with that minimum rating
 
-            $result['lowestReview'] = Review::find()
-                ->with("user")
-                ->where(['rating' => $statResult['min_rating']])
-                ->andWhere(['restaurant_id' => $id])
-                ->orderBy('created_at')
-                ->asArray()
-                ->one();
+                $result['lowestReview'] = Review::find()
+                    ->with("user")
+                    ->where(['rating' => $statResult['min_rating']])
+                    ->andWhere(['restaurant_id' => $id])
+                    ->orderBy('created_at')
+                    ->asArray()
+                    ->one();
 
-            return $result;
+                return $result;
+            }
         }
 
         throw new NotFoundHttpException("Requested resource not found");

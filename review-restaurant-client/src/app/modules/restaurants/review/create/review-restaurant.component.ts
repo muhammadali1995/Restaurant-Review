@@ -42,7 +42,7 @@ export class ReviewRestaurantComponent implements OnInit {
 
       this.restaurantService.fetchOne(params.id).subscribe((restaurant: RestaurantModel) => {
         this.restaurant = restaurant;
-      }, error => this.error = error);
+      }, error => this.error = error?.error.message);
     });
   }
 

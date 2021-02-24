@@ -63,7 +63,7 @@ export class CreateRestaurantComponent implements OnInit {
       this.showSuccess();
       this.location.back();
     }, error => {
-      console.log(error);
+      this.error = error.error?.message;
     });
   }
 

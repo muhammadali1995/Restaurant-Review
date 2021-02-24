@@ -21,6 +21,7 @@ export class ListCommentComponent implements OnInit {
   faTrash = faTrashAlt;
   faPencil = faPencilAlt;
   faReply = faReply;
+  error: string;
   @Output() onUpdate = new EventEmitter();
 
   constructor(private modalService: NgbModal,
@@ -36,17 +37,15 @@ export class ListCommentComponent implements OnInit {
     const modal = this.modalService.open(DeleteCommentComponent);
     modal.componentInstance.comment = comment;
     modal.result.then(res => {
-      this.restaurant.comments.splice(index, 1);
-    });
+      this.onUpdate.emit();
+    }, error => this.error = error.error?.message);
   }
 
   update(comment: CommentModel) {
-    const index = this.restaurant.comments.indexOf(comment);
     const modal = this.modalService.open(UpdateCommentComponent);
     modal.componentInstance.comment = comment;
     modal.result.then(res => {
-      if (res && res.id) {
-      }
+      this.onUpdate.emit();
     });
   }
 

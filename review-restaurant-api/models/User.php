@@ -33,7 +33,6 @@ use yii\web\IdentityInterface;
  * @SWG\Property(property="id", type="integer")
  * @SWG\Property(property="email", type="string")
  */
-
 class User extends ActiveRecord implements IdentityInterface
 {
 

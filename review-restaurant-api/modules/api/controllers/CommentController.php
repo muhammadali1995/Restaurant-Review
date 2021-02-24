@@ -7,7 +7,6 @@ namespace app\modules\api\controllers;
 use app\models\Comment;
 use app\models\Restaurant;
 use Yii;
-use yii\web\BadRequestHttpException;
 use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\UnprocessableEntityHttpException;

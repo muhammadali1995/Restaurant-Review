@@ -66,7 +66,7 @@ class ReviewController extends BaseController
 
 
             //if it can not save or does not pass validation
-            Yii::$app->response->statusCode = 422;
+            Yii::$app->response->statusCode = 400;
             return [
                 'errors' => $model->errors
             ];

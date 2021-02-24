@@ -83,16 +83,15 @@ class UserController extends ActiveController
             $offset = ($queryParams['page'] - 1) * 10;
         }
 
-        $query = UserResource::find();
+        $query = User::find();
 
-        $admin = 'admin';
         //select all users except users
         $countQuery = clone $query;
         $pages = new Pagination(['totalCount' => $countQuery->count(), 'defaultPageSize' => 10]);
         $rows = $query->select('user.id, user.firstname, user.lastname, user.email, auth_assignment.item_name as role')
             ->leftJoin('auth_assignment', '`auth_assignment`.`user_id` = `user`.`id`')
             ->offset($offset)
-            ->andWhere(['<>', 'auth_assignment.item_name', $admin])
+            ->andWhere(['<>', 'auth_assignment.item_name', 'admin'])
             ->limit($pages->limit)
             ->all();
         return [
@@ -103,7 +102,15 @@ class UserController extends ActiveController
 
     public function actionView($id)
     {
-        return User::find()->select(['id', 'firstname', 'lastname'])->one();
+
+        $user = User::find()->select(['id', 'firstname', 'lastname'])->where(['id' => $id])->one();
+
+        if (isset(Yii::$app->authManager->getRolesByUser($id)['admin']) || (!isset($user))) {
+            //if the user is trying to get admin, throw not found exception or user not found
+            throw new NotFoundHttpException("Requested resource not found");
+        }
+
+        return $user;
     }
 
     public function actionUpdate()
@@ -120,19 +127,23 @@ class UserController extends ActiveController
             throw new NotFoundHttpException('User with provided id not found');
         }
         // if password is updated, update the password_hash through setPassword();
-        $password = trim($request['password']);
-        if (isset($password)) {
+        if (isset($request['password'])) {
+            $password = trim($request['password']);
             if (strlen($password) < 8) {
                 throw new BadRequestHttpException("Password should be 8 or more characters or it can not contain white spaces");
             }
 
             $model->setPassword($password);
         }
-        $model->firstname = $request['firstname'];
-        $model->lastname = $request['lastname'];
-        if ($model->validate() && $model->save()) {
-            return true;
+
+        if ($model->load($request, '') && $model->validate() && $model->save()) {
+            return User::find()->select(['id', 'firstname', 'lastname'])->where(['id' => $model->getId()])->one();
         }
+        //validation error
+        Yii::$app->response->statusCode = 400;
+        return [
+            'errors' => $model->errors
+        ];
     }
 
 
@@ -144,7 +155,7 @@ class UserController extends ActiveController
         }
 
         //validation error
-        Yii::$app->response->statusCode = 422;
+        Yii::$app->response->statusCode = 400;
         return [
             'errors' => $model->errors
         ];
@@ -158,7 +169,7 @@ class UserController extends ActiveController
         }
 
         //validation error
-        Yii::$app->response->statusCode = 422;
+        Yii::$app->response->statusCode = 400;
         return [
             'errors' => $model->errors
         ];

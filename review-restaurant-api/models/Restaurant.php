@@ -119,6 +119,7 @@ class Restaurant extends \yii\db\ActiveRecord
     {
         return $this->getReviews()
             ->select(['restaurant_id', 'counted' => 'count(*)'])
+            ->where(['reply' => null])
             ->groupBy('restaurant_id')
             ->asArray(true);
     }

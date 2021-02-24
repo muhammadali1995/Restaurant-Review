@@ -66,6 +66,7 @@ class UserController extends ActiveController
         //unsetting update function to customize
         unset($actions['update']);
         unset($actions['view']);
+        unset($actions["create"]);
         return $actions;
     }
 
@@ -162,4 +163,5 @@ class UserController extends ActiveController
             'errors' => $model->errors
         ];
     }
+
 }

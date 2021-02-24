@@ -85,6 +85,7 @@ $config = [
                     'controller' => ['api/review'],
                     'pluralize' => false,
                     'extraPatterns' => [
+                        'POST reply' => 'reply',
                         'OPTIONS <action:\w+>' => 'options'
                     ]
                 ],
@@ -93,6 +94,7 @@ $config = [
                     'controller' => ['api/comment'],
                     'pluralize' => false,
                     'extraPatterns' => [
+                        'POST reply' => 'reply',
                         'OPTIONS <action:\w+>' => 'options'
                     ]
                 ]

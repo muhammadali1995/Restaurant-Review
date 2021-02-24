@@ -10,6 +10,7 @@ use yii\data\Pagination;
 use yii\filters\auth\HttpBearerAuth;
 use yii\filters\Cors;
 use yii\rest\ActiveController;
+use yii\web\BadRequestHttpException;
 use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 
@@ -44,6 +45,9 @@ class RestaurantController extends ActiveController
             if (!Yii::$app->user->can("owner")) {
                 throw new ForbiddenHttpException('Permission denied: you dont have access for ' . $action);
             }
+            // create a restaurant with a different
+
+
         } else if ($action == 'delete' || $action == 'update') {
             if (!Yii::$app->user->can("admin")) {
                 throw new ForbiddenHttpException('Permission denied: you dont have access for ' . $action);
@@ -73,9 +77,12 @@ class RestaurantController extends ActiveController
 
         //offset for getting the targeted page data
         $offset = 0;
+
+
         if (isset($queryParams['page'])) {
             $offset = ($queryParams['page'] - 1) * 10;
         }
+
         // prepare and return a data provider for the "index" action
         $query = Restaurant::find()
             ->select('restaurant.id, 
@@ -85,12 +92,16 @@ class RestaurantController extends ActiveController
                          AVG(review.rating) as averageRating')
             ->joinWith('reviews')->groupBy('restaurant.id')->orderBy('averageRating desc');
 
-
         if (Yii::$app->user->can("owner")) {
             $ownerId = Yii::$app->user->getId();
             if (isset($ownerId)) {
                 $query->with('reviewAggregation')->where(['owner' => $ownerId]);
             }
+        }
+
+
+        if (isset($queryParams['rating']) && ((int)$queryParams['rating']) > 0) {
+            $query->andHaving(['>=', 'averageRating', $queryParams['rating']]);
         }
 
         $countQuery = clone $query;
@@ -131,7 +142,7 @@ class RestaurantController extends ActiveController
             //find average of the reviews
             $result['averageRating'] = round($statResult['avg_rating'], 2);
 
-//            //find the maximum rating from the reviews of the restaurant and select the latest review with that max rating
+            //find the maximum rating from the reviews of the restaurant and select the latest review with that max rating
             $result['highestReview'] = Review::find()->with('user')
                 ->where(['rating' => $statResult['max_rating']])
                 ->andWhere(['restaurant_id' => $id])

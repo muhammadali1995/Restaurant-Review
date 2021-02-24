@@ -38,6 +38,7 @@ class Review extends \yii\db\ActiveRecord
             [['rating'], 'number'],
             [['comment', 'reply'], 'string'],
             [['restaurant_id', 'rating'], 'required'],
+            ['rating', 'in', 'range' => [1, 2, 3, 4, 5]],
             [['user_id', 'restaurant_id'], 'integer'],
             [['updated_at', 'created_at'], 'safe'],
             [['restaurant_id'], 'exist', 'skipOnError' => true, 'targetClass' => Restaurant::className(), 'targetAttribute' => ['restaurant_id' => 'id']],

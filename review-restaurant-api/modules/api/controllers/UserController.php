@@ -136,7 +136,10 @@ class UserController extends ActiveController
             $model->setPassword($password);
         }
 
-        if ($model->load($request, '') && $model->validate() && $model->save()) {
+        $model->setAttribute('firstname', $request['firstname']);
+        $model->setAttribute('lastname', $request['lastname']);
+
+        if ($model->validate() && $model->save()) {
             return User::find()->select(['id', 'firstname', 'lastname'])->where(['id' => $model->getId()])->one();
         }
         //validation error

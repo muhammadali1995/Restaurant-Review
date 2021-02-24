@@ -5,7 +5,6 @@ namespace app\modules\api\controllers;
 use app\models\User;
 use app\modules\api\models\LoginForm;
 use app\modules\api\models\RegisterForm;
-use app\modules\api\resources\UserResource;
 use Yii;
 use yii\data\Pagination;
 use yii\filters\auth\HttpBearerAuth;

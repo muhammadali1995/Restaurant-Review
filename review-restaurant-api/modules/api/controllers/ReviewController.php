@@ -18,19 +18,20 @@ class ReviewController extends BaseController
         if ($action == 'create') {
             if (!Yii::$app->user->can("customer")) {
                 throw new ForbiddenHttpException('Permission denied: you dont have access to this action');
-            } else if ($action == 'delete' || $action == 'update') {
-                if (!Yii::$app->user->can("admin")) {
-                    throw new ForbiddenHttpException('Permission denied: you dont have access to this action');
-                }
-            } else if ($action == 'reply') {
-                if (!Yii::$app->user->can("owner")) {
-                    throw new ForbiddenHttpException('Permission denied: you dont have access to this action');
-                }
+            }
+        } else if ($action == 'delete' || $action == 'update') {
+            if (!Yii::$app->user->can("admin")) {
+                throw new ForbiddenHttpException('Permission denied: you dont have access to this action');
+            }
+        } else if ($action == 'reply') {
+            if (!Yii::$app->user->can("owner")) {
+                throw new ForbiddenHttpException('Permission denied: you dont have access to this action');
             }
         }
     }
 
-    public function actions()
+    public
+    function actions()
     {
         $actions = parent::actions();
         unset($actions['index']);
@@ -38,7 +39,8 @@ class ReviewController extends BaseController
     }
 
 
-    public function actionReply()
+    public
+    function actionReply()
     {
 
         $id = Yii::$app->request->getBodyParam('reviewId');

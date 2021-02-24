@@ -128,6 +128,8 @@ export class RegisterComponent implements OnInit {
     }, (err) => {
       if (err.error.errors && err.error.errors.email) {
         this.error = 'The email has already taken by another user';
+      }else  {
+        this.error = err.error?.message;
       }
     });
   }

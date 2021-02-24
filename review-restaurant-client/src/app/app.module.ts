@@ -16,6 +16,7 @@ import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {AutTokenInterceptor} from './modules/account/aut-token.interceptor';
 import {PageNotFoundComponent} from './components/page-not-found/page-not-found.component';
 import {AuthGuard} from './modules/account/auth.guard';
+import {ErrorInterceptor} from "./modules/shared/services/error.interceptor";
 
 @NgModule({
   declarations: [
@@ -43,7 +44,13 @@ import {AuthGuard} from './modules/account/auth.guard';
       provide: HTTP_INTERCEPTORS,
       useClass: AutTokenInterceptor,
       multi: true
-    }
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
+      multi: true
+    },
+
   ],
   bootstrap: [AppComponent]
 })

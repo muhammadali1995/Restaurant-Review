@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Location} from '@angular/common';
 import {UserService} from '../user.service';
@@ -28,8 +28,18 @@ export class UpdateUserComponent implements OnInit {
     this.form = this.fb.group({
       firstname: [null, [Validators.required, validatorService.noWhitespaceValidator]],
       lastname: [null, [Validators.required, validatorService.noWhitespaceValidator]],
-      password: [null, [Validators.minLength(8), validatorService.noWhitespaceValidator]],
-      password_repeat: [null, [Validators.minLength(8), validatorService.noWhitespaceValidator]],
+
+      // set conditional validator for password
+      password: ['', [
+        this.validatorService.conditionalValidator(() => this.form.get('password').value, Validators.minLength(8)),
+        this.validatorService.conditionalValidator(() => this.form.get('password').value, this.validatorService.noWhitespaceValidator)
+      ]],
+
+      // set conditional validator for password repeat
+      password_repeat: ['',
+        [this.validatorService.conditionalValidator(() => this.form.get('password').value, Validators.minLength(8)),
+          this.validatorService.conditionalValidator(() => this.form.get('password').value, this.validatorService.noWhitespaceValidator)]
+      ],
     });
   }
 
@@ -95,6 +105,9 @@ export class UpdateUserComponent implements OnInit {
     return (this.passwordRepeat.errors && this.passwordRepeat.errors.minlength) ? 'Confirm password should be more than 8 characters' : '';
   }
 
+
+  // set validations conditionally
+
   // handle update form submission
   onSubmit() {
     this.submitting = true;
@@ -107,6 +120,10 @@ export class UpdateUserComponent implements OnInit {
     }
 
     delete request.password_repeat;
+    // if password is empty string remove it from request
+    if (!this.password.value) {
+      delete request.password;
+    }
 
     this.userService.update(this.user.id, request).pipe(finalize(() => this.submitting = false)).subscribe(response => {
       this.error = '';
@@ -123,3 +140,4 @@ export class UpdateUserComponent implements OnInit {
   }
 
 }
+

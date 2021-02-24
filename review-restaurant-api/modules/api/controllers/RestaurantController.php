@@ -10,7 +10,6 @@ use yii\data\Pagination;
 use yii\filters\auth\HttpBearerAuth;
 use yii\filters\Cors;
 use yii\rest\ActiveController;
-use yii\web\BadRequestHttpException;
 use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 
@@ -125,7 +124,8 @@ class RestaurantController extends ActiveController
 
             if (Yii::$app->user->can('owner')) {
                 //if the currently logged in user is not the owner of the restaurant then throw error
-                if (isset($result) && $result->owner !== Yii::$app->user->getId()) {
+                $restaurant = Restaurant::findOne($id);
+                if (!isset($restaurant) || $restaurant->owner != Yii::$app->user->id) {
                     throw new  NotFoundHttpException("Requested resource not found");
                 }
                 $query->with(['reviewAggregation', 'reviews.user', 'comments.user']);

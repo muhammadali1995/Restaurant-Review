@@ -69,10 +69,10 @@ export class LoginComponent implements OnInit {
     this.accountService.login(request).pipe(finalize(() => this.submitting = false)).subscribe(res => {
       this.router.navigate(['/']);
     }, error => {
-      if (error.status === 422) {
+      if (error.status === 400) {
         this.error = 'Incorrect email or password';
       } else {
-        this.error = error.message;
+        this.error = error.error?.message;
       }
     });
   }

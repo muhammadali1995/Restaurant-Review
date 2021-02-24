@@ -16,4 +16,5 @@
       <button class="btn btn-primary" [disabled]="form.invalid|| saving">Save</button>
     </div>
   </form>
+  <small class="text text-danger" *ngIf="error">{{error}}</small>
 </div>

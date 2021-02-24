@@ -2,8 +2,8 @@ import {Component, Input, OnInit} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {CommentService} from '../comment.service';
 import {CommentModel} from '../../../../models/comment-model';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {ValidatorService} from "../../../shared/services/validator.service";
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {ValidatorService} from '../../../shared/services/validator.service';
 
 @Component({
   selector: 'app-update-comment',
@@ -65,7 +65,7 @@ export class UpdateCommentComponent implements OnInit {
     this.commentService.update(this.comment.id, request)
       .subscribe((updatedComment: CommentModel) => {
         this.activeModal.close(updatedComment);
-      }, err => this.error = err.error.message);
+      }, err => this.error = err.error?.message);
   }
 
 }

@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {UserModel} from '../../../models/user-model';
 import {UserService} from '../user.service';
 import {finalize} from 'rxjs/operators';
 import {ListUserResponse} from '../../../models/list-user-response';
@@ -7,7 +6,8 @@ import {UrlService} from '../../shared/services/url.service';
 import {faPencilAlt, faTrashAlt} from '@fortawesome/free-solid-svg-icons';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {DeleteUserComponent} from '../delete/delete-user.component';
-import {Router} from "@angular/router";
+import {Router} from '@angular/router';
+import {UserModel} from "../../../models/user.model";
 
 @Component({
   selector: 'app-user-list',

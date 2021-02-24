@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 import {Observable} from 'rxjs';
 import {RestaurantModel} from '../../models/restaurant.model';
@@ -18,11 +18,20 @@ export class RestaurantService {
 
 
   // fetch all restaurants
-  fetchAll(currPage: number): Observable<ListRestaurantResponse> {
+  fetchAll(currPage: number, rating?: number): Observable<ListRestaurantResponse> {
+
+
+    // set params conditionally
+    const params = {};
+    if (currPage) {
+      params['page'] = currPage;
+    }
+
+    if (rating !== 0) {
+      params['rating'] = rating;
+    }
     return this.http.get<ListRestaurantResponse>(this.apiUrl, {
-      params: {
-        page: currPage.toString(),
-      },
+      params: {...params}
     });
   }
 

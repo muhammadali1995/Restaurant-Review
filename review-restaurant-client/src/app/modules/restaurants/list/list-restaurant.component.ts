@@ -2,13 +2,14 @@ import {Component, OnInit} from '@angular/core';
 import {faMapMarkerAlt, faPlusCircle} from '@fortawesome/free-solid-svg-icons';
 import {RestaurantService} from '../restaurant.service';
 import {RestaurantModel} from '../../../models/restaurant.model';
-import {finalize} from 'rxjs/operators';
+import {filter, finalize} from 'rxjs/operators';
 import {ListRestaurantResponse} from '../../../models/list-restaurant-response';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Location} from '@angular/common';
 import {AccountService} from '../../account/account.service';
 import {AuthGuard} from '../../account/auth.guard';
 import {Action} from '../../../models/action';
+import {UrlService} from '../../shared/services/url.service';
 
 @Component({
   selector: 'app-list-restaurant',
@@ -22,14 +23,16 @@ export class ListRestaurantComponent implements OnInit {
   error: string;
   faPlus = faPlusCircle;
   faMapMarker = faMapMarkerAlt;
-  page = 0;
+  page = 1;
   total = 0;
   pageSize = 10;
+  rating;
 
   constructor(private restaurantService: RestaurantService,
               private location: Location,
               private authGuardService: AuthGuard,
               private accountService: AccountService,
+              private urlService: UrlService,
               private activatedRoute: ActivatedRoute,
               private router: Router,
   ) {
@@ -37,25 +40,29 @@ export class ListRestaurantComponent implements OnInit {
 
   ngOnInit(): void {
     // get the first page on start
-    this.fetch(1);
+    this.fetch();
   }
 
+  applyFilter($filter) {
+    this.rating = $filter;
+    this.page = 1;
+    this.fetch();
+  }
+
+  onPageChange(page) {
+    this.page = page;
+    this.fetch();
+  }
 
   // get the rows of the current page and update total
-  fetch(page: number) {
-    this.restaurantService.fetchAll(page)
+  fetch() {
+    this.restaurantService.fetchAll(this.page, this.rating)
       .pipe(finalize(() => this.loading = false))
       .subscribe((response: ListRestaurantResponse) => {
         this.restaurants = response.rows;
         this.total = response.total;
       }, error => this.error = error);
-    this.updateUrl(page);
-  }
-
-  updateUrl(page) {
-    // update url for on pagination change
-    const url = this.router.createUrlTree([], {relativeTo: this.activatedRoute, queryParams: {page}}).toString();
-    this.location.go(url);
+    this.urlService.updateUrl(this.page, this.rating);
   }
 
   get canCreate() {

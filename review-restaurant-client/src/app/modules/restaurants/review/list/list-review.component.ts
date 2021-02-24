@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {RestaurantModel} from '../../../../models/restaurant.model';
 import {faPencilAlt, faTrashAlt, faReply} from '@fortawesome/free-solid-svg-icons';
 import {ReviewModel} from '../../../../models/review.model';
@@ -20,6 +20,7 @@ export class ListReviewComponent implements OnInit {
   faTrash = faTrashAlt;
   faPencil = faPencilAlt;
   faReply = faReply;
+  @Output() onUpdate = new EventEmitter();
 
   constructor(private modalService: NgbModal,
               private authGuardService: AuthGuard,
@@ -37,7 +38,7 @@ export class ListReviewComponent implements OnInit {
     modal.result.then(res => {
       if (res === 'success') {
         this.restaurant.reviews.splice(index, 1);
-        this.fetchRestaurant();
+        this.onUpdate.emit();
       }
     });
   }
@@ -48,21 +49,13 @@ export class ListReviewComponent implements OnInit {
     modal.componentInstance.review = review;
     modal.result.then((res: ReviewModel) => {
       if (res && res.id) {
-        this.restaurant.reviews[index] = res;
-
-        this.fetchRestaurant();
+        this.onUpdate.emit();
       }
     });
   }
 
 
   // re-fetch restaurant to get the changes of the review stats
-
-  fetchRestaurant() {
-    this.restaurantService.fetchOne(this.restaurant.id).subscribe((restaurant: RestaurantModel) => {
-      this.restaurant = restaurant;
-    });
-  }
 
   get canEdit() {
     return this.authGuardService.can(Action.UPDATE_REVIEW);

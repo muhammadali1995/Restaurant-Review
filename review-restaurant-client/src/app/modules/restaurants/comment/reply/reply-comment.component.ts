@@ -63,10 +63,12 @@ export class ReplyCommentComponent implements OnInit {
   onSubmit() {
     this.saving = true;
     const request = this.form.value;
-    this.commentService.update(this.comment.id, request)
+    // set comment id
+    request.id = this.comment.id;
+    this.commentService.reply(request)
       .subscribe((updatedComment: CommentModel) => {
         this.activeModal.close(updatedComment);
-      }, err => this.error = err.error.message);
+      }, err => this.error = err.error?.message);
   }
 
 

@@ -1,8 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {finalize} from 'rxjs/operators';
-import {UserModel} from '../../../models/user-model';
 import {UserService} from '../user.service';
+import {UserModel} from '../../../models/user.model';
 
 @Component({
   selector: 'app-delete-user',

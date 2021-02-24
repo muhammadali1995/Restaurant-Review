@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {RestaurantModel} from '../../../../models/restaurant.model';
 import {CommentModel} from '../../../../models/comment-model';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
@@ -7,7 +7,8 @@ import {faPencilAlt, faReply, faTrashAlt} from '@fortawesome/free-solid-svg-icon
 import {UpdateCommentComponent} from '../update/update-comment.component';
 import {ReplyCommentComponent} from '../reply/reply-comment.component';
 import {Action} from '../../../../models/action';
-import {AuthGuard} from "../../../account/auth.guard";
+import {AuthGuard} from '../../../account/auth.guard';
+import {RestaurantService} from '../../restaurant.service';
 
 @Component({
   selector: 'app-list-comment',
@@ -20,8 +21,11 @@ export class ListCommentComponent implements OnInit {
   faTrash = faTrashAlt;
   faPencil = faPencilAlt;
   faReply = faReply;
+  @Output() onUpdate = new EventEmitter();
 
-  constructor(private modalService: NgbModal, private authGuardService: AuthGuard) {
+  constructor(private modalService: NgbModal,
+              private restaurantService: RestaurantService,
+              private authGuardService: AuthGuard) {
   }
 
   ngOnInit(): void {
@@ -42,7 +46,6 @@ export class ListCommentComponent implements OnInit {
     modal.componentInstance.comment = comment;
     modal.result.then(res => {
       if (res && res.id) {
-        this.restaurant.comments[index] = res;
       }
     });
   }
@@ -54,6 +57,7 @@ export class ListCommentComponent implements OnInit {
     modal.result.then(res => {
       if (res && res.id) {
         this.restaurant.comments[index] = res;
+        this.onUpdate.emit();
       }
     });
   }

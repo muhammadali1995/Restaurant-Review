@@ -55,7 +55,7 @@ export class ViewRestaurantComponent implements OnInit {
 
 
   // on new comment created, refetch the restaurants
-  onCommented() {
+  onUpdated() {
     this.fetch(this.restaurant.id);
   }
 

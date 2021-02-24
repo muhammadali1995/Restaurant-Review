@@ -3,7 +3,7 @@ import {Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 import {ListUserResponse} from '../../models/list-user-response';
-import {UserModel} from '../../models/user-model';
+import {UserModel} from '../../models/user.model';
 
 @Injectable({
   providedIn: 'root'

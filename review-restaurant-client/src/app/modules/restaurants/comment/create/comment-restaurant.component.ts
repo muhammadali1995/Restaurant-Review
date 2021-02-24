@@ -18,16 +18,13 @@ export class CommentRestaurantComponent implements OnInit {
   commenting: boolean;
   error: string;
   @Input() restaurant: RestaurantModel;
-  @Output() onCommented = new EventEmitter();
+  @Output() onUpdate = new EventEmitter();
 
   constructor(private fb: FormBuilder,
               private validatorService: ValidatorService,
               private restaurantService: RestaurantService,
               private commentService: CommentService) {
-    this.form = this.fb.group({
-      restaurant_id: [null, Validators.required],
-      comment: [null, [Validators.required, this.validatorService.noWhitespaceValidator]]
-    });
+    this.setForm();
   }
 
   ngOnInit(): void {
@@ -51,9 +48,16 @@ export class CommentRestaurantComponent implements OnInit {
     this.commenting = true;
     const request = this.form.value;
     this.commentService.create(request).pipe(finalize(() => this.commenting = false)).subscribe((comment: CommentModel) => {
-      this.onCommented.emit();
-      this.form.reset();
+      this.onUpdate.emit();
+      this.setForm();
     }, er => this.error = er.error.message);
+  }
+
+  setForm() {
+    this.form = this.fb.group({
+      restaurant_id: [this.restaurant?.id, Validators.required],
+      comment: [null, [this.validatorService.noWhitespaceValidator]]
+    });
   }
 
 

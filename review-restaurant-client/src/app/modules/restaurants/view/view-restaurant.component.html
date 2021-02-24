@@ -38,15 +38,15 @@
           <li ngbNavItem>
             <a ngbNavLink>Reviews</a>
             <ng-template ngbNavContent>
-              <app-list-review [restaurant]="restaurant"></app-list-review>
+              <app-list-review (onUpdate)="onUpdated()" [restaurant]="restaurant"></app-list-review>
             </ng-template>
           </li>
           <li ngbNavItem>
             <a ngbNavLink>Comments</a>
             <ng-template ngbNavContent>
-              <app-comment-restaurant (onCommented)="onCommented()" *ngIf="canComment" [restaurant]="restaurant">
+              <app-comment-restaurant (onUpdate)="onUpdated()" *ngIf="canComment" [restaurant]="restaurant">
               </app-comment-restaurant>
-              <app-list-comment [restaurant]="restaurant">
+              <app-list-comment (onUpdate)="onUpdated()" [restaurant]="restaurant">
               </app-list-comment>
             </ng-template>
           </li>

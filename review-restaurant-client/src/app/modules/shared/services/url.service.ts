@@ -10,9 +10,9 @@ export class UrlService {
   constructor(private router: Router, private route: ActivatedRoute, private location: Location) {
   }
 
-  updateUrl(page) {
+  updateUrl(page: number, rating?: number) {
     // update url for on pagination change
-    const url = this.router.createUrlTree([], {relativeTo: this.route, queryParams: {page}}).toString();
+    const url = this.router.createUrlTree([], {relativeTo: this.route, queryParams: {page, rating}}).toString();
     this.location.go(url);
   }
 }

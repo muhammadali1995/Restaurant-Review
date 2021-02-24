@@ -3,6 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../../environments/environment';
 import {Observable} from 'rxjs';
 import {ReviewModel} from '../../../models/review.model';
+import {ReplyModel} from '../../../models/reply.model';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +24,7 @@ export class ReviewService {
     return this.http.delete<boolean>(`${this.apiUrl}/${id}`);
   }
 
-  // update request to delete a review
+  // update request to update a review
   update(id: number, request: ReviewModel): Observable<ReviewModel> {
     return this.http.put<ReviewModel>(`${this.apiUrl}/${id}`, request);
   }
@@ -32,4 +33,8 @@ export class ReviewService {
     return this.http.get<ReviewModel>(`${this.apiUrl}/${id}`);
   }
 
+
+  reply(request: ReplyModel) {
+    return this.http.post<ReviewModel>(`${this.apiUrl}/reply`, request);
+  }
 }

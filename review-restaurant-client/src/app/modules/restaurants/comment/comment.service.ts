@@ -3,6 +3,7 @@ import {environment} from '../../../../environments/environment';
 import {CommentModel} from '../../../models/comment-model';
 import {Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
+import {ReplyModel} from '../../../models/reply.model';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class CommentService {
 
   constructor(private  http: HttpClient) {
   }
-  
+
   // create request to create a new comment
   create(request: CommentModel): Observable<CommentModel> {
     return this.http.post<CommentModel>(this.apiUrl, request);
@@ -31,5 +32,9 @@ export class CommentService {
 
   fetchOne(id: number): Observable<CommentModel> {
     return this.http.get<CommentModel>(`${this.apiUrl}/${id}`);
+  }
+
+  reply(request: ReplyModel) {
+    return this.http.post<CommentModel>(`${this.apiUrl}/reply`, request);
   }
 }

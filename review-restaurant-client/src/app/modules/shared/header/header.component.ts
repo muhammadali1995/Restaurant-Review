@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {AccountService} from '../../account/account.service';
 import {faUserCircle} from '@fortawesome/free-solid-svg-icons';
-import {UserModel} from '../../../models/user-model';
 import {Roles} from '../../../models/roles';
+import {UserModel} from '../../../models/user.model';
 
 @Component({
   selector: 'app-header',

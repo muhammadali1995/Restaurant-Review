@@ -1,0 +1,15 @@
+<div class="input-group mb-3">
+  <select class="form-control" [(ngModel)]="rating"
+          aria-label="rating"
+          aria-describedby="rating">
+    <option [value]="0">Select a rating</option>
+    <option [value]="1">One Star</option>
+    <option [value]="2">Two Star</option>
+    <option [value]="3">Three Star</option>
+    <option [value]="4">Four Star</option>
+    <option [value]="5">Five Star</option>
+  </select>
+  <div class="input-group-append">
+    <button class="btn btn-primary" id="search-btn" (click)="apply()">Apply</button>
+  </div>
+</div>

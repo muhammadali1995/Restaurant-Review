@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
-import {UserModel} from '../../../models/user-model';
 import {Location} from '@angular/common';
 import {UserService} from '../user.service';
 import {finalize} from 'rxjs/operators';
-import {ValidatorService} from "../../shared/services/validator.service";
+import {ValidatorService} from '../../shared/services/validator.service';
+import {UserModel} from '../../../models/user.model';
 
 @Component({
   selector: 'app-update-user',

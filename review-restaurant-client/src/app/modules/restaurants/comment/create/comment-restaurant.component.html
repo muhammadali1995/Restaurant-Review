@@ -1,5 +1,5 @@
 <div class="card mt-3 p-4 d-flex flex-column justify-content-between">
-  <form [formGroup]="form" (ngSubmit)="onCommentSubmitted()">
+  <form [formGroup]="form" (ngSubmit)="onCommentSubmitted()" novalidate>
     <div class="form-group m-0">
       <div class="row">
         <div class="col-md-10 col-12">
@@ -9,7 +9,7 @@
                  *ngIf="form.invalid&& (comment.touched || comment.dirty)">{{getCommentError}}</small>
         </div>
         <div class="col-md-2 col-12">
-          <button class="btn btn-primary" [disabled]="form.invalid||commenting">Send</button>
+          <button type="submit" class="btn btn-primary" [disabled]="form.invalid ||commenting">Send</button>
         </div>
       </div>
     </div>

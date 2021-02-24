@@ -66,6 +66,7 @@ class UserController extends ActiveController
         unset($actions['update']);
         unset($actions['view']);
         unset($actions["create"]);
+        unset($actions['delete']);
         return $actions;
     }
 
@@ -177,4 +178,16 @@ class UserController extends ActiveController
         ];
     }
 
+
+    public function actionDelete()
+    {
+        $userId = Yii::$app->request->getQueryParam('id');
+        $model = User::findOne($userId);
+        if (isset(Yii::$app->authManager->getRolesByUser($userId)['admin']) || (!isset($model))) {
+            //if the user is trying to delete admin, throw not found exception or user not found
+            throw new NotFoundHttpException("Requested resource not found");
+        }
+
+        return $model->delete();
+    }
 }

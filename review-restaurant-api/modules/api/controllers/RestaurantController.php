@@ -167,7 +167,6 @@ class RestaurantController extends ActiveController
 
         throw new NotFoundHttpException("Requested resource not found");
 
-
     }
 
 }

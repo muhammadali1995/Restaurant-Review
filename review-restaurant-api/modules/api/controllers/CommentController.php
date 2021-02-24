@@ -42,7 +42,7 @@ class CommentController extends BaseController
 
     public function actionReply()
     {
-        $id = Yii::$app->request->getBodyParam('id');
+        $id = Yii::$app->request->getBodyParam('comment_id');
         $model = null;
         if (isset($id)) {
             $model = Comment::findOne($id);

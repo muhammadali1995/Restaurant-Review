@@ -63,7 +63,7 @@ export class ReplyReviewComponent implements OnInit {
   onSubmit() {
     this.saving = true;
     const request = this.form.value;
-    request.id = this.review.id;
+    request.reviewId = this.review.id;
     this.reviewService.reply(request)
       .subscribe((updatedReview: ReviewModel) => {
         this.activeModal.close(updatedReview);

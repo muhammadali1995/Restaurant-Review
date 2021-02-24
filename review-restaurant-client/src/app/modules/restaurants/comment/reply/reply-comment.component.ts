@@ -64,7 +64,7 @@ export class ReplyCommentComponent implements OnInit {
     this.saving = true;
     const request = this.form.value;
     // set comment id
-    request.id = this.comment.id;
+    request.commentId = this.comment.id;
     this.commentService.reply(request)
       .subscribe((updatedComment: CommentModel) => {
         this.activeModal.close(updatedComment);

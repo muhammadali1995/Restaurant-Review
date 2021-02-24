@@ -41,7 +41,7 @@ class ReviewController extends BaseController
     public function actionReply()
     {
 
-        $id = Yii::$app->request->getBodyParam('review_id');
+        $id = Yii::$app->request->getBodyParam('reviewId');
         $model = null;
         if (isset($id)) {
             $model = Review::findOne($id);

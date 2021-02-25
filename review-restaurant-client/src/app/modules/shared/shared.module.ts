@@ -6,6 +6,7 @@ import {NgbAlertModule, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {RouterModule} from '@angular/router';
 import {StartFilterComponent} from './start-filter/start-filter/start-filter.component';
 import {FormsModule} from '@angular/forms';
+import {HttpClientModule} from '@angular/common/http';
 
 
 @NgModule({
@@ -18,6 +19,7 @@ import {FormsModule} from '@angular/forms';
   imports: [
     CommonModule,
     FontAwesomeModule,
+    HttpClientModule,
     NgbAlertModule,
     NgbModule,
     RouterModule,

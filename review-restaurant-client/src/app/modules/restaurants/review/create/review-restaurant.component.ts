@@ -67,7 +67,6 @@ export class ReviewRestaurantComponent implements OnInit {
     const datePipe = new DatePipe('en-US');
 
     request.date_of_visit = datePipe.transform(request.date_of_visit, 'yyyy-MM-dd');
-    console.log(request);
     this.reviewService.create(request).subscribe(res => {
       window.alert('Successfully created');
       this.location.back();

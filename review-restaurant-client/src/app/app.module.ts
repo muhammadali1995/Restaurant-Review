@@ -16,7 +16,7 @@ import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {AutTokenInterceptor} from './modules/account/aut-token.interceptor';
 import {PageNotFoundComponent} from './components/page-not-found/page-not-found.component';
 import {AuthGuard} from './modules/account/auth.guard';
-import {ErrorInterceptor} from "./modules/shared/services/error.interceptor";
+import {ErrorInterceptor} from './modules/shared/services/error.interceptor';
 
 @NgModule({
   declarations: [

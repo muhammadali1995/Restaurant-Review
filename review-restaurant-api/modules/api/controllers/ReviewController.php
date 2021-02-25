@@ -62,6 +62,7 @@ class ReviewController extends BaseController
 
         if (is_null($model->reply)) {
             $model->reply = Yii::$app->request->getBodyParam('reply');
+
             if ($model->validate() && $model->save()) {
                 return $model;
             }

@@ -1,6 +1,8 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { DeleteCommentComponent } from './delete-comment.component';
+import {DeleteCommentComponent} from './delete-comment.component';
+import {NgbActiveModal, NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {HttpClientModule} from '@angular/common/http';
 
 describe('DeleteCommentComponent', () => {
   let component: DeleteCommentComponent;
@@ -8,9 +10,11 @@ describe('DeleteCommentComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DeleteCommentComponent ]
+      imports: [NgbModule, HttpClientModule],
+      providers: [NgbActiveModal],
+      declarations: [DeleteCommentComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

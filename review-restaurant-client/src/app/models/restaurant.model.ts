@@ -2,12 +2,12 @@ import {CommentModel} from './comment-model';
 import {ReviewModel} from './review.model';
 
 export interface RestaurantModel {
-  id: number;
+  id?: number;
   name: string;
   address: string;
   description: string;
-  comments: CommentModel [];
-  reviews: ReviewModel [];
+  comments?: CommentModel [];
+  reviews?: ReviewModel [];
   averageRating?: number;
   highestReview?: ReviewModel;
   lowestReview?: ReviewModel;

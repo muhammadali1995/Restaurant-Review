@@ -5,7 +5,6 @@ import {ReviewModel} from '../../../../models/review.model';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {DeleteReviewComponent} from '../delete/delete-review.component';
 import {ReplyReviewComponent} from '../reply/reply-review.component';
-import {RestaurantService} from '../../restaurant.service';
 import {Action} from '../../../../models/action';
 import {AuthGuard} from '../../../account/auth.guard';
 
@@ -23,8 +22,7 @@ export class ListReviewComponent implements OnInit {
   @Output() onUpdate = new EventEmitter();
 
   constructor(private modalService: NgbModal,
-              private authGuardService: AuthGuard,
-              private restaurantService: RestaurantService) {
+              private authGuardService: AuthGuard) {
   }
 
   ngOnInit(): void {

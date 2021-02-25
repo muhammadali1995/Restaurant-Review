@@ -1,6 +1,9 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ListRestaurantComponent } from './list-restaurant.component';
+import {ListRestaurantComponent} from './list-restaurant.component';
+import {FormsModule} from "@angular/forms";
+import {HttpClientModule} from "@angular/common/http";
+import {RouterTestingModule} from "@angular/router/testing";
 
 describe('ListRestaurantComponent', () => {
   let component: ListRestaurantComponent;
@@ -8,9 +11,10 @@ describe('ListRestaurantComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ListRestaurantComponent ]
+      imports: [FormsModule, HttpClientModule, RouterTestingModule.withRoutes([])],
+      declarations: [ListRestaurantComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

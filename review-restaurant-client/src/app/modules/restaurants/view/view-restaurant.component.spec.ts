@@ -1,6 +1,8 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ViewRestaurantComponent } from './view-restaurant.component';
+import {ViewRestaurantComponent} from './view-restaurant.component';
+import {RouterTestingModule} from '@angular/router/testing';
+import {HttpClientModule} from '@angular/common/http';
 
 describe('ViewRestaurantComponent', () => {
   let component: ViewRestaurantComponent;
@@ -8,9 +10,10 @@ describe('ViewRestaurantComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ViewRestaurantComponent ]
+      imports: [RouterTestingModule.withRoutes([]), HttpClientModule],
+      declarations: [ViewRestaurantComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

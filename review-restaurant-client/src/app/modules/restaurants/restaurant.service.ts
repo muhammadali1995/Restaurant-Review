@@ -11,7 +11,7 @@ import {ListRestaurantResponse} from '../../models/list-restaurant-response';
 })
 export class RestaurantService {
 
-  private apiUrl = `${environment.apiUrl}/restaurant`;
+  public apiUrl = `${environment.apiUrl}/restaurant`;
 
   constructor(private http: HttpClient) {
   }

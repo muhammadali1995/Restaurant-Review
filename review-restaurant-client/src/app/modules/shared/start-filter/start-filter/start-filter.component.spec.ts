@@ -1,6 +1,8 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { StartFilterComponent } from './start-filter.component';
+import {StartFilterComponent} from './start-filter.component';
+import {RouterModule} from '@angular/router';
+import {RouterTestingModule} from '@angular/router/testing';
 
 describe('StartFilterComponent', () => {
   let component: StartFilterComponent;
@@ -8,9 +10,10 @@ describe('StartFilterComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ StartFilterComponent ]
+      imports: [RouterModule, RouterTestingModule.withRoutes([])],
+      declarations: [StartFilterComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

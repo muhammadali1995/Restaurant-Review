@@ -7,21 +7,21 @@
     </ngb-rating>
     <div>
       <span class="badge badge-success"> Highest Rated
-        <span class="badge badge-warning">{{review.rating}}</span>
+        <span class="badge badge-warning">{{review?.rating}}</span>
       </span>
     </div>
   </div>
   <div class="card-body py-1">
     <p class="mb-1">{{review.comment}}</p>
-    <ngb-alert type="warning" [dismissible]="false" *ngIf="review.reply"><small>{{review.reply}}</small></ngb-alert>
+    <ngb-alert type="warning" [dismissible]="false" *ngIf="review?.reply"><small>{{review?.reply}}</small></ngb-alert>
   </div>
   <div class="card-footer d-flex justify-content-between py-1">
     <div>
       <small><i> {{review.user?.firstname}} {{review.user?.lastname}}</i></small>
-      <small class="ml-2"><i>{{review.created_at | date: 'medium'}}</i></small>
+      <small class="ml-2"><i>{{review?.created_at | date: 'medium'}}</i></small>
     </div>
     <div>
-      <small> Visit Date:</small> <small class="ml-2"><i>{{review.created_at | date: 'mediumDate'}}</i></small>
+      <small> Visit Date:</small> <small class="ml-2"><i>{{review?.date_of_visit | date: 'mediumDate'}}</i></small>
     </div>
   </div>
 </div>

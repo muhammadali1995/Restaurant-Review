@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {Location} from '@angular/common';
+import {Router} from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -10,16 +9,16 @@ export class UrlService {
   }
 
   updateUrl(page: number, rating?: number) {
-    const queryParams = {
+    const params = {
       page: page ? page : 1
     };
     if (rating) {
-      queryParams['rating'] = rating;
+      params['rating'] = rating;
     }
     this.router.navigate(
       [],
       {
-        queryParams: queryParams,
+        queryParams: params,
         queryParamsHandling: 'merge'
       }
     );

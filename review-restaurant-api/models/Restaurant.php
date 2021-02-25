@@ -110,6 +110,7 @@ class Restaurant extends \yii\db\ActiveRecord
                 'comment',
                 'created_at',
                 'reply',
+                'date_of_visit',
                 'user_id',
                 'restaurant_id'])->orderBy('review.created_at');
     }

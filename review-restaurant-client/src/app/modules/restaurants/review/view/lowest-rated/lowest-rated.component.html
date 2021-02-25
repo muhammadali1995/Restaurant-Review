@@ -21,5 +21,8 @@
       <small><i> {{review.user?.firstname}} {{review.user?.lastname}}</i></small>
       <small class="ml-2"><i>{{review.created_at | date: 'medium'}}</i></small>
     </div>
+    <div>
+      <small> Visit Date:</small> <small class="ml-2"><i>{{review.created_at | date: 'mediumDate'}}</i></small>
+    </div>
   </div>
 </div>

@@ -1,4 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {UrlService} from '../../services/url.service';
 
 @Component({
   selector: 'app-star-filter',
@@ -8,16 +10,15 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 export class StartFilterComponent implements OnInit {
 
   @Output() onFilterChange = new EventEmitter();
-  rating = 0;
+  @Input() rating = 0;
 
-  constructor() {
+  constructor(private activatedRoute: ActivatedRoute, private urlService: UrlService) {
   }
 
   ngOnInit(): void {
   }
 
   apply() {
-    this.onFilterChange.emit(this.rating);
+    this.urlService.updateUrl(1, this.rating);
   }
-
 }

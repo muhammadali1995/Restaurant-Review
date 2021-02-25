@@ -3,6 +3,7 @@ import {AccountService} from '../../account/account.service';
 import {faUserCircle} from '@fortawesome/free-solid-svg-icons';
 import {Roles} from '../../../models/roles';
 import {UserModel} from '../../../models/user.model';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -14,7 +15,9 @@ export class HeaderComponent implements OnInit {
   user: UserModel;
   public isMenuCollapsed = true;
 
-  constructor(private accountService: AccountService, private authService: AccountService) {
+  constructor(private accountService: AccountService,
+              private router: Router,
+              private authService: AccountService) {
     this.user = accountService.currentUser;
   }
 
@@ -24,6 +27,10 @@ export class HeaderComponent implements OnInit {
 
   logout() {
     this.accountService.logout();
+  }
+
+  go(link) {
+    this.router.navigate([link]);
   }
 
   // check if the current user is admin to show

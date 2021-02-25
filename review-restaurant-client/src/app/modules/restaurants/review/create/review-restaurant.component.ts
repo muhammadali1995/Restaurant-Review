@@ -3,7 +3,7 @@ import {ActivatedRoute} from '@angular/router';
 import {RestaurantService} from '../../restaurant.service';
 import {RestaurantModel} from '../../../../models/restaurant.model';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Location} from '@angular/common';
+import {DatePipe, Location} from '@angular/common';
 import {faStarHalf} from '@fortawesome/free-solid-svg-icons';
 import {ReviewService} from '../review.service';
 
@@ -29,6 +29,7 @@ export class ReviewRestaurantComponent implements OnInit {
     this.form = this.fb.group({
       restaurant_id: [null, Validators.required],
       rating: [null, Validators.required],
+      date_of_visit: [null, Validators.required],
       comment: null
     });
 
@@ -63,6 +64,10 @@ export class ReviewRestaurantComponent implements OnInit {
 
   onSubmit() {
     const request = this.form.value;
+    const datePipe = new DatePipe('en-US');
+
+    request.date_of_visit = datePipe.transform(request.date_of_visit, 'yyyy-MM-dd');
+    console.log(request);
     this.reviewService.create(request).subscribe(res => {
       window.alert('Successfully created');
       this.location.back();

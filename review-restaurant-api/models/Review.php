@@ -1,7 +1,7 @@
 <?php
 
 namespace app\models;
-
+use DateTime;
 use Yii;
 
 /**
@@ -14,6 +14,7 @@ use Yii;
  * @property string $updated_at
  * @property string $created_at
  * @property int $restaurant_id
+ * @property DateTime $date_of_visit
  * @property string|null $reply
  *
  * @property Restaurant $restaurant
@@ -37,7 +38,8 @@ class Review extends \yii\db\ActiveRecord
         return [
             [['rating'], 'number'],
             [['comment', 'reply'], 'string'],
-            [['restaurant_id', 'rating'], 'required'],
+            [['restaurant_id', 'rating', 'date_of_visit'], 'required'],
+            ['date_of_visit', 'datetime', 'format' => 'php:Y-m-d'],
             ['rating', 'in', 'range' => [1, 2, 3, 4, 5]],
             [['user_id', 'restaurant_id'], 'integer'],
             [['updated_at', 'created_at'], 'safe'],
@@ -60,6 +62,7 @@ class Review extends \yii\db\ActiveRecord
             'created_at' => 'Created At',
             'restaurant_id' => 'Restaurant ID',
             'reply' => 'Reply',
+            'date_of_visit' => "Date Of Visit"
         ];
     }
 

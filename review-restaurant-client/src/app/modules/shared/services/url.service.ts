@@ -6,13 +6,22 @@ import {Location} from '@angular/common';
   providedIn: 'root'
 })
 export class UrlService {
-
-  constructor(private router: Router, private route: ActivatedRoute, private location: Location) {
+  constructor(private router: Router) {
   }
 
   updateUrl(page: number, rating?: number) {
-    // update url for on pagination change
-    const url = this.router.createUrlTree([], {relativeTo: this.route, queryParams: {page, rating}}).toString();
-    this.location.go(url);
+    const queryParams = {
+      page: page ? page : 1
+    };
+    if (rating) {
+      queryParams['rating'] = rating;
+    }
+    this.router.navigate(
+      [],
+      {
+        queryParams: queryParams,
+        queryParamsHandling: 'merge'
+      }
+    );
   }
 }

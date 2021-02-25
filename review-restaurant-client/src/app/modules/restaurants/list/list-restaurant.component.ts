@@ -32,26 +32,22 @@ export class ListRestaurantComponent implements OnInit {
               private location: Location,
               private authGuardService: AuthGuard,
               private accountService: AccountService,
+              private route: ActivatedRoute,
               private urlService: UrlService,
-              private activatedRoute: ActivatedRoute,
-              private router: Router,
   ) {
   }
 
   ngOnInit(): void {
     // get the first page on start
-    this.fetch();
-  }
-
-  applyFilter($filter) {
-    this.rating = $filter;
-    this.page = 1;
-    this.fetch();
+    this.route.queryParams.subscribe(params => {
+      this.page = params.page ? params.page : 1;
+      this.rating = params.rating ? params.rating : 0;
+      this.fetch();
+    });
   }
 
   onPageChange(page) {
-    this.page = page;
-    this.fetch();
+    this.urlService.updateUrl(page, this.rating);
   }
 
   // get the rows of the current page and update total
@@ -62,7 +58,6 @@ export class ListRestaurantComponent implements OnInit {
         this.restaurants = response.rows;
         this.total = response.total;
       }, error => this.error = error);
-    this.urlService.updateUrl(this.page, this.rating);
   }
 
   get canCreate() {

@@ -191,7 +191,7 @@
           }
         ]
       }
-    }, 
+    },
     "/restaurant/{restaurantId}": {
       "get": {
         "tags": ["restaurant"],
@@ -271,17 +271,24 @@
     "/user/register": {
       "post": {
         "tags": ["user"],
-        "summary": "Creates list of users with given input array",
-        "description": "Creates list of users with given input array",
-        "operationId": "createUsersWithListInput",
+        "summary": "Register a user",
+        "description": "Register a user",
+        "operationId": "register",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/User"
-                }
+                "$ref": "#/components/schemas/RegisterForm"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterForm"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterForm"
               }
             }
           }
@@ -309,31 +316,30 @@
       }
     },
     "/user/login": {
-      "get": {
+      "post": {
         "tags": ["user"],
         "summary": "Logs user into the system",
         "description": "",
         "operationId": "loginUser",
-        "parameters": [
-          {
-            "name": "username",
-            "in": "query",
-            "description": "The user name for login",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "password",
-            "in": "query",
-            "description": "The password for login in clear text",
-            "required": false,
-            "schema": {
-              "type": "string"
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginForm"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginForm"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginForm"
+              }
             }
           }
-        ],
+        },
         "responses": {
           "200": {
             "description": "successful operation",
@@ -372,17 +378,17 @@
         }
       }
     },
-    "/user/{username}": {
+    "/user/{id}": {
       "get": {
         "tags": ["user"],
-        "summary": "Get user by user name",
+        "summary": "Get user by id",
         "description": "",
-        "operationId": "getUserByName",
+        "operationId": "getUserById",
         "parameters": [
           {
-            "name": "username",
+            "name": "id",
             "in": "path",
-            "description": "The name that needs to be fetched. Use user1 for testing. ",
+            "description": "The id that needs to be fetched. Use 51 for testing. ",
             "required": true,
             "schema": {
               "type": "string"
@@ -411,7 +417,12 @@
           "404": {
             "description": "User not found"
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       },
       "put": {
         "tags": ["user"],
@@ -886,7 +897,7 @@
           "created_at": {
             "type": "string",
             "example": "Feb 26, 2021, 5:09:31 AM"
-          } ,
+          },
           "reply": {
             "type": "string",
             "example": "This is a sample reply"
@@ -904,11 +915,11 @@
             "format": "int64",
             "example": 10
           },
-          "firstName": {
+          "firstname": {
             "type": "string",
             "example": "John"
           },
-          "lastName": {
+          "lastname": {
             "type": "string",
             "example": "James"
           },
@@ -919,10 +930,63 @@
           "password": {
             "type": "string",
             "example": "12345"
+          },
+          "role": {
+            "type": "string",
+            "description": "User roles",
+            "enum": [
+              "owner",
+              "customer"
+            ]
           }
         },
         "xml": {
           "name": "user"
+        }
+      },
+      "RegisterForm": {
+        "type": "object",
+        "properties": {
+          "firstname": {
+            "type": "string",
+            "example": "John"
+          },
+          "lastname": {
+            "type": "string",
+            "example": "James"
+          },
+          "email": {
+            "type": "string",
+            "example": "john@email.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "12345"
+          },
+          "role": {
+            "type": "string",
+            "description": "User roles",
+            "enum": [
+              "owner",
+              "customer"
+            ]
+          }
+        },
+        "xml": {
+          "name": "registerForm"
+        }
+      },
+      "LoginForm": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "john@email.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "12345678"
+          }
         }
       },
       "ApiResponse": {

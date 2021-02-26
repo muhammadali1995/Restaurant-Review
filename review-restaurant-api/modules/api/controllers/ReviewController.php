@@ -39,8 +39,7 @@ class ReviewController extends BaseController
     }
 
 
-    public
-    function actionReply()
+    public function actionReply()
     {
 
         $id = Yii::$app->request->getBodyParam('reviewId');

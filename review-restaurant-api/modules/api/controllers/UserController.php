@@ -70,27 +70,6 @@ class UserController extends ActiveController
         return $actions;
     }
 
-
-    /**
-     * @SWG\Get(path="/user",
-     *     tags={"user"},
-     *     summary="Show users list",
-     *     description="Show users list",
-     *     produces={"application/json"},
-     *     @SWG\Parameter(
-     *        in = "query",
-     *        name = "page",
-     *        description = "Page number for pagination",
-     *        type = "string"
-     *     ),
-     *
-     *     @SWG\Response(
-     *         response = 200,
-     *         description = " success"
-     *     )
-     * )
-     *
-     */
     public function prepareDataProvider()
     {
 
@@ -124,8 +103,9 @@ class UserController extends ActiveController
     public function actionView($id)
     {
 
-        $user = User::find()->select(['id', 'firstname', 'lastname'])->where(['id' => $id])->one();
+        $this->checkAccess('view');
 
+        $user = User::find()->select(['id', 'firstname', 'lastname'])->where(['id' => $id])->one();
         if (isset(Yii::$app->authManager->getRolesByUser($id)['admin']) || (!isset($user))) {
             //if the user is trying to get admin, throw not found exception or user not found
             throw new NotFoundHttpException("Requested resource not found");
@@ -136,6 +116,9 @@ class UserController extends ActiveController
 
     public function actionUpdate()
     {
+
+        $this->checkAccess('update');
+
 
         $queryParams = Yii::$app->request->getQueryParams();
 
@@ -202,6 +185,8 @@ class UserController extends ActiveController
 
     public function actionDelete()
     {
+        $this->checkAccess('delete');
+
         $userId = Yii::$app->request->getQueryParam('id');
         $model = User::findOne($userId);
         if (isset(Yii::$app->authManager->getRolesByUser($userId)['admin']) || (!isset($model))) {

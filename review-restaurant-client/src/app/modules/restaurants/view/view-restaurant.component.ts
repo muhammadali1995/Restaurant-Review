@@ -70,6 +70,8 @@ export class ViewRestaurantComponent implements OnInit {
       });
   }
 
+
+  // get permissions of the users
   get canEdit() {
     return this.authGuardService.can(Action.UPDATE_RESTAURANT);
   }
@@ -92,6 +94,7 @@ export class ViewRestaurantComponent implements OnInit {
 
   get pendingReviewCount() {
     if (this.restaurant.reviewAggregation) {
+      // get the count of the number of pending reviews  of a restaurant shown to owner only
       return this.restaurant.reviewAggregation[0]?.counted ? this.restaurant.reviewAggregation[0]?.counted : 0;
     }
     return 0;

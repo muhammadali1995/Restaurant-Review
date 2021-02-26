@@ -72,6 +72,7 @@ export class ListRestaurantComponent implements OnInit {
 
   getPendingReviewCount(restaurant: RestaurantModel) {
     if (restaurant.reviewAggregation) {
+      // show the details review aggregations such as number of pending reviews currently
       return restaurant.reviewAggregation[0]?.counted ? restaurant.reviewAggregation[0]?.counted : 0;
     }
     return 0;

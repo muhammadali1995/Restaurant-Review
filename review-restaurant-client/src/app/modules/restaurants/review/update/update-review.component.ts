@@ -35,6 +35,7 @@ export class UpdateReviewComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe(params => {
 
+      // fetch review details and set to the form
       this.reviewService.fetchOne(params.reviewId).subscribe((review: ReviewModel) => {
         this.review = review;
         this.form.patchValue({
@@ -64,6 +65,8 @@ export class UpdateReviewComponent implements OnInit {
   onSubmit() {
     const request = this.form.value;
     const datePipe = new DatePipe('en-US');
+
+    // send a proper formatted date for the api using date pipe
     request.date_of_visit = datePipe.transform(request.date_of_visit, 'yyyy-MM-dd');
     this.reviewService.update(this.review.id, request).subscribe(res => {
       window.alert('Successfully updated');

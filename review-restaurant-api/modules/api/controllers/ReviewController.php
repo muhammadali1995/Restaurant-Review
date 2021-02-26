@@ -59,7 +59,7 @@ class ReviewController extends BaseController
             throw new NotFoundHttpException();
         }
 
-
+        //check if the review has already been replied once
         if (is_null($model->reply)) {
             $model->reply = Yii::$app->request->getBodyParam('reply');
 

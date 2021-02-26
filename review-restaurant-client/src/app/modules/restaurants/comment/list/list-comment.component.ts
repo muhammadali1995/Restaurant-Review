@@ -33,7 +33,6 @@ export class ListCommentComponent implements OnInit {
   }
 
   delete(comment: CommentModel) {
-    const index = this.restaurant.comments.indexOf(comment);
     const modal = this.modalService.open(DeleteCommentComponent);
     modal.componentInstance.comment = comment;
     modal.result.then(res => {
@@ -50,12 +49,10 @@ export class ListCommentComponent implements OnInit {
   }
 
   reply(comment: CommentModel) {
-    const index = this.restaurant.comments.indexOf(comment);
     const modal = this.modalService.open(ReplyCommentComponent);
     modal.componentInstance.comment = comment;
     modal.result.then(res => {
       if (res && res.id) {
-        this.restaurant.comments[index] = res;
         this.onUpdate.emit();
       }
     });

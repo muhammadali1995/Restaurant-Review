@@ -3,6 +3,7 @@ import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {ReviewModel} from '../../../../models/review.model';
 import {ReviewService} from '../review.service';
+import {ValidatorService} from '../../../shared/services/validator.service';
 
 @Component({
   selector: 'app-reply-review',
@@ -19,9 +20,11 @@ export class ReplyReviewComponent implements OnInit {
 
   constructor(private activeModal: NgbActiveModal,
               private fb: FormBuilder,
+              private validatorService: ValidatorService,
               private reviewService: ReviewService) {
     this.form = this.fb.group({
-      reply: [null, [Validators.required, this.noWhitespaceValidator]]
+      // set required and value can not be white space validations
+      reply: [null, [Validators.required, this.validatorService.noWhitespaceValidator]]
     });
   }
 
@@ -41,19 +44,14 @@ export class ReplyReviewComponent implements OnInit {
     return this.form.get('reply');
   }
 
+
+  // getter for showing errors of a reply field
   get getReplyError() {
     if (this.reply.hasError('required')) {
       return 'Comment is required';
     }
     return this.reply.hasError('whitespace') ? 'Reply can not be whitespaces' : '';
 
-  }
-
-
-  public noWhitespaceValidator(control: FormControl) {
-    const isWhitespace = (control.value || '').trim().length === 0;
-    const isValid = !isWhitespace;
-    return isValid ? null : {whitespace: true};
   }
 
   onClose() {

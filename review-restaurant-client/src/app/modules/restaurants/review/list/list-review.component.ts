@@ -30,23 +30,22 @@ export class ListReviewComponent implements OnInit {
 
   // delete a review from the server and if successful remove from the view as well
   delete(review: ReviewModel) {
-    const index = this.restaurant.reviews.indexOf(review);
     const modal = this.modalService.open(DeleteReviewComponent);
     modal.componentInstance.review = review;
     modal.result.then(res => {
       if (res === 'success') {
-        this.restaurant.reviews.splice(index, 1);
+        // output to the parent component to fetch the details of the restaurant as a relation is updated
         this.onUpdate.emit();
       }
     });
   }
 
   reply(review: ReviewModel) {
-    const index = this.restaurant.reviews.indexOf(review);
     const modal = this.modalService.open(ReplyReviewComponent);
     modal.componentInstance.review = review;
     modal.result.then((res: ReviewModel) => {
       if (res && res.id) {
+        // output to the parent component to fetch the details of the restaurant as a relation is updated
         this.onUpdate.emit();
       }
     });
@@ -54,7 +53,6 @@ export class ListReviewComponent implements OnInit {
 
 
   // re-fetch restaurant to get the changes of the review stats
-
   get canEdit() {
     return this.authGuardService.can(Action.UPDATE_REVIEW);
   }

@@ -40,7 +40,7 @@ export class ReviewRestaurantComponent implements OnInit {
 
       // set the id of the restaurant being reviewed
       this.form.get('restaurant_id').setValue(params.id);
-
+      // fetch the details of a restaurnt
       this.restaurantService.fetchOne(params.id).subscribe((restaurant: RestaurantModel) => {
         this.restaurant = restaurant;
       }, error => this.error = error?.error.message);
@@ -53,7 +53,6 @@ export class ReviewRestaurantComponent implements OnInit {
   }
 
   // get rate error
-
   get getRateErrorMessage() {
     return this.rating.value === null ? 'Rate is required' : '';
   }
@@ -65,7 +64,7 @@ export class ReviewRestaurantComponent implements OnInit {
   onSubmit() {
     const request = this.form.value;
     const datePipe = new DatePipe('en-US');
-
+    // send a proper formatted date to the api using datepipe
     request.date_of_visit = datePipe.transform(request.date_of_visit, 'yyyy-MM-dd');
     this.reviewService.create(request).subscribe(res => {
       window.alert('Successfully created');

@@ -85,7 +85,7 @@ class UserController extends ActiveController
 
         $query = User::find();
 
-        //select all users except users
+        //select all users except admins
         $countQuery = clone $query;
         $pages = new Pagination(['totalCount' => $countQuery->count(), 'defaultPageSize' => 10]);
         $rows = $query->select('user.id, user.firstname, user.lastname, user.email, auth_assignment.item_name as role')

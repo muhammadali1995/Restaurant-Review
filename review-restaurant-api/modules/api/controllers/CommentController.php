@@ -21,7 +21,7 @@ class CommentController extends BaseController
             if (!Yii::$app->user->can("customer")) {
                 throw new ForbiddenHttpException('Permission denied: you dont have access to this action');
             }
-        } else if ($action == 'delete' || $action == 'update') {
+        } else if ($action == 'delete' || $action == 'update' || $action=='view') {
             if (!Yii::$app->user->can("admin")) {
                 throw new ForbiddenHttpException('Permission denied: you dont have access to this action');
             }

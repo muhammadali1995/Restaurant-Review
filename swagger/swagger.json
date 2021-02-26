@@ -89,18 +89,29 @@
       "get": {
         "tags": ["restaurant"],
         "summary": "Fetch Restaurants",
-        "description": "Multiple status values can be provided with comma separated strings",
+        "description": "",
         "operationId": "fetchAll",
         "parameters": [
           {
             "name": "page",
             "in": "query",
-            "description": "Status values that need to be considered for filter",
+            "description": "Page for pagination",
             "required": false,
             "explode": true,
             "schema": {
               "type": "integer",
               "format": "int64"
+            }
+          },
+          {
+            "name": "rating",
+            "in": "query",
+            "description": "Rating for filter",
+            "required": false,
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "example": "1"
             }
           }
         ],
@@ -152,6 +163,16 @@
             "schema": {
               "type": "integer",
               "format": "int64"
+            }
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "expand params for getting relational data",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "reviews"
             }
           }
         ],
@@ -270,6 +291,53 @@
         "responses": {
           "400": {
             "description": "Invalid restaurant value"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/user": {
+      "get": {
+        "tags": ["user"],
+        "summary": "Get all users",
+        "description": "",
+        "operationId": "getAllUsers",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "The id that needs to be fetched. Use 51 for testing. ",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid id supplied"
+          },
+          "404": {
+            "description": "User not found"
           }
         },
         "security": [
@@ -529,9 +597,290 @@
       }
     },
     "/review": {
+      "post": {
+        "tags": ["review"],
+        "summary": "Add a new review",
+        "description": "Add a new review",
+        "operationId": "createReview",
+        "requestBody": {
+          "description": "Create a new review",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReviewForm"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/ReviewForm"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/ReviewForm"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Restaurant"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Restaurant"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Invalid input"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/review/{id}": {
       "put": {
         "tags": ["review"],
-        "summary": "Update an existing restaurant",
+        "summary": "Update an existing review",
+        "description": "Update an existing review by Id",
+        "operationId": "updateReview",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id of the review that need to be updated",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Update an existing review",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReviewForm"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/ReviewForm"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/ReviewForm"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Restaurant"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Restaurant"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Pet not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "get": {
+        "tags": ["review"],
+        "summary": "Fetch a review",
+        "description": "Fetch a review by id",
+        "operationId": "getById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id of the review that needs to be get",
+            "required": true,
+            "explode": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Restaurant"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Pet"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/review/reply": {
+      "post": {
+        "tags": ["comment"],
+        "summary": "Add a new restaurant",
+        "description": "Add a new restaurant",
+        "operationId": "addRestaurant",
+        "requestBody": {
+          "description": "Create a new restaurant",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Restaurant"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/Restaurant"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Restaurant"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Restaurant"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Restaurant"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Invalid input"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/comment": {
+      "post": {
+        "tags": ["review"],
+        "summary": "Add a new restaurant",
+        "description": "Add a new restaurant",
+        "operationId": "addRestaurant",
+        "requestBody": {
+          "description": "Create a new restaurant",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Restaurant"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/Restaurant"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Restaurant"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Restaurant"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Restaurant"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Invalid input"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/comment/{id}": {
+      "put": {
+        "tags": ["review"],
+        "summary": "Update an existing review",
         "description": "Update an existing restaurant by Id",
         "operationId": "updateRestaurant",
         "requestBody": {
@@ -584,60 +933,8 @@
           }
         ]
       },
-      "post": {
-        "tags": ["review"],
-        "summary": "Add a new restaurant",
-        "description": "Add a new restaurant",
-        "operationId": "addRestaurant",
-        "requestBody": {
-          "description": "Create a new restaurant",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Restaurant"
-              }
-            },
-            "application/xml": {
-              "schema": {
-                "$ref": "#/components/schemas/Restaurant"
-              }
-            },
-            "application/x-www-form-urlencoded": {
-              "schema": {
-                "$ref": "#/components/schemas/Restaurant"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful operation",
-            "content": {
-              "application/xml": {
-                "schema": {
-                  "$ref": "#/components/schemas/Restaurant"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Restaurant"
-                }
-              }
-            }
-          },
-          "405": {
-            "description": "Invalid input"
-          }
-        },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
-      },
       "get": {
-        "tags": ["review"],
+        "tags": ["comment"],
         "summary": "Fetch Restaurants",
         "description": "Multiple status values can be provided with comma separated strings",
         "operationId": "fetchAll",
@@ -687,62 +984,7 @@
         ]
       }
     },
-    "/comment": {
-      "put": {
-        "tags": ["comment"],
-        "summary": "Update an existing restaurant",
-        "description": "Update an existing restaurant by Id",
-        "operationId": "updateRestaurant",
-        "requestBody": {
-          "description": "Update an existent restaurant",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Restaurant"
-              }
-            },
-            "application/xml": {
-              "schema": {
-                "$ref": "#/components/schemas/Restaurant"
-              }
-            },
-            "application/x-www-form-urlencoded": {
-              "schema": {
-                "$ref": "#/components/schemas/Restaurant"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful operation",
-            "content": {
-              "application/xml": {
-                "schema": {
-                  "$ref": "#/components/schemas/Restaurant"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Restaurant"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Pet not found"
-          },
-          "405": {
-            "description": "Validation exception"
-          }
-        },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
-      },
+    "/comment/reply": {
       "post": {
         "tags": ["comment"],
         "summary": "Add a new restaurant",
@@ -787,56 +1029,6 @@
           },
           "405": {
             "description": "Invalid input"
-          }
-        },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
-      },
-      "get": {
-        "tags": ["comment"],
-        "summary": "Fetch Restaurants",
-        "description": "Multiple status values can be provided with comma separated strings",
-        "operationId": "fetchAll",
-        "parameters": [
-          {
-            "name": "page",
-            "in": "query",
-            "description": "Status values that need to be considered for filter",
-            "required": false,
-            "explode": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "content": {
-              "application/xml": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Restaurant"
-                  }
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Pet"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid status value"
           }
         },
         "security": [
@@ -929,6 +1121,27 @@
           }
         }
       },
+      "ReviewForm": {
+        "type": "object",
+        "properties": {
+          "comment": {
+            "type": "string",
+            "example": "This is a comment"
+          },
+          "restaurant_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "date_of_visit": {
+            "type": "string",
+            "example": "2021-05-06"
+          },
+          "rating": {
+            "type": "integer",
+            "example": "1"
+          }
+        }
+      },
       "Comment": {
         "type": "object",
         "properties": {
@@ -960,6 +1173,19 @@
           "name": "address"
         }
       },
+      "CommentForm": {
+        "type": "object",
+        "properties": {
+          "comment": {
+            "type": "string",
+            "example": "This is a comment"
+          },
+          "restaurant_id": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
       "User": {
         "type": "object",
         "properties": {
@@ -987,10 +1213,7 @@
           "role": {
             "type": "string",
             "description": "User roles",
-            "enum": [
-              "owner",
-              "customer"
-            ]
+            "enum": ["owner", "customer"]
           }
         },
         "xml": {
@@ -1039,10 +1262,7 @@
           "role": {
             "type": "string",
             "description": "User roles",
-            "enum": [
-              "owner",
-              "customer"
-            ]
+            "enum": ["owner", "customer"]
           }
         },
         "xml": {

@@ -34,61 +34,6 @@
   ],
   "paths": {
     "/restaurant": {
-      "put": {
-        "tags": ["restaurant"],
-        "summary": "Update an existing restaurant",
-        "description": "Update an existing restaurant by Id",
-        "operationId": "updateRestaurant",
-        "requestBody": {
-          "description": "Update an existent restaurant",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Restaurant"
-              }
-            },
-            "application/xml": {
-              "schema": {
-                "$ref": "#/components/schemas/Restaurant"
-              }
-            },
-            "application/x-www-form-urlencoded": {
-              "schema": {
-                "$ref": "#/components/schemas/Restaurant"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful operation",
-            "content": {
-              "application/xml": {
-                "schema": {
-                  "$ref": "#/components/schemas/Restaurant"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Restaurant"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Pet not found"
-          },
-          "405": {
-            "description": "Validation exception"
-          }
-        },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
-      },
       "post": {
         "tags": ["restaurant"],
         "summary": "Add a new restaurant",
@@ -99,17 +44,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Restaurant"
+                "$ref": "#/components/schemas/RestaurantForm"
               }
             },
             "application/xml": {
               "schema": {
-                "$ref": "#/components/schemas/Restaurant"
+                "$ref": "#/components/schemas/RestaurantForm"
               }
             },
             "application/x-www-form-urlencoded": {
               "schema": {
-                "$ref": "#/components/schemas/Restaurant"
+                "$ref": "#/components/schemas/RestaurantForm"
               }
             }
           },
@@ -192,7 +137,7 @@
         ]
       }
     },
-    "/restaurant/{restaurantId}": {
+    "/restaurant/{id}": {
       "get": {
         "tags": ["restaurant"],
         "summary": "Find restaurant by ID",
@@ -200,9 +145,9 @@
         "operationId": "getRestaurantById",
         "parameters": [
           {
-            "name": "restaurantId",
+            "name": "id",
             "in": "path",
-            "description": "ID of restaurant to return",
+            "description": "ID of restaurant to return. Example: 89",
             "required": true,
             "schema": {
               "type": "integer",
@@ -239,6 +184,72 @@
           }
         ]
       },
+      "put": {
+        "tags": ["restaurant"],
+        "summary": "Update an existing restaurant",
+        "description": "Update an existing restaurant by Id",
+        "operationId": "updateRestaurant",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id that needs to be fetched. Use 89 for testing. ",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Update an existent restaurant",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RestaurantForm"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/RestaurantForm"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/RestaurantForm"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Restaurant"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Restaurant"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Pet not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
       "delete": {
         "tags": ["restaurant"],
         "summary": "Deletes a restaurant",
@@ -246,7 +257,7 @@
         "operationId": "deleteRestaurant",
         "parameters": [
           {
-            "name": "restaurantId",
+            "name": "id",
             "in": "path",
             "description": "Restaurant id to delete",
             "required": true,
@@ -862,6 +873,23 @@
             "type": "integer",
             "format": "int64",
             "example": 10
+          }
+        }
+      },
+      "RestaurantForm": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Mc Donald's"
+          },
+          "address": {
+            "type": "string",
+            "example": "Palo Alto, CA, USA"
+          },
+          "description": {
+            "type": "string",
+            "example": "Burger Restaurant"
           }
         }
       },

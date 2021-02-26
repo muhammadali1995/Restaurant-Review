@@ -25,7 +25,7 @@
     },
     {
       "name": "user",
-      "description": "Access to Petstore orders",
+      "description": "Access to restaurant reviews",
       "externalDocs": {
         "description": "Find out more about our store",
         "url": "http://swagger.io"
@@ -131,7 +131,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Pet"
+                    "$ref": "#/components/schemas/Restaurant"
                   }
                 }
               }
@@ -259,7 +259,7 @@
             }
           },
           "404": {
-            "description": "Pet not found"
+            "description": "Restaurant not found"
           },
           "405": {
             "description": "Validation exception"
@@ -289,6 +289,9 @@
           }
         ],
         "responses": {
+          "204": {
+            "description": "Successful operation"
+          },
           "400": {
             "description": "Invalid restaurant value"
           }
@@ -579,7 +582,7 @@
           }
         ],
         "responses": {
-          "200": {
+          "204": {
             "description": "successful operation"
           },
           "400": {
@@ -706,7 +709,7 @@
             }
           },
           "404": {
-            "description": "Pet not found"
+            "description": "Restaurant not found"
           },
           "405": {
             "description": "Validation exception"
@@ -752,7 +755,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Pet"
+                    "$ref": "#/components/schemas/Restaurant"
                   }
                 }
               }
@@ -767,30 +770,63 @@
             "bearerAuth": []
           }
         ]
+      },
+      "delete": {
+        "tags": ["review"],
+        "summary": "Delete review",
+        "description": "This can only be done by the logged in admin.",
+        "operationId": "deleteReview",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the review that needs to be deleted",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "Invalid id supplied"
+          },
+          "404": {
+            "description": "Review not found"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
     "/review/reply": {
       "post": {
-        "tags": ["comment"],
-        "summary": "Add a new restaurant",
-        "description": "Add a new restaurant",
+        "tags": ["review"],
+        "summary": "Add a reply a reply",
+        "description": "Add a new reply",
         "operationId": "addRestaurant",
         "requestBody": {
-          "description": "Create a new restaurant",
+          "description": "Create a new reply",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Restaurant"
+                "$ref": "#/components/schemas/ReviewReply"
               }
             },
             "application/xml": {
               "schema": {
-                "$ref": "#/components/schemas/Restaurant"
+                "$ref": "#/components/schemas/ReviewReply"
               }
             },
             "application/x-www-form-urlencoded": {
               "schema": {
-                "$ref": "#/components/schemas/Restaurant"
+                "$ref": "#/components/schemas/ReviewReply"
               }
             }
           },
@@ -802,12 +838,12 @@
             "content": {
               "application/xml": {
                 "schema": {
-                  "$ref": "#/components/schemas/Restaurant"
+                  "$ref": "#/components/schemas/ReviewReply"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Restaurant"
+                  "$ref": "#/components/schemas/ReviewReply"
                 }
               }
             }
@@ -825,26 +861,26 @@
     },
     "/comment": {
       "post": {
-        "tags": ["review"],
-        "summary": "Add a new restaurant",
-        "description": "Add a new restaurant",
-        "operationId": "addRestaurant",
+        "tags": ["comment"],
+        "summary": "Add a new comment",
+        "description": "Add a new comment",
+        "operationId": "createComment",
         "requestBody": {
-          "description": "Create a new restaurant",
+          "description": "Create a new comment",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Restaurant"
+                "$ref": "#/components/schemas/CommentForm"
               }
             },
             "application/xml": {
               "schema": {
-                "$ref": "#/components/schemas/Restaurant"
+                "$ref": "#/components/schemas/CommentForm"
               }
             },
             "application/x-www-form-urlencoded": {
               "schema": {
-                "$ref": "#/components/schemas/Restaurant"
+                "$ref": "#/components/schemas/CommentForm"
               }
             }
           },
@@ -856,12 +892,12 @@
             "content": {
               "application/xml": {
                 "schema": {
-                  "$ref": "#/components/schemas/Restaurant"
+                  "$ref": "#/components/schemas/Comment"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Restaurant"
+                  "$ref": "#/components/schemas/Comment"
                 }
               }
             }
@@ -879,26 +915,38 @@
     },
     "/comment/{id}": {
       "put": {
-        "tags": ["review"],
-        "summary": "Update an existing review",
-        "description": "Update an existing restaurant by Id",
-        "operationId": "updateRestaurant",
+        "tags": ["comment"],
+        "summary": "Update an existing comment",
+        "description": "Update an existing comment by Id",
+        "operationId": "updateComment",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id of the comment that need to be updated",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
         "requestBody": {
-          "description": "Update an existent restaurant",
+          "description": "Update an existing comment",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Restaurant"
+                "$ref": "#/components/schemas/CommentForm"
               }
             },
             "application/xml": {
               "schema": {
-                "$ref": "#/components/schemas/Restaurant"
+                "$ref": "#/components/schemas/CommentForm"
               }
             },
             "application/x-www-form-urlencoded": {
               "schema": {
-                "$ref": "#/components/schemas/Restaurant"
+                "$ref": "#/components/schemas/CommentForm"
               }
             }
           },
@@ -910,18 +958,18 @@
             "content": {
               "application/xml": {
                 "schema": {
-                  "$ref": "#/components/schemas/Restaurant"
+                  "$ref": "#/components/schemas/Comment"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Restaurant"
+                  "$ref": "#/components/schemas/Comment"
                 }
               }
             }
           },
           "404": {
-            "description": "Pet not found"
+            "description": "Comment not found"
           },
           "405": {
             "description": "Validation exception"
@@ -935,15 +983,15 @@
       },
       "get": {
         "tags": ["comment"],
-        "summary": "Fetch Restaurants",
-        "description": "Multiple status values can be provided with comma separated strings",
-        "operationId": "fetchAll",
+        "summary": "Fetch a comment",
+        "description": "Fetch a comment by id",
+        "operationId": "getById",
         "parameters": [
           {
-            "name": "page",
-            "in": "query",
-            "description": "Status values that need to be considered for filter",
-            "required": false,
+            "name": "id",
+            "in": "path",
+            "description": "id of the comment that needs to be get",
+            "required": true,
             "explode": true,
             "schema": {
               "type": "integer",
@@ -959,7 +1007,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Restaurant"
+                    "$ref": "#/components/schemas/Comment"
                   }
                 }
               },
@@ -967,7 +1015,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Pet"
+                    "$ref": "#/components/schemas/Comment"
                   }
                 }
               }
@@ -982,30 +1030,63 @@
             "bearerAuth": []
           }
         ]
+      },
+      "delete": {
+        "tags": ["comment"],
+        "summary": "Delete comment",
+        "description": "This can only be done by the logged in admin.",
+        "operationId": "deleteComment",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the comment that needs to be deleted",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "Invalid id supplied"
+          },
+          "404": {
+            "description": "Comment not found"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
     "/comment/reply": {
       "post": {
         "tags": ["comment"],
-        "summary": "Add a new restaurant",
-        "description": "Add a new restaurant",
-        "operationId": "addRestaurant",
+        "summary": "Add a reply to a comment",
+        "description": "Add a new reply",
+        "operationId": "addReply",
         "requestBody": {
-          "description": "Create a new restaurant",
+          "description": "Create a new reply",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Restaurant"
+                "$ref": "#/components/schemas/CommentReply"
               }
             },
             "application/xml": {
               "schema": {
-                "$ref": "#/components/schemas/Restaurant"
+                "$ref": "#/components/schemas/CommentReply"
               }
             },
             "application/x-www-form-urlencoded": {
               "schema": {
-                "$ref": "#/components/schemas/Restaurant"
+                "$ref": "#/components/schemas/CommentReply"
               }
             }
           },
@@ -1017,12 +1098,12 @@
             "content": {
               "application/xml": {
                 "schema": {
-                  "$ref": "#/components/schemas/Restaurant"
+                  "$ref": "#/components/schemas/Comment"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Restaurant"
+                  "$ref": "#/components/schemas/Comment"
                 }
               }
             }
@@ -1181,6 +1262,32 @@
             "example": "This is a comment"
           },
           "restaurant_id": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "ReviewReply" : {
+        "type": "object",
+        "properties": {
+          "reply": {
+            "type": "string",
+            "example": "This is a reply"
+          },
+          "reviewId": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "CommentReply" : {
+        "type": "object",
+        "properties": {
+          "reply": {
+            "type": "string",
+            "example": "This is a reply"
+          },
+          "commentId": {
             "type": "integer",
             "format": "int64"
           }

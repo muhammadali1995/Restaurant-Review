@@ -70,6 +70,27 @@ class UserController extends ActiveController
         return $actions;
     }
 
+
+    /**
+     * @SWG\Get(path="/user",
+     *     tags={"user"},
+     *     summary="Show users list",
+     *     description="Show users list",
+     *     produces={"application/json"},
+     *     @SWG\Parameter(
+     *        in = "query",
+     *        name = "page",
+     *        description = "Page number for pagination",
+     *        type = "string"
+     *     ),
+     *
+     *     @SWG\Response(
+     *         response = 200,
+     *         description = " success"
+     *     )
+     * )
+     *
+     */
     public function prepareDataProvider()
     {
 

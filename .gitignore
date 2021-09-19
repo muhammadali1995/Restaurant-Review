@@ -48,11 +48,6 @@ review-restaurant-client/speed-measure-plugin*.json
 *.sublime-workspace
 
 # IDE - VSCode
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
 .history/*
 
 # misc
@@ -66,3 +61,7 @@ review-restaurant-client/testem.log
 /review-restaurant-client/typings
 
 Thumbs.db
+temp_auto_push.bat
+temp_interactive_push.bat
+.gitignore
+branch_structure.json
